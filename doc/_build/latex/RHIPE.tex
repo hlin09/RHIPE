@@ -12,7 +12,7 @@
 
 
 \title{RHIPE Documentation}
-\date{September 08, 2010}
+\date{October 11, 2010}
 \release{0.61}
 \author{Saptarshi Guha}
 \newcommand{\sphinxlogo}{}
@@ -245,13 +245,14 @@ tasks, such as saving the mapping between a file and the location of its block
 across the cluster and so on. The Namenode tells the client which Datanodes (the
 computers that make up the HDFS) to store the data onto. It also tells the
 client which Datanodes to read the data from when a read request is
-performed. See (\hyperref[introduction:hadoopschematic]{\emph{A schematic of the Hadoop File System}}) for an graphical outline of the file
+performed. See ({\hyperref[introduction:hadoopschematic]{\emph{A schematic of the Hadoop File System}}}) for an graphical outline of the file
 copy operation to the HDFS.
-\phantomsection\label{introduction:hadoopschematic}\begin{figure}[htbp]
+\begin{figure}[htbp]
 \centering
+\capstart
 
 \includegraphics{hdfs-write.pdf}
-\caption{A schematic of the Hadoop File System}\end{figure}
+\caption{A schematic of the Hadoop File System}\label{introduction:hadoopschematic}\end{figure}
 
 
 \section{Hadoop MapReduce}
@@ -264,14 +265,14 @@ Concurrent programming is difficult to get right. As Herb Sutter put it:
 
 A statistician attempting concurrent programming needs to be aware of race
 conditions, deadlocks and tools to prevent this: locks, semaphores, and
-mutually exclusive regions etc. An approach suggested by Sutter et al (\hyperref[introduction:stla]{{[}STLa{]}}) is to
+mutually exclusive regions etc. An approach suggested by Sutter et al ({\hyperref[introduction:stla]{{[}STLa{]}}}) is to
 provide programming models not functions that force
 the programmer to approach her algorithms differently. Once the programmer
 constructs the algorithm using this model, concurrency comes for free.  The
 MapReduce programming model is one example. Correctly coded Condor DAGS are another
 example.
 
-MapReduce (\hyperref[introduction:mapred]{{[}MapRed{]}}) consists of several embarrassingly parallel splits which are evaluated
+MapReduce ({\hyperref[introduction:mapred]{{[}MapRed{]}}}) consists of several embarrassingly parallel splits which are evaluated
 in parallel. This is called the Map. There is a synchronization guard where
 intermediate data created at the end of the Map is exchanged between nodes and
 another round of parallel computing starts, called the Reduce phase. In effect
@@ -304,6 +305,7 @@ $A$ and $B$ (the map) and displays each subset (the reduce). Hadoop
 MapReduce generalizes this to a distributed level.
 \begin{figure}[htbp]
 \centering
+\capstart
 
 \includegraphics{mapredslov.pdf}
 \caption{An overview of Hadoop MapReduce}\end{figure}
@@ -328,7 +330,7 @@ decimal places!
 
 For this example, let us assume the data is discrete (so no need for
 rounding). The goal is to compute the frequency table of the data and use that
-to compute the quantiles (see \hyperref[introduction:hynfan]{{[}HynFan{]}})
+to compute the quantiles (see {\hyperref[introduction:hynfan]{{[}HynFan{]}}})
 
 \begin{Verbatim}[commandchars=\\\{\}]
 for line in line\PYGZus{}of\PYGZus{}numbers:
@@ -504,6 +506,7 @@ values for a given intermediate keys. The output of this is sent to the
 reducer. This greatly reduces network transfer and accelerates the job speed.
 \begin{figure}[htbp]
 \centering
+\capstart
 
 \scalebox{0.750000}{\includegraphics{combiner.pdf}}
 \caption{A MapReduce job using a combiner (the minimum operator). We consider   intermediate values for a single key.}\end{figure}
@@ -618,7 +621,7 @@ others? Are there critical links in the system?''
 \end{quote}
 
 In this chapter, I will demonstrate RHIPE code samples to create similar
-graphics found in the winning entries \hyperref[airline:sas]{{[}SAS{]}} and \hyperref[airline:flusa]{{[}FLUSA{]}}
+graphics found in the winning entries {\hyperref[airline:sas]{{[}SAS{]}}} and {\hyperref[airline:flusa]{{[}FLUSA{]}}}
 
 
 \section{Copying the Data to the HDFS (or a \emph{Distributed Downloader}!)}
@@ -697,13 +700,14 @@ specified by \code{ofolder} in the call to \code{rhmr}. Files are copied \textbf
 \code{copyFiles} is set to TRUE (in line 23).
 
 Once a file has been downloaded, we inform Hadoop of our change in status, via
-\code{rhastatus}. The figure \hyperref[airline:example-of-rhstatus]{\emph{Example of rhstatus}} displays the various status of each
+\code{rhastatus}. The figure {\hyperref[airline:example-of-rhstatus]{\emph{Example of rhstatus}}} displays the various status of each
 of the 22 splits (also called Tasks)
-\phantomsection\label{airline:example-of-rhstatus}\begin{figure}[htbp]
+\begin{figure}[htbp]
 \centering
+\capstart
 
 \includegraphics{rhstatus1.pdf}
-\caption{Example of \code{rhstatus}}\end{figure}
+\caption{Example of \code{rhstatus}}\label{airline:example-of-rhstatus}\end{figure}
 
 Once a file has been downloaded, we increment a \textbf{distributed count}. Counts
 belong to families, a single family contains many counters. The counter for
@@ -978,7 +982,7 @@ values for the keys $(identifier,i)`$ in the order of \emph{i} for a given
 \emph{identifier}. This also assumes the user has partitioned the data on
 \emph{identifier} (see the \code{part} parameter of \code{rhmr}: for this to work, all the
 keys  $(identifier,i)`$ with the same \emph{identifier} need to be sent to the
-same reducer). For an example see \hyperref[airline:streaming-data]{\emph{Streaming Data?}}.
+same reducer). For an example see {\hyperref[airline:streaming-data]{\emph{Streaming Data?}}}.
 
 A sample data frame (last 4 columns removed):
 
@@ -1096,16 +1100,17 @@ rhex\PYG{p}{(}z\PYG{p}{,}async\PYG{o}{=}\PYG{k+kc}{TRUE}\PYG{p}{)}
 \end{Verbatim}
 
 The code is straightforward. I increased the value of \emph{rhipe\_map\_buff\_size}
-since we are doing summaries of columns. The figure \hyperref[airline:time-to-complete-vs-rhipe-map-buff-size]{\emph{Log of time to complete vs log of rhipe\_map\_buff\_size.}} plots the time of completion vs the mean of three
+since we are doing summaries of columns. The figure {\hyperref[airline:time-to-complete-vs-rhipe-map-buff-size]{\emph{Log of time to complete vs log of rhipe\_map\_buff\_size.}}} plots the time of completion vs the mean of three
 trials for different values of \emph{rhipe\_map\_buff\_size}. The trials set
 \emph{rhipe\_map\_buff\_size} to 5,10,15,20,25 and 125. All experiments (like the rest
 in the manual) were performed on a 72 core cluster across 8 servers with RAM
 varying from 16 to 64 GB.
-\phantomsection\label{airline:time-to-complete-vs-rhipe-map-buff-size}\begin{figure}[htbp]
+\begin{figure}[htbp]
 \centering
+\capstart
 
 \scalebox{0.500000}{\includegraphics{rhipemapbuff.pdf}}
-\caption{Log of time to complete vs log of \emph{rhipe\_map\_buff\_size}.}\end{figure}
+\caption{Log of time to complete vs log of \emph{rhipe\_map\_buff\_size}.}\label{airline:time-to-complete-vs-rhipe-map-buff-size}\end{figure}
 
 Read the data into R and display them using the \code{lattice} library.
 \index{rhread}
@@ -1128,12 +1133,13 @@ dotplot\PYG{p}{(}af\textasciitilde{}log\PYG{p}{(}r\PYG{p}{[}\PYG{p}{,}\PYG{l+s}{
 \end{Verbatim}
 
 There are 352 locations (airports) of which the top 20 serve 50\% of the volume
-(see \hyperref[airline:figvolume]{\emph{Top 20 airports by volume of all flights.}})
-\phantomsection\label{airline:figvolume}\begin{figure}[htbp]
+(see {\hyperref[airline:figvolume]{\emph{Top 20 airports by volume of all flights.}}})
+\begin{figure}[htbp]
 \centering
+\capstart
 
 \scalebox{0.700000}{\includegraphics{volume.pdf}}
-\caption{Top 20 airports by volume of all flights.}\end{figure}
+\caption{Top 20 airports by volume of all flights.}\label{airline:figvolume}\end{figure}
 
 
 \subsection{Carrier Popularity}
@@ -1228,11 +1234,13 @@ It is clear that proportion increases in the holidays (the ends of the
 panels). The code for this comes after the figures.
 \begin{figure}[htbp]
 \centering
+\capstart
 
 \includegraphics{propdelayed_1.pdf}
 \caption{Proportion of flights delayed}\end{figure}
 \begin{figure}[htbp]
 \centering
+\capstart
 
 \includegraphics{propdelayed_2.pdf}
 \caption{Proportion of flights delayed (cont'd)}\end{figure}
@@ -1271,7 +1279,7 @@ results\PYG{p}{\$}prop \PYG{o}{\textless{}-} results\PYG{p}{\$}ndelay\PYG{o}{/}r
 results \PYG{o}{\textless{}-} results\PYG{p}{[}order\PYG{p}{(}results\PYG{p}{\$}year\PYG{p}{,}results\PYG{p}{\$}yday\PYG{p}{)}\PYG{p}{,}\PYG{p}{]}
 \end{Verbatim}
 
-\hyperref[airline:stl-decomposition]{\emph{STL decomposition of proportion of flights delayed}} is
+{\hyperref[airline:stl-decomposition]{\emph{STL decomposition of proportion of flights delayed}}} is
 the STL decomposition of \emph{p} (the proportion of flights delayed). The \emph{seasonal}
 panel clearly demonstrates the holiday effect of delays. They don't seem to be
 increasing with time (see \emph{trend} panel).
@@ -1284,31 +1292,34 @@ pdf\PYG{p}{(}\PYG{l+s}{"}\PYG{l+s}{\textasciitilde{}/tmp/propdelayedxyplot.pdf"}
 plot\PYG{p}{(}stl\PYG{p}{(}tprop\PYG{p}{,}s.window\PYG{o}{=}\PYG{l+s}{"}\PYG{l+s}{periodic"}\PYG{p}{)}\PYG{p}{)}
 dev.off\PYG{p}{(}\PYG{p}{)}
 \end{Verbatim}
-\phantomsection\label{airline:stl-decomposition}\begin{figure}[htbp]
+\begin{figure}[htbp]
 \centering
+\capstart
 
 \scalebox{0.700000}{\includegraphics{propdelayedxyplot-fromtiff.pdf}}
-\caption{STL decomposition of proportion of flights delayed}\end{figure}
+\caption{STL decomposition of proportion of flights delayed}\label{airline:stl-decomposition}\end{figure}
 
-There is similar seasonality for weekly behavior. The figure \hyperref[airline:delay-by-day-of-week]{\emph{Proportion of flights delayed by day of week.}} displays proportion of
+There is similar seasonality for weekly behavior. The figure {\hyperref[airline:delay-by-day-of-week]{\emph{Proportion of flights delayed by day of week.}}} displays proportion of
 flights delayed by day of week. The code for this identical to the previous one
 except we split on \code{a\$wday} and the key is \code{r{[}1,c("wday"){]}}. It appears
 Thursdays and Fridays can be quite trying.
-\phantomsection\label{airline:delay-by-day-of-week}\begin{figure}[htbp]
+\begin{figure}[htbp]
 \centering
+\capstart
 
 \scalebox{0.700000}{\includegraphics{propdelayeddow.pdf}}
-\caption{Proportion of flights delayed by day of week.}\end{figure}
+\caption{Proportion of flights delayed by day of week.}\label{airline:delay-by-day-of-week}\end{figure}
 
-Does the delay proportion change with hour? It appears it does (see \hyperref[airline:delay-by-hour]{\emph{Proportion of flights delayed by hour of day}}). The hours are scheduled
+Does the delay proportion change with hour? It appears it does (see {\hyperref[airline:delay-by-hour]{\emph{Proportion of flights delayed by hour of day}}}). The hours are scheduled
 departure times. \emph{Why are so many flights leaving in the wee hours (12-3) delayed?}
-\phantomsection\label{airline:delay-by-hour}\begin{figure}[htbp]
+\begin{figure}[htbp]
 \centering
+\capstart
 
 \scalebox{0.700000}{\includegraphics{propdelaybyhour.pdf}}
-\caption{Proportion of flights delayed by hour of day}\end{figure}
+\caption{Proportion of flights delayed by hour of day}\label{airline:delay-by-hour}\end{figure}
 
-The code to create \hyperref[airline:delay-by-hour]{\emph{Proportion of flights delayed by hour of day}} is
+The code to create {\hyperref[airline:delay-by-hour]{\emph{Proportion of flights delayed by hour of day}}} is
 
 \begin{Verbatim}[commandchars=\\\{\},numbers=left,firstnumber=1,stepnumber=1]
 map \PYG{o}{\textless{}-} expression\PYG{p}{(}\PYG{p}{\PYGZob{}}
@@ -1417,6 +1428,7 @@ xyplot\PYG{p}{(}log\PYG{p}{(}qt\PYG{p}{,}\PYG{l+m}{2}\PYG{p}{)}\textasciitilde{}
 \end{Verbatim}
 \begin{figure}[htbp]
 \centering
+\capstart
 
 \includegraphics{quantiles_by_month.pdf}
 \caption{Quantile of minute delay (for delay \textgreater{} 15 minutes) across months}\end{figure}
@@ -1454,11 +1466,13 @@ z\PYG{o}{=}rhex\PYG{p}{(}z\PYG{p}{)}
 \end{Verbatim}
 \begin{figure}[htbp]
 \centering
+\capstart
 
 \includegraphics{quantiles_by_hr_1.pdf}
 \caption{Quantile of minute delay (for delay \textgreater{} 15 minutes) by hour of day}\end{figure}
 \begin{figure}[htbp]
 \centering
+\capstart
 
 \includegraphics{quantiles_by_hr_2.pdf}
 \caption{Quantile of minute delay (for delay \textgreater{} 15 minutes) by hour of day (cont'd)}\end{figure}
@@ -1469,8 +1483,8 @@ quantiles of log\_2 of the delay times (in minutes) for inbound and outbound for
 4 different airports is plotted. The airports are in order of median delay time.
 Of note, the median delay time for Chicago (ORD) and San Francisco (SFO) is greater flying in than out
 (approximately an hour). For both Chicago and Dallas Fort Worth (DFW), the 75th
-percentile of inbound delays is greater than that for outbound. \hyperref[airline:quantilebyairport]{\emph{Quantile of minute delay for inbound and outbound for 4 different
-airports. Dotted red lines are 25\%,50\% and 75\% uniform proportions.}} displays these differences.
+percentile of inbound delays is greater than that for outbound. {\hyperref[airline:quantilebyairport]{\emph{Quantile of minute delay for inbound and outbound for 4 different
+airports. Dotted red lines are 25\%,50\% and 75\% uniform proportions.}}} displays these differences.
 
 \begin{Verbatim}[commandchars=\\\{\},numbers=left,firstnumber=1,stepnumber=1]
  map \PYG{o}{\textless{}-} expression\PYG{p}{(}\PYG{p}{\PYGZob{}}
@@ -1503,12 +1517,13 @@ reduce \PYG{o}{\textless{}-} expression\PYG{p}{(}
            \PYG{p}{,}mapred\PYG{o}{=}mapred\PYG{p}{)}
  z\PYG{o}{=}rhex\PYG{p}{(}z\PYG{p}{)}
 \end{Verbatim}
-\phantomsection\label{airline:quantilebyairport}\begin{figure}[htbp]
+\begin{figure}[htbp]
 \centering
+\capstart
 
 \includegraphics{quantiles_by_airport.pdf}
 \caption{Quantile of minute delay for inbound and outbound for 4 different
-airports. Dotted red lines are 25\%,50\% and 75\% uniform proportions.}\end{figure}
+airports. Dotted red lines are 25\%,50\% and 75\% uniform proportions.}\label{airline:quantilebyairport}\end{figure}
 
 
 \subsection{Carrier Delays}
@@ -1538,11 +1553,13 @@ reduce \PYG{o}{\textless{}-} expression\PYG{p}{(}
 \end{Verbatim}
 \begin{figure}[htbp]
 \centering
+\capstart
 
 \includegraphics{carrvol.pdf}
 \caption{Log base 2 volume of flights by carrier}\end{figure}
 \begin{figure}[htbp]
 \centering
+\capstart
 
 \includegraphics{carrdelay.pdf}
 \caption{Proportion of flights delayed by carrier. Compare this with the previous graph.}\end{figure}
@@ -1614,6 +1631,7 @@ flights from Chicago (ORD) are color coded based on volume carried e.g. red
 implies those routes carry the top 25\% of traffic in/out of ORD.
 \begin{figure}[htbp]
 \centering
+\capstart
 
 \includegraphics{flightord.pdf}
 \caption{Flights in and out of Chicago color coded by \% cumulative contribution.}\end{figure}
@@ -1793,7 +1811,7 @@ rhex(z)
 \section{Simple Debugging}
 \label{airline:simple-debugging}\index{debugging}\index{tryCatch}
 Consider the example code used to compute the delay quantiles by month (see
-\hyperref[airline:delay-quantiles-by-month]{\emph{Delay Quantiles By Month}} ). We can use \code{tryCatch} for some simple
+{\hyperref[airline:delay-quantiles-by-month]{\emph{Delay Quantiles By Month}}} ). We can use \code{tryCatch} for some simple
 debugging. See the error in line 7, there is no such variable \code{isdelayed}
 
 \begin{Verbatim}[commandchars=\\\{\},numbers=left,firstnumber=1,stepnumber=1]
@@ -1900,7 +1918,7 @@ map \PYG{o}{\textless{}-} expression\PYG{p}{(}\PYG{p}{\PYGZob{}}
 NULL is given as the key argument and \emph{mapred.textoutputformat.usekey} is set to
 FALSE so that the key is not written to disk. RHIPE quotes strings, which we do
 not want (nothing is quoted), so \emph{rhipe\_string\_quote} is set to
-`' and \emph{mapred.field.separator} is  ``,'' since the original data is comma separated.
+`' and \emph{mapred.field.separator} is  '','' since the original data is comma separated.
 A partitioner is used to send all the Southwest flights to one file and Delta to another.
 
 \begin{Verbatim}[commandchars=\\\{\},numbers=left,firstnumber=1,stepnumber=1]
@@ -2089,7 +2107,7 @@ passed to \code{rhmr}.
 \label{simulate:a-note-on-random-number-generators}\label{simulate:index-2}
 RHIPE does not include parallel random generator e.g. Scalable Parallel Random
 Number Generators Library and the Rstreams package for R
-(\hyperref[simulate:ecuyer]{{[}ecuyer{]}} and \hyperref[simulate:masac]{{[}Masac{]}}). Parallel RNGs can create streams of random numbers that
+({\hyperref[simulate:ecuyer]{{[}ecuyer{]}}} and {\hyperref[simulate:masac]{{[}Masac{]}}}). Parallel RNGs can create streams of random numbers that
 are not correlated across cluster computers (i.e enforce `statistical
 independence') and ensure reproducibility of streams for research.  RHIPE can
 guarantee independent streams since each task has a unique identifier obtained
@@ -2212,7 +2230,7 @@ Thus data written by \code{rhwrite} can be read
 
 using \code{rhread}. The parameter \code{max} specifies the maximum number of entries
 to read, by default all the key,value pairs will be read. Setting \code{mc} to TRUE
-will use the the \code{multicore} \hyperref[functions:multicore]{{[}multicore{]}} package to convert the data to R
+will use the the \code{multicore} {\hyperref[functions:multicore]{{[}multicore{]}}} package to convert the data to R
 objects in parallel. The user must have first loaded \code{multicore} via call to
 library. This often does accelerate the process of reading data into R.
 \index{rhgetkey}\index{mapfile}\index{orderby}\index{rhmr}\index{sequencefile!convert seqeuncefile to mapfile}
@@ -2350,7 +2368,7 @@ TRUE.
 The function \code{rhmr} discussed below creates the R object that contains
 all the information required by RHIPE to run a MapReduce job.
 Within the MapReduce environment, RHIPE provides 3 functions to interact with
-the Hadoop Framework. These are discussed in \hyperref[mr:insidemr]{\emph{Functions to Communicate with Hadoop during MapReduce}}
+the Hadoop Framework. These are discussed in {\hyperref[mr:insidemr]{\emph{Functions to Communicate with Hadoop during MapReduce}}}
 
 
 \section{Creating a MapReduce Object}
@@ -2478,7 +2496,7 @@ expressions. If just an expressions is provided, it will be evaluated before
 both the Map phase and Reduce phase. The same is true for
 \code{cleanup}. Variables created, packages loaded in the \code{setup} expression
 will be visible in the \code{map} and the \code{reduce} expression but not both since
-both are evaluated in different R sessions. For an example, see \hyperref[airline:streaming-data]{\emph{Streaming Data?}}
+both are evaluated in different R sessions. For an example, see {\hyperref[airline:streaming-data]{\emph{Streaming Data?}}}
 
 \item[{\code{ifolder}}] \leavevmode
 This is a path to a folder on the HDFS containing the input
@@ -2568,7 +2586,7 @@ desired to store all IP addresses with the same first three ordinates in one fil
 partitioner as \code{list(lims=c(1:3), type='integer')}. RHIPE implements
 partitioners when the key is an atomic vector of the following type: integer,
 string, and real. The value of \code{lims} specifies the ordinates (beginning and end) of the key
-to partition on. The numbers must be positive. \code{lims} can be a single number. See \hyperref[airline:streaming-data]{\emph{Streaming Data?}}.
+to partition on. The numbers must be positive. \code{lims} can be a single number. See {\hyperref[airline:streaming-data]{\emph{Streaming Data?}}}.
 
 \item[{\code{mapred}}] \leavevmode
 Specify Hadoop and RHIPE options in this parameter (a list). For a full list of
@@ -2603,7 +2621,7 @@ rhcounter\PYG{p}{(}group\PYG{p}{,} name\PYG{p}{,} value\PYG{p}{)}
 Increments (in a safe way i.e. no race conditions) the distributed counter
 \code{name} that belongs to family \code{group} by \code{value}. Ideally \code{group} and
 \code{name} should be strings, any R object can be sent and it will be converted to
-its string representation (see \hyperref[serialize:serializationstringify]{\emph{String Representations}})
+its string representation (see {\hyperref[serialize:serializationstringify]{\emph{String Representations}}})
 \index{rhstatus}
 
 \subsection{rhstatus - Updating the Status of the Job during Runtime}
@@ -2627,7 +2645,7 @@ rhuz\PYG{p}{(}rawobj\PYG{p}{)}
 \end{Verbatim}
 
 The function \code{rhsz} serializes an object using RHIPE's binary serialization
-(see \hyperref[texttransfirm:rhipeserialize]{\emph{RHIPE Serialization}}). This will return the raw bytes
+(see {\hyperref[texttransfirm:rhipeserialize]{\emph{RHIPE Serialization}}}). This will return the raw bytes
 corresponding the serialized object. If the object cannot be serialized, it will be
 converted to NULL and serialized. \code{rhuz} takes the bytes and un-serializes,
 throwing an error if it cannot. These two functions are also available at the R
@@ -2679,7 +2697,7 @@ RHIPE provides string representations of the above objects and is used when the
 output format in \code{rhmr} is \emph{text}. The stringfying rules expand all scalar
 vectors and write them out as a line separated by
 \emph{mapred.field.separator}. Thus the vector \code{c(1,2,3)} is written out as
-\emph{1,2,3} if the value of \emph{mapred.field.separator} is ``,''. The default value is
+\emph{1,2,3} if the value of \emph{mapred.field.separator} is '',''. The default value is
 \code{SPACE}. Strings are surrounded by \emph{rhipe\_string\_quote} (default is double
 quote, to not surround strings set this to `'). Lists have their elements
 written out consecutively on a single line.
@@ -2739,9 +2757,10 @@ message CMPLX \PYG{p}{\PYGZob{}}
 \chapter{RHIPE Options}
 \label{options:rhipe-options}\label{options::doc}\phantomsection\label{options:options-for-rhipe}\index{rhipe\_map\_buffsize}\index{rhipe\_reduce\_buffsize}\index{io.sort.mb}\index{mapred.textoutputformat.separator}\index{mapred.field.separator}\index{mapred.textoutputformat.usekey}\index{mapred.map.tasks}\index{mapred.reduce.tasks}\index{mapred.task.timeout}\index{rhipe\_stream\_buffer}\index{mapred.input.filename}\begin{figure}[htbp]
 \centering
+\capstart
 
 \includegraphics{tableopts.pdf}
-\caption{Options useful for RHIPE and Hadoop}\end{figure}
+\caption{Options useful for RHIPE and Hadoop}\label{options:index-1}\end{figure}
 
 \begin{thebibliography}{multicore}
 \bibitem[STLa]{STLa}{\phantomsection\label{introduction:stla} 
