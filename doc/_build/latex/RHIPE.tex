@@ -5,15 +5,15 @@
 \DeclareUnicodeCharacter{00A0}{\nobreakspace}
 \usepackage[T1]{fontenc}
 \usepackage{babel}
-\usepackage{times}
+\usepackage{bookman}
 \usepackage[Bjarne]{fncychap}
 \usepackage{longtable}
 \usepackage{sphinx}
 
 
 \title{RHIPE Documentation}
-\date{October 11, 2010}
-\release{0.61}
+\date{October 21, 2010}
+\release{0.64}
 \author{Saptarshi Guha}
 \newcommand{\sphinxlogo}{}
 \renewcommand{\releasename}{Release}
@@ -924,7 +924,10 @@ to Hadoop in line 37.
 Running R across massive data can be illuminating. Without the calls to
 \code{ISOdatetime}, it is \textbf{much} faster to complete.
 \indexii{key ordering}{ordering of keys}\index{orderby}
-\textbf{Sorted keys} A reduce is not needed in this example. The text data is blocked
+
+\subsection{Sorted keys}
+\label{airline:index-7}\label{airline:sorted-keys}
+A reduce is not needed in this example. The text data is blocked
 into data frames and written to disk. With 128MB block sizes and each block a
 split, each split being mapped by one R session, there 96 files each
 containing several data frames.  The reduce expression writes each incoming
@@ -1635,10 +1638,18 @@ implies those routes carry the top 25\% of traffic in/out of ORD.
 
 \includegraphics{flightord.pdf}
 \caption{Flights in and out of Chicago color coded by \% cumulative contribution.}\end{figure}
+\index{biglm}\index{QR}\index{out-of-core regression}
+
+\section{Out of Core Regression using \texttt{biglm}}
+\label{airline:index-12}\label{airline:out-of-core-regression-using-biglm}\label{airline:out-of-core-regression}
+RHIPE can be used as a means to transfer massive data sets sitting on the HDFS to the package {\hyperref[airline:biglm]{{[}biglm{]}}}
+\code{biglm} takes a function that returns chunks of data frames. We can easily use this to compute the results of a linear
+regression on the airline data set. These functions work assuming the values are chunked data frames
+as the airline data set is stored (see above).
 
 
 \section{Streaming Data?}
-\label{airline:id6}\label{airline:streaming-data}\index{orderby}\index{streaming}\index{partitioner}
+\label{airline:id7}\label{airline:streaming-data}\index{orderby}\index{streaming}\index{partitioner}
 Some algorithms are left associative in their operands
 $t_1,t_2,\ldots,t_n$ but not commutative. For example a streaming update
 algorithm that computes the inter-arrival times of time series data for
@@ -1666,104 +1677,81 @@ by the reducer and R is about to quit.
 
 \begin{Verbatim}[commandchars=\\\{\},numbers=left,firstnumber=1,stepnumber=1]
 map \PYG{o}{\textless{}-} expression\PYG{p}{(}\PYG{p}{\PYGZob{}}
-  lapply\PYG{p}{(}seq\PYGZus{}along\PYG{p}{(}map.values\PYG{p}{)}\PYG{p}{,}\PYG{k+kr}{function}\PYG{p}{(}r\PYG{p}{)}\PYG{p}{\PYGZob{}}
-    catlevel \PYG{o}{\textless{}-} map.keys\PYG{p}{[}\PYG{p}{[}r\PYG{p}{]}\PYG{p}{]} \PYG{c+c1}{\#numeric}
-    timepoint \PYG{o}{\textless{}-} map.values\PYG{p}{[}\PYG{p}{[}r\PYG{p}{]}\PYG{p}{]}\PYG{p}{\$}timepoint \PYG{c+c1}{\#numeric}
-    datastructure \PYG{o}{\textless{}-} map.values\PYG{p}{[}\PYG{p}{[}r\PYG{p}{]}\PYG{p}{]}\PYG{p}{\$}data
-    key \PYG{o}{\textless{}-} c\PYG{p}{(}catlevel\PYG{p}{,}timepoint\PYG{p}{)}
-    rhcollect\PYG{p}{(}key\PYG{p}{,}datastructure\PYG{p}{)}
-  \PYG{p}{\PYGZcb{}}\PYG{p}{)}
-\PYG{p}{\PYGZcb{}}\PYG{p}{)}
-redsetup \PYG{o}{\textless{}-} expression\PYG{p}{(}\PYG{p}{\PYGZob{}}
-  currentkey \PYG{o}{\textless{}-} \PYG{k+kc}{NULL}
-\PYG{p}{\PYGZcb{}}\PYG{p}{)}
-reduce \PYG{o}{\textless{}-} expression\PYG{p}{(}
-    pre\PYG{o}{=}\PYG{p}{\PYGZob{}}
-      catlevel \PYG{o}{\textless{}-} reduce.key\PYG{p}{[}\PYG{l+m}{1}\PYG{p}{]}
-      time \PYG{o}{\textless{}-} reduce.key\PYG{p}{[}\PYG{l+m}{2}\PYG{p}{]}
-      \PYG{k+kr}{if}\PYG{p}{(}!identical\PYG{p}{(}catlevel\PYG{p}{,}currentkey\PYG{p}{)}\PYG{p}{)}\PYG{p}{\PYGZob{}}
-        \PYG{c+c1}{\#\# new categorical level}
-        \PYG{c+c1}{\#\# so finalize the computation for}
-        \PYG{c+c1}{\#\# the previous level e.g. use rhcollect}
-        \PYG{k+kr}{if}\PYG{p}{(}!identical\PYG{p}{(}currentkey\PYG{p}{,}\PYG{k+kc}{NULL}\PYG{p}{)}\PYG{p}{)}
-          FINALIZE\PYG{p}{(}\PYG{k+kVariable}{F}\PYG{p}{)}
-        \PYG{c+c1}{\#\# store current categorical level}
-        currentkey \PYG{o}{\textless{}-} catlevel
-        \PYG{c+c1}{\#\# initialize computation for new level}
-        INITIALIZE\PYG{p}{(}\PYG{k+kVariable}{F}\PYG{p}{)}
-      \PYG{p}{\PYGZcb{}}
-    \PYG{p}{\PYGZcb{}}\PYG{p}{,}
-    reduce\PYG{o}{=}\PYG{p}{\PYGZob{}}
-      \PYG{k+kVariable}{F} \PYG{o}{\textless{}-} UPDATE\PYG{p}{(}\PYG{k+kVariable}{F}\PYG{p}{,} reduce.values\PYG{p}{[}\PYG{p}{[}\PYG{l+m}{1}\PYG{p}{]}\PYG{p}{]}\PYG{p}{)}
-    \PYG{p}{\PYGZcb{}}\PYG{p}{)}
-redclose \PYG{o}{\textless{}-} expression\PYG{p}{(}\PYG{p}{\PYGZob{}}
-  \PYG{c+c1}{\#\# need to run this, otherwise the last catlevel}
-  \PYG{c+c1}{\#\# will not get finalized}
- FINALIZE\PYG{p}{(}\PYG{k+kVariable}{F}\PYG{p}{)}
-\PYG{p}{\PYGZcb{}}\PYG{p}{)}
-rhmr\PYG{p}{(}\PYG{l+m}{.}\PYG{l+m}{.}\PYG{l+m}{.}\PYG{p}{,} combiner\PYG{o}{=}\PYG{k+kc}{FALSE}\PYG{p}{,}setup\PYG{o}{=}list\PYG{p}{(}reduce\PYG{o}{=}redsetup\PYG{p}{)}\PYG{p}{,}cleanup\PYG{o}{=}list\PYG{p}{(}reduce\PYG{o}{=}redclose\PYG{p}{)}\PYG{p}{,}
-     orderby\PYG{o}{=}\PYG{l+s}{"}\PYG{l+s}{numeric"}\PYG{p}{,}
-     part\PYG{o}{=}list\PYG{p}{(}lims\PYG{o}{=}\PYG{l+m}{1}\PYG{p}{,}type\PYG{o}{=}\PYG{l+s}{'}\PYG{l+s}{numeric'}\PYG{p}{)}\PYG{p}{)}
+   lapply\PYG{p}{(}seq\PYGZus{}along\PYG{p}{(}map.values\PYG{p}{)}\PYG{p}{,}\PYG{k+kr}{function}\PYG{p}{(}r\PYG{p}{)}\PYG{p}{\PYGZob{}}
+     catlevel \PYG{o}{\textless{}-} map.keys\PYG{p}{[}\PYG{p}{[}r\PYG{p}{]}\PYG{p}{]} \PYG{c+c1}{\#numeric}
+     timepoint \PYG{o}{\textless{}-} map.values\PYG{p}{[}\PYG{p}{[}r\PYG{p}{]}\PYG{p}{]}\PYG{p}{\$}timepoint \PYG{c+c1}{\#numeric}
+     datastructure \PYG{o}{\textless{}-} map.values\PYG{p}{[}\PYG{p}{[}r\PYG{p}{]}\PYG{p}{]}\PYG{p}{\$}data
+     key \PYG{o}{\textless{}-} c\PYG{p}{(}catlevel\PYG{p}{,}timepoint\PYG{p}{)}
+     rhcollect\PYG{p}{(}key\PYG{p}{,}datastructure\PYG{p}{)}
+   \PYG{p}{\PYGZcb{}}\PYG{p}{)}
+ \PYG{p}{\PYGZcb{}}\PYG{p}{)}
+ redsetup \PYG{o}{\textless{}-} expression\PYG{p}{(}\PYG{p}{\PYGZob{}}
+   currentkey \PYG{o}{\textless{}-} \PYG{k+kc}{NULL}
+ \PYG{p}{\PYGZcb{}}\PYG{p}{)}
+ reduce \PYG{o}{\textless{}-} expression\PYG{p}{(}
+     pre\PYG{o}{=}\PYG{p}{\PYGZob{}}
+       catlevel \PYG{o}{\textless{}-} reduce.key\PYG{p}{[}\PYG{l+m}{1}\PYG{p}{]}
+       time \PYG{o}{\textless{}-} reduce.key\PYG{p}{[}\PYG{l+m}{2}\PYG{p}{]}
+       \PYG{k+kr}{if}\PYG{p}{(}!identical\PYG{p}{(}catlevel\PYG{p}{,}currentkey\PYG{p}{)}\PYG{p}{)}\PYG{p}{\PYGZob{}}
+         \PYG{c+c1}{\#\# new categorical level}
+         \PYG{c+c1}{\#\# so finalize the computation for}
+         \PYG{c+c1}{\#\# the previous level e.g. use rhcollect}
+         \PYG{k+kr}{if}\PYG{p}{(}!identical\PYG{p}{(}currentkey\PYG{p}{,}\PYG{k+kc}{NULL}\PYG{p}{)}\PYG{p}{)}
+           FINALIZE\PYG{p}{(}\PYG{k+kVariable}{F}\PYG{p}{)}
+         \PYG{c+c1}{\#\# store current categorical level}
+         currentkey \PYG{o}{\textless{}-} catlevel
+         \PYG{c+c1}{\#\# initialize computation for new level}
+         INITIALIZE\PYG{p}{(}\PYG{k+kVariable}{F}\PYG{p}{)}
+       \PYG{p}{\PYGZcb{}}
+     \PYG{p}{\PYGZcb{}}\PYG{p}{,}
+     reduce\PYG{o}{=}\PYG{p}{\PYGZob{}}
+       \PYG{k+kVariable}{F} \PYG{o}{\textless{}-} UPDATE\PYG{p}{(}\PYG{k+kVariable}{F}\PYG{p}{,} reduce.values\PYG{p}{[}\PYG{p}{[}\PYG{l+m}{1}\PYG{p}{]}\PYG{p}{]}\PYG{p}{)}
+     \PYG{p}{\PYGZcb{}}\PYG{p}{)}
+ redclose \PYG{o}{\textless{}-} expression\PYG{p}{(}\PYG{p}{\PYGZob{}}
+   \PYG{c+c1}{\#\# need to run this, otherwise the last catlevel}
+   \PYG{c+c1}{\#\# will not get finalized}
+  FINALIZE\PYG{p}{(}\PYG{k+kVariable}{F}\PYG{p}{)}
+ \PYG{p}{\PYGZcb{}}\PYG{p}{)}
+ rhmr\PYG{p}{(}\PYG{l+m}{.}\PYG{l+m}{.}\PYG{l+m}{.}\PYG{p}{,} combiner\PYG{o}{=}\PYG{k+kc}{FALSE}\PYG{p}{,}setup\PYG{o}{=}list\PYG{p}{(}reduce\PYG{o}{=}redsetup\PYG{p}{)}\PYG{p}{,}cleanup\PYG{o}{=}list\PYG{p}{(}reduce\PYG{o}{=}redclose\PYG{p}{)}\PYG{p}{,}
+      orderby\PYG{o}{=}\PYG{l+s}{"}\PYG{l+s}{numeric"}\PYG{p}{,}
+      part\PYG{o}{=}list\PYG{p}{(}lims\PYG{o}{=}\PYG{l+m}{1}\PYG{p}{,}type\PYG{o}{=}\PYG{l+s}{'}\PYG{l+s}{numeric'}\PYG{p}{)}\PYG{p}{)}
 \end{Verbatim}
 
 
 \subsection{Concrete (but artifical) Example}
-\label{airline:concrete-but-artifical-example}\begin{quote}
-
-We will create a data set with three columns: the level of a categorical variable \emph{A}, a time variable \emph{B} and a value \emph{C}. For each level of \emph{A}, we want the sum of differences of \emph{C} ordered by \emph{B} within \emph{A}.
-\end{quote}
+\label{airline:concrete-but-artifical-example}
+We will create a data set with three columns: the level of a categorical
+variable \emph{A}, a time variable \emph{B} and a value \emph{C}. For each level of \emph{A}, we
+want the sum of differences of \emph{C} ordered by \emph{B} within \emph{A}.
 
 \textbf{Creating the Data set} The column \emph{A} is the key, but this is not important. There are 5000 levels of \emph{A}, each level has 10,000 observations. By design the values of \emph{B} are randomly written (\code{sample}), also for simplicity \emph{C} is equal to \emph{B}, though this need not be.
-\begin{description}
-\item[{::}] \leavevmode
-library(Rhipe)
-map \textless{}- expression(\{
-\begin{quote}
 
-N \textless{}- 10000
-for( first.col in map.values )\{
-\begin{quote}
-
-w \textless{}- sample(N,N,replace=FALSE)
-for( i in w)\{
-\begin{quote}
-
-rhcollect(first.col,c(i,i))
-\end{quote}
-
-\}
-\end{quote}
-
-\}\})
-\end{quote}
-
-mapred \textless{}- list(mapred.reduce.tasks=0)
-z=rhmr(map=map, N=5000, inout=c(``lapply'',''sequence''),ofolder=''/tmp/sort'',
-\begin{quote}
-
-mapred=mapred)
-\end{quote}
-
-rhex(z)
-
-\end{description}
+\begin{Verbatim}[commandchars=\\\{\},numbers=left,firstnumber=1,stepnumber=1]
+library\PYG{p}{(}Rhipe\PYG{p}{)}
+map \PYG{o}{\textless{}-} expression\PYG{p}{(}\PYG{p}{\PYGZob{}}
+  N \PYG{o}{\textless{}-} \PYG{l+m}{10000}
+  \PYG{k+kr}{for}\PYG{p}{(} first.col in map.values \PYG{p}{)}\PYG{p}{\PYGZob{}}
+    w \PYG{o}{\textless{}-} sample\PYG{p}{(}N\PYG{p}{,}N\PYG{p}{,}replace\PYG{o}{=}\PYG{k+kc}{FALSE}\PYG{p}{)}
+    \PYG{k+kr}{for}\PYG{p}{(} i in w\PYG{p}{)}\PYG{p}{\PYGZob{}}
+      rhcollect\PYG{p}{(}first.col\PYG{p}{,}c\PYG{p}{(}i\PYG{p}{,}i\PYG{p}{)}\PYG{p}{)}
+    \PYG{p}{\PYGZcb{}}
+  \PYG{p}{\PYGZcb{}}\PYG{p}{\PYGZcb{}}\PYG{p}{)}
+mapred \PYG{o}{\textless{}-} list\PYG{p}{(}mapred.reduce.tasks\PYG{o}{=}\PYG{l+m}{0}\PYG{p}{)}
+z\PYG{o}{=}rhmr\PYG{p}{(}map\PYG{o}{=}map\PYG{p}{,} N\PYG{o}{=}\PYG{l+m}{5000}\PYG{p}{,} inout\PYG{o}{=}c\PYG{p}{(}\PYG{l+s}{"}\PYG{l+s}{lapply"}\PYG{p}{,}\PYG{l+s}{"}\PYG{l+s}{sequence"}\PYG{p}{)}\PYG{p}{,}ofolder\PYG{o}{=}\PYG{l+s}{"}\PYG{l+s}{/tmp/sort"}\PYG{p}{,}
+     mapred\PYG{o}{=}mapred\PYG{p}{)}
+rhex\PYG{p}{(}z\PYG{p}{)}
+\end{Verbatim}
 
 \textbf{Sum of Differences}
 The key is the value of \emph{A} and \emph{B}, the value is \emph{C}.
-\begin{description}
-\item[{::}] \leavevmode\begin{description}
-\item[{map \textless{}- expression(\{}] \leavevmode\begin{description}
-\item[{lapply(seq\_along(map.values),function(r)\{}] \leavevmode
-f \textless{}- map.values{[}{[}r{]}{]}
-rhcollect(as.integer(c(map.keys{[}{[}r{]}{]},f{[}1{]})),f{[}2{]})
 
-\end{description}
-
-\end{description}
-
-\})\})
-
-\end{description}
+\begin{Verbatim}[commandchars=\\\{\},numbers=left,firstnumber=1,stepnumber=1]
+map \PYG{o}{\textless{}-} expression\PYG{p}{(}\PYG{p}{\PYGZob{}}
+  lapply\PYG{p}{(}seq\PYGZus{}along\PYG{p}{(}map.values\PYG{p}{)}\PYG{p}{,}\PYG{k+kr}{function}\PYG{p}{(}r\PYG{p}{)}\PYG{p}{\PYGZob{}}
+    f \PYG{o}{\textless{}-} map.values\PYG{p}{[}\PYG{p}{[}r\PYG{p}{]}\PYG{p}{]}
+    rhcollect\PYG{p}{(}as.integer\PYG{p}{(}c\PYG{p}{(}map.keys\PYG{p}{[}\PYG{p}{[}r\PYG{p}{]}\PYG{p}{]}\PYG{p}{,}f\PYG{p}{[}\PYG{l+m}{1}\PYG{p}{]}\PYG{p}{)}\PYG{p}{)}\PYG{p}{,}f\PYG{p}{[}\PYG{l+m}{2}\PYG{p}{]}\PYG{p}{)}
+\PYG{p}{\PYGZcb{}}\PYG{p}{)}\PYG{p}{\PYGZcb{}}\PYG{p}{)}
+\end{Verbatim}
 
 Thus each output from a map is a key (assuming there are not any duplicates for \emph{B} for a given level of \emph{A}), thus \emph{reduce.values} has only one observation. All keys sharing the same level of \emph{A} will be sent to one R process and the tuples \emph{as.integer(c(map.keys{[}{[}r{]}{]},f{[}1{]}))} will be sorted. \emph{reduce.setup} is called once when the R process starts processing its assigned partition of keys and \emph{reduce.post} is called at the end (when all keys have been processed)
 
@@ -1794,18 +1782,14 @@ reduce.post \PYG{o}{\textless{}-} expression\PYG{p}{(}\PYG{p}{\PYGZob{}}
 \end{Verbatim}
 
 To turn on the partitioning and ordering of keys,
-\begin{description}
-\item[{::}] \leavevmode\begin{description}
-\item[{z \textless{}- rhmr(map=map,reduce=reduce, inout=c(``sequence'',''sequence''),ifolder=''/tmp/sort'',}] \leavevmode
-ofolder=''/tmp/sort2'', part=list(lims=1,type='integer'),
-orderby=''integer'',cleanup=list(reduce=reduce.post),
-setup=list(reduce=reduce.setup))
 
-\end{description}
-
-rhex(z)
-
-\end{description}
+\begin{Verbatim}[commandchars=\\\{\},numbers=left,firstnumber=1,stepnumber=1]
+z \PYG{o}{\textless{}-} rhmr\PYG{p}{(}map\PYG{o}{=}map\PYG{p}{,}reduce\PYG{o}{=}reduce\PYG{p}{,} inout\PYG{o}{=}c\PYG{p}{(}\PYG{l+s}{"}\PYG{l+s}{sequence"}\PYG{p}{,}\PYG{l+s}{"}\PYG{l+s}{sequence"}\PYG{p}{)}\PYG{p}{,}ifolder\PYG{o}{=}\PYG{l+s}{"}\PYG{l+s}{/tmp/sort"}\PYG{p}{,}
+  ofolder\PYG{o}{=}\PYG{l+s}{"}\PYG{l+s}{/tmp/sort2"}\PYG{p}{,} part\PYG{o}{=}list\PYG{p}{(}lims\PYG{o}{=}\PYG{l+m}{1}\PYG{p}{,}type\PYG{o}{=}\PYG{l+s}{'}\PYG{l+s}{integer'}\PYG{p}{)}\PYG{p}{,}
+  orderby\PYG{o}{=}\PYG{l+s}{"}\PYG{l+s}{integer"}\PYG{p}{,}cleanup\PYG{o}{=}list\PYG{p}{(}reduce\PYG{o}{=}reduce.post\PYG{p}{)}\PYG{p}{,}
+  setup\PYG{o}{=}list\PYG{p}{(}reduce\PYG{o}{=}reduce.setup\PYG{p}{)}\PYG{p}{)}
+rhex\PYG{p}{(}z\PYG{p}{)}
+\end{Verbatim}
 
 
 \section{Simple Debugging}
@@ -1845,10 +1829,11 @@ z \PYG{o}{\textless{}-} rhmr\PYG{p}{(}map\PYG{o}{=}map\PYG{p}{,}reduce\PYG{o}{=}
 z\PYG{o}{=}rhex\PYG{p}{(}z\PYG{p}{)}
 \end{Verbatim}
 
-Produces a slew of errors like
+Produces a slew of errors like (output slightly modified to fit page)
 \index{counter}
 \begin{Verbatim}[commandchars=\\\{\},numbers=left,firstnumber=1,stepnumber=1]
-\PYG{l+m}{10}\PYG{o}{/}\PYG{l+m}{08}\PYG{o}{/}\PYG{l+m}{04} \PYG{l+m}{00}:\PYG{l+m}{41}:\PYG{l+m}{20} INFO mapred.JobClient: Task Id : attempt\PYGZus{}201007281701\PYGZus{}0273\PYGZus{}m\PYGZus{}000023\PYGZus{}0\PYG{p}{,} Status : FAILED
+\PYG{l+m}{10}\PYG{o}{/}\PYG{l+m}{08}\PYG{o}{/}\PYG{l+m}{04} \PYG{l+m}{00}:\PYG{l+m}{41}:\PYG{l+m}{20} INFO mapred.JobClient: Task Id :
+  attempt\PYGZus{}201007281701\PYGZus{}0273\PYGZus{}m\PYGZus{}000023\PYGZus{}0\PYG{p}{,} Status : FAILED
 java.io.IOException: MROutput\PYG{o}{/}MRErrThread failed:java.lang.RuntimeException:
 R ERROR
 \PYG{o}{==}\PYG{o}{==}\PYG{o}{==}\PYG{o}{=}
@@ -2089,11 +2074,10 @@ function to aggregate the intermediate results. With this function, the user can
 distribute the \code{lapply} command and rely on Hadoop to handle fault-tolerancy
 and the scheduling of processors in an optimal fashion. The \code{rhlapply}
 function is present to do this.
-\index{rhlapply}\begin{description}
-\item[{::}] \leavevmode
-rhlapply(ll, F, ofolder,setup=NULL,readIn = TRUE, N, aggr=NULL,...)
-
-\end{description}
+\index{rhlapply}
+\begin{Verbatim}[commandchars=\\\{\}]
+rhlapply\PYG{p}{(}ll\PYG{p}{,} \PYG{k+kVariable}{F}\PYG{p}{,} ofolder\PYG{p}{,}setup\PYG{o}{=}\PYG{k+kc}{NULL}\PYG{p}{,}readIn \PYG{o}{=} \PYG{k+kc}{TRUE}\PYG{p}{,} N\PYG{p}{,} aggr\PYG{o}{=}\PYG{k+kc}{NULL}\PYG{p}{,}\PYG{l+m}{.}\PYG{l+m}{.}\PYG{l+m}{.}\PYG{p}{)}
+\end{Verbatim}
 
 This applies \code{F} to the elements of \code{ll}. If provided a value, it will save
 the results to \code{ofolder} and the results are returned as a list if \code{readIn}
@@ -2284,6 +2268,56 @@ but this will
 
 \begin{Verbatim}[commandchars=\\\{\}]
 rhgetkey\PYG{p}{(}list\PYG{p}{(}c\PYG{p}{(}x\PYG{o}{=}\PYG{l+m}{1}\PYG{p}{)}\PYG{p}{)}\PYG{p}{,}path\PYG{p}{)}
+\end{Verbatim}
+
+
+\subsection{rhstreamsequence - Reading from a sequence file in a streaming fashion}
+\label{functions:rhstreamsequence-reading-from-a-sequence-file-in-a-streaming-fashion}
+\begin{Verbatim}[commandchars=\\\{\}]
+rhstreamsequence\PYG{p}{(}inputfile\PYG{p}{,}type\PYG{o}{=}\PYG{l+s}{'}\PYG{l+s}{sequence'}\PYG{p}{,}batch\PYG{o}{=}\PYG{l+m}{100}\PYG{p}{,}\PYG{l+m}{.}\PYG{l+m}{.}\PYG{l+m}{.}\PYG{p}{)}
+\end{Verbatim}
+
+\code{rhread} only reads from the beginning a prechosen number or all of the
+data. This function enables the user to open a file and read in blocks till the
+end of the file or all files in the folder specified by \code{inputfile} . The
+function returns a list of two closures \code{get} and \code{close}. The former takes
+one parameter \code{mc}. The \code{mc} option is given to the multi-core package to
+deserialize in parallel. Call the \code{close} closure to close the file. Note, due
+to a bug in the logic, the \code{get} function may retrieve from \code{batch} to
+\code{2*batch} values.
+
+\begin{Verbatim}[commandchars=\\\{\}]
+e \PYG{o}{\textless{}-} rhstreamsequence\PYG{p}{(}\PYG{l+s}{"}\PYG{l+s}{/tmp/x/0"}\PYG{p}{,}batch\PYG{o}{=}\PYG{l+m}{100}\PYG{p}{)}
+a \PYG{o}{\textless{}-} e\PYG{p}{\$}get\PYG{p}{(}\PYG{p}{)}
+a \PYG{o}{\textless{}-} e\PYG{p}{\$}get\PYG{p}{(}\PYG{p}{)} \PYG{c+c1}{\# returns an empty list if reached end.}
+e\PYG{p}{\$}close\PYG{p}{(}\PYG{p}{)}
+\end{Verbatim}
+
+This is particularly useful for the \code{biglm} package which accepts a function
+to return blocks of data (typically data frames). If your data source is stored
+as key/value pairs where the values are data frames, you can use
+\code{rhbiglm.stream.hdfs} to provide data to \code{biglm} as in
+
+\begin{Verbatim}[commandchars=\\\{\},numbers=left,firstnumber=1,stepnumber=1]
+modifier \PYG{o}{\textless{}-} \PYG{k+kr}{function}\PYG{p}{(}df\PYG{p}{,}reset\PYG{p}{)}\PYG{p}{\PYGZob{}}
+  \PYG{c+c1}{\#\# different chunks might not all display all the levels}
+  \PYG{c+c1}{\#\# of rm.site, so we have to predefine all levels visible}
+  \PYG{c+c1}{\#\# across data site}
+  \PYG{k+kr}{if}\PYG{p}{(}!reset\PYG{p}{)}\PYG{p}{\PYGZob{}}
+    total.rows\PYG{o}{\textless{}}\PYG{o}{\textless{}-}total.rows\PYG{o}{+}nrow\PYG{p}{(}df\PYG{p}{)}
+    cat\PYG{p}{(}sprintf\PYG{p}{(}\PYG{l+s}{"}\PYG{l+s}{Total rows:\%s\PYGZbs{}n"}\PYG{p}{,}total.rows\PYG{p}{)}\PYG{p}{)}
+  \PYG{p}{\PYGZcb{}}else \PYG{p}{\PYGZob{}}total.rows\PYG{o}{\textless{}}\PYG{o}{\textless{}-}\PYG{l+m}{0}\PYG{p}{;}\PYG{k+kr}{return}\PYG{p}{(}\PYG{p}{)}\PYG{p}{\PYGZcb{}}
+  df\PYG{p}{\$}rm.site \PYG{o}{\textless{}-} factor\PYG{p}{(}df\PYG{p}{\$}rm.site\PYG{p}{,} levels\PYG{o}{=}names\PYG{p}{(}remote.site.table\PYG{p}{)}\PYG{p}{)}
+  df\PYG{p}{\$}traffic.rate \PYG{o}{\textless{}-} df\PYG{p}{\$}traffic.rate\PYG{o}{/}\PYG{l+m}{1}e6
+  df
+\PYG{p}{\PYGZcb{}}
+pp \PYG{o}{\textless{}-} \PYG{l+s}{"}\PYG{l+s}{/voip/modified.jitter.traffic.rate.database/"}
+\PYG{k+kVariable}{F} \PYG{o}{\textless{}-}  rhbiglm.stream.hdfs\PYG{p}{(}pp\PYG{p}{,}type\PYG{o}{=}\PYG{l+s}{'}\PYG{l+s}{map'}\PYG{p}{,}modifier\PYG{o}{=}modifier\PYG{p}{,}batch\PYG{o}{=}\PYG{l+m}{150}\PYG{p}{,}quiet\PYG{o}{=}\PYG{k+kc}{TRUE}\PYG{p}{)}
+\PYG{c+c1}{\#\# modifier is called for every list of 'batch' key,value pairs}
+\PYG{c+c1}{\#\# the parameter df is a data frame (do.call("rbind",values))}
+\PYG{c+c1}{\#\# reset is FALSE when bigglm calls for more data}
+\PYG{c+c1}{\#\# and is TRUE when it requests the reader to go to the beginning of the stream}
+b\PYG{o}{\textless{}-}bigglm\PYG{p}{(}jitter\textasciitilde{}traffic.rate\PYG{o}{+}rm.site\PYG{p}{,}data\PYG{o}{=}\PYG{k+kVariable}{F}\PYG{p}{,}maxit\PYG{o}{=}\PYG{l+m}{3}\PYG{p}{)}
 \end{Verbatim}
 
 
@@ -2777,6 +2811,9 @@ Congestion in the Sky: Vizualising Domestic Airline Traffic with SAS, Rick Wickl
 }
 \bibitem[FLUSA]{FLUSA}{\phantomsection\label{airline:flusa} 
 Delayed, Cancelled, On-Time, Boarding ... Flying in the USA, Heike  Hofmann, Di Cook, Chris Kielion, Barret Schloerke, Jon Hobbs, Adam Loy,Lawrence Mosley, David Rockoff, Yuanyuan Sun, Danielle Wrolstad and Tengfei. Yin, \emph{Iowa State University}, \href{http://stat-computing.org/dataexpo/2009/posters/hofmann-cook.pdf}{http://stat-computing.org/dataexpo/2009/posters/hofmann-cook.pdf}
+}
+\bibitem[biglm]{biglm}{\phantomsection\label{airline:biglm} 
+biglm: bounded memory linear and generalized linear models \href{http://cran.r-project.org/web/packages/biglm/index.html}{http://cran.r-project.org/web/packages/biglm/index.html}
 }
 \bibitem[ecuyer]{ecuyer}{\phantomsection\label{simulate:ecuyer} 
 rstream: Streams of Random Numbers for Stochastic Simulation,Pierre L'Ecuyer and Josef Leydold, \href{http://cran.r-project.org/web/packages/rstream/index.html}{http://cran.r-project.org/web/packages/rstream/index.html}
