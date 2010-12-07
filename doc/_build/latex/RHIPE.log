@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-1.40.11 (TeX Live 2010) (format=pdflatex 2010.7.21)  21 OCT 2010 22:27
+This is pdfTeX, Version 3.1415926-1.40.11 (TeX Live 2010) (format=pdflatex 2010.7.21)  7 DEC 2010 14:47
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -961,12 +961,12 @@ LaTeX Font Info:    Font shape `TS1/pbk/m/n' in size <10> not available
 (Font)              Font shape `TS1/pbk/l/n' tried instead on input line 120.
 LaTeX Font Info:    Font shape `T1/pbk/m/n' in size <9> not available
 (Font)              Font shape `T1/pbk/l/n' tried instead on input line 130.
-LaTeX Font Info:    Font shape `T1/pbk/m/n' in size <5> not available
-(Font)              Font shape `T1/pbk/l/n' tried instead on input line 165.
 LaTeX Font Info:    Font shape `T1/pcr/bx/n' in size <9> not available
-(Font)              Font shape `T1/pcr/b/n' tried instead on input line 166.
+(Font)              Font shape `T1/pcr/b/n' tried instead on input line 146.
 LaTeX Font Info:    Font shape `T1/pcr/m/it' in size <9> not available
-(Font)              Font shape `T1/pcr/m/sl' tried instead on input line 171.
+(Font)              Font shape `T1/pcr/m/sl' tried instead on input line 146.
+LaTeX Font Info:    Font shape `T1/pbk/m/n' in size <5> not available
+(Font)              Font shape `T1/pbk/l/n' tried instead on input line 166.
  [3] [4]
 Chapter 2.
 <hdfs-write.pdf, id=217, 474.77374pt x 239.89626pt>
@@ -984,9 +984,9 @@ File: mapredslov.pdf Graphic file (type pdf)
 
 <use mapredslov.pdf>
 LaTeX Font Info:    Font shape `T1/pag/bx/n' in size <12> not available
-(Font)              Font shape `T1/pag/b/n' tried instead on input line 314.
+(Font)              Font shape `T1/pag/b/n' tried instead on input line 315.
 LaTeX Font Info:    Font shape `T1/pag/b/n' in size <12> not available
-(Font)              Font shape `T1/pag/db/n' tried instead on input line 314.
+(Font)              Font shape `T1/pag/db/n' tried instead on input line 315.
  [7 <./mapredslov.pdf>] [8] [9]
 <combiner.pdf, id=410, 502.87875pt x 359.3425pt>
 File: combiner.pdf Graphic file (type pdf)
@@ -996,22 +996,22 @@ File: combiner.pdf Graphic file (type pdf)
 <use combiner.pdf> [10] [11 <./combiner.pdf>] [12]
 Chapter 3.
 LaTeX Font Info:    Font shape `T1/pag/bx/it' in size <14.4> not available
-(Font)              Font shape `T1/pag/b/it' tried instead on input line 627.
+(Font)              Font shape `T1/pag/b/it' tried instead on input line 628.
 LaTeX Font Info:    Font shape `T1/pag/b/it' in size <14.4> not available
-(Font)              Font shape `T1/pag/db/it' tried instead on input line 627.
+(Font)              Font shape `T1/pag/db/it' tried instead on input line 628.
 LaTeX Font Info:    Font shape `T1/pag/db/it' in size <14.4> not available
-(Font)              Font shape `T1/pag/db/sl' tried instead on input line 627.
+(Font)              Font shape `T1/pag/db/sl' tried instead on input line 628.
 [13
 
 ]
 LaTeX Font Info:    Font shape `T1/pbk/m/n' in size <7> not available
-(Font)              Font shape `T1/pbk/l/n' tried instead on input line 681.
+(Font)              Font shape `T1/pbk/l/n' tried instead on input line 683.
 LaTeX Font Info:    Font shape `T1/pbk/m/n' in size <8> not available
-(Font)              Font shape `T1/pbk/l/n' tried instead on input line 683.
+(Font)              Font shape `T1/pbk/l/n' tried instead on input line 685.
 LaTeX Font Info:    Font shape `T1/pbk/m/n' in size <6> not available
-(Font)              Font shape `T1/pbk/l/n' tried instead on input line 683.
+(Font)              Font shape `T1/pbk/l/n' tried instead on input line 685.
 LaTeX Font Info:    Font shape `T1/pbk/m/it' in size <8> not available
-(Font)              Font shape `T1/pbk/l/it' tried instead on input line 683.
+(Font)              Font shape `T1/pbk/l/it' tried instead on input line 685.
  <rhstatus1.pdf, id=482, 1258.7025pt x 508.90125pt>
 File: rhstatus1.pdf Graphic file (type pdf)
  <use rhstatus1.pdf>
@@ -1019,11 +1019,11 @@ File: rhstatus1.pdf Graphic file (type pdf)
 
 <use rhstatus1.pdf> [14]
 LaTeX Font Info:    Font shape `T1/pag/bx/it' in size <10> not available
-(Font)              Font shape `T1/pag/b/it' tried instead on input line 772.
+(Font)              Font shape `T1/pag/b/it' tried instead on input line 774.
 LaTeX Font Info:    Font shape `T1/pag/b/it' in size <10> not available
-(Font)              Font shape `T1/pag/db/it' tried instead on input line 772.
+(Font)              Font shape `T1/pag/db/it' tried instead on input line 774.
 LaTeX Font Info:    Font shape `T1/pag/db/it' in size <10> not available
-(Font)              Font shape `T1/pag/db/sl' tried instead on input line 772.
+(Font)              Font shape `T1/pag/db/sl' tried instead on input line 774.
  [15 <./rhstatus1.pdf>] [16] [17] [18] [19]
 <rhipemapbuff.pdf, id=526, 505.89pt x 505.89pt>
 File: rhipemapbuff.pdf Graphic file (type pdf)
@@ -1036,7 +1036,7 @@ File: volume.pdf Graphic file (type pdf)
 <use volume.pdf>
 File: volume.pdf Graphic file (type pdf)
  <use volume.pdf> [21 <./rhipemapbuff.pdf>] [22 <./volume.pdf>]
-Underfull \vbox (badness 3000) detected at line 1225
+Underfull \vbox (badness 3000) detected at line 1227
  []
 
 [23] <propdelayed_1.pdf, id=559, 505.89pt x 505.89pt>
@@ -1075,7 +1075,7 @@ File: quantiles_by_month.pdf Graphic file (type pdf)
 <use quantiles_by_month.pdf>
 File: quantiles_by_month.pdf Graphic file (type pdf)
  <use quantiles_by_month.pdf>
-Underfull \vbox (badness 1953) detected at line 1469
+Underfull \vbox (badness 1953) detected at line 1471
  []
 
 [31] [32 <./quantiles_by_month.pdf>]
@@ -1116,9 +1116,9 @@ File: flightord.pdf Graphic file (type pdf)
 File: flightord.pdf Graphic file (type pdf)
  <use flightord.pdf> [39]
 LaTeX Font Info:    Font shape `T1/pcr/bx/n' in size <14.4> not available
-(Font)              Font shape `T1/pcr/b/n' tried instead on input line 1643.
+(Font)              Font shape `T1/pcr/b/n' tried instead on input line 1645.
  [40 <./flightord.pdf>]
-Underfull \vbox (badness 1097) detected at line 1718
+Underfull \vbox (badness 1097) detected at line 1720
  []
 
 [41] [42] [43] [44]
@@ -1131,6 +1131,12 @@ Chapter 4.
 Chapter 5.
 [49] [50]
 Chapter 6.
+
+Underfull \hbox (badness 5475) in paragraph at lines 2111--2113
+[]\T1/pbk/l/n/10 Before call-ing any of the func-tions de-scribed be-low, call 
+\T1/pcr/m/n/10 rhinit\T1/pbk/l/n/10 . If you call
+ []
+
 [51
 
 ] [52] [53] [54] [55] [56
@@ -1138,22 +1144,22 @@ Chapter 6.
 ]
 Chapter 7.
 LaTeX Font Info:    Font shape `T1/pcr/bx/n' in size <10> not available
-(Font)              Font shape `T1/pcr/b/n' tried instead on input line 2427.
+(Font)              Font shape `T1/pcr/b/n' tried instead on input line 2436.
 
-Overfull \hbox (25.00003pt too wide) in paragraph at lines 2449--2449
+Overfull \hbox (25.00003pt too wide) in paragraph at lines 2458--2458
 | [] 
  []
 
 [57]
-Overfull \hbox (25.00003pt too wide) in paragraph at lines 2473--2473
+Overfull \hbox (25.00003pt too wide) in paragraph at lines 2482--2482
 | [] 
  []
 
 [58]
 LaTeX Font Info:    Font shape `T1/pbk/bx/it' in size <10> not available
-(Font)              Font shape `T1/pbk/b/it' tried instead on input line 2555.
+(Font)              Font shape `T1/pbk/b/it' tried instead on input line 2564.
 LaTeX Font Info:    Font shape `T1/pbk/b/it' in size <10> not available
-(Font)              Font shape `T1/pbk/db/it' tried instead on input line 2555.
+(Font)              Font shape `T1/pbk/db/it' tried instead on input line 2564.
 
  [59] [60] [61] [62
 
@@ -1179,17 +1185,17 @@ File: tableopts.pdf Graphic file (type pdf)
 [70
 
 ])
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 2833.
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 2833.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 2842.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 2842.
  (./RHIPE.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 2833.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 2842.
 Package rerunfilecheck Info: File `RHIPE.out' has not changed.
 (rerunfilecheck)             Checksum: F40C9DC28A08CE63771C899C548A3353;2133.
  ) 
 Here is how much of TeX's memory you used:
  8900 strings out of 493747
  126142 string characters out of 3143546
- 219731 words of memory out of 3000000
+ 219734 words of memory out of 3000000
  11742 multiletter control sequences out of 15000+200000
  69881 words of font info for 96 fonts, out of 3000000 for 9000
  715 hyphenation exceptions out of 8191
@@ -1210,10 +1216,10 @@ bookman/ubkdi8a.pfb></usr/local/texlive/2010/texmf-dist/fonts/type1/urw/bookman
 .pfb></usr/local/texlive/2010/texmf-dist/fonts/type1/urw/courier/ucrb8a.pfb></u
 sr/local/texlive/2010/texmf-dist/fonts/type1/urw/courier/ucrr8a.pfb></usr/local
 /texlive/2010/texmf-dist/fonts/type1/urw/courier/ucrro8a.pfb>
-Output written on RHIPE.pdf (74 pages, 1116072 bytes).
+Output written on RHIPE.pdf (74 pages, 1117250 bytes).
 PDF statistics:
- 1185 PDF objects out of 1200 (max. 8388607)
- 961 compressed objects within 10 object streams
+ 1187 PDF objects out of 1200 (max. 8388607)
+ 963 compressed objects within 10 object streams
  190 named destinations out of 1000 (max. 500000)
  360 words of extra memory for PDF output out of 10000 (max. 10000000)
 

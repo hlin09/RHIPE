@@ -12,8 +12,8 @@
 
 
 \title{RHIPE Documentation}
-\date{October 21, 2010}
-\release{0.64}
+\date{December 07, 2010}
+\release{0.65.1}
 \author{Saptarshi Guha}
 \newcommand{\sphinxlogo}{}
 \renewcommand{\releasename}{Release}
@@ -143,6 +143,7 @@ In R
 
 \begin{Verbatim}[commandchars=\\\{\}]
 library\PYG{p}{(}Rhipe\PYG{p}{)}
+rhinit\PYG{p}{(}\PYG{k+kc}{TRUE}\PYG{p}{,} \PYG{k+kc}{TRUE}\PYG{p}{)} \PYG{c+c1}{\#\# the TRUEs are optional, use them for debugging}
 \end{Verbatim}
 
 should work successfully.
@@ -632,6 +633,7 @@ them on the HDFS with the following code (with limited error checks)
 
 \begin{Verbatim}[commandchars=\\\{\},numbers=left,firstnumber=1,stepnumber=1]
 library\PYG{p}{(}Rhipe\PYG{p}{)}
+rhinit\PYG{p}{(}\PYG{k+kc}{TRUE}\PYG{p}{,}\PYG{k+kc}{TRUE}\PYG{p}{)}
 map \PYG{o}{\textless{}-} expression\PYG{p}{(}\PYG{p}{\PYGZob{}}
   msys \PYG{o}{\textless{}-} \PYG{k+kr}{function}\PYG{p}{(}on\PYG{p}{)}\PYG{p}{\PYGZob{}}
     system\PYG{p}{(}sprintf\PYG{p}{(}\PYG{l+s}{"}\PYG{l+s}{wget  \%s --directory-prefix ./tmp 2\textgreater{} ./errors"}\PYG{p}{,}on\PYG{p}{)}\PYG{p}{)}
@@ -2106,6 +2108,9 @@ random generator packages for R with RHIPE.
 RHIPE has functions that access the HDFS from R, that are used inside MapReduce
 jobs and functions for managing MapReduce jobs.
 
+Before calling any of the functions described below, call \code{rhinit}. If you call \emph{rhinit(TRUE,TRUE,buglevel=2000){}`} a slew
+of messages are displayed  - useful if Rhipe does not load.
+
 
 \section{HDFS Related}
 \label{functions:hdfs-related}\index{rhdel}
@@ -2345,7 +2350,7 @@ progress. This object can be used in calls to \code{rhstatus},{}`{}`rhjoin{}`{}`
 \subsection{rhstatus - Monitoring a MapReduce Job}
 \label{functions:index-10}\label{functions:rhstatus-monitoring-a-mapreduce-job}
 \begin{Verbatim}[commandchars=\\\{\}]
-rhstatus\PYG{p}{(}jobid\PYG{p}{)}
+rhstatus\PYG{p}{(}jobid\PYG{p}{,}mon.sec\PYG{o}{=}\PYG{l+m}{0}\PYG{p}{,} autokill\PYG{o}{=}\PYG{k+kc}{TRUE}\PYG{p}{,}showErrors\PYG{o}{=}\PYG{k+kc}{TRUE}\PYG{p}{,}verbose\PYG{o}{=}\PYG{k+kc}{FALSE}\PYG{p}{)}
 \end{Verbatim}
 
 This returns the status of an running MapReduce job. The parameter \code{jobid} can
@@ -2368,6 +2373,10 @@ a data frame with columns for the Map and Reduce phase. This data frame summariz
 In addition the list has an element that consists of both user defined and Hadoop MapReduce built in counters (counters can be user defined with a call to \code{rhcounter}).
 
 \end{itemize}
+
+If \code{mon.sec} is greater than 0, a small data frame indicating the progress will be returned every \code{mon.sec} seconds.
+If \code{autokill} is TRUE, then any R errors caused by the map/reduce code will cause the job to be killed. If \code{verbose} is TRUE, the above list
+will be displayed too.
 \index{rhjoin}\index{rhex}
 
 \subsection{rhjoin - Waiting on Completion of a MapReduce Job}
