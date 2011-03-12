@@ -12,8 +12,8 @@
 
 
 \title{RHIPE Documentation}
-\date{December 09, 2010}
-\release{0.65.2}
+\date{March 12, 2011}
+\release{0.65.3}
 \author{Saptarshi Guha}
 \newcommand{\sphinxlogo}{}
 \renewcommand{\releasename}{Release}
@@ -96,6 +96,10 @@
 \def\PYGZob{\char`\{}
 \def\PYGZcb{\char`\}}
 \def\PYGZca{\char`\^}
+\def\PYGZsh{\char`\#}
+\def\PYGZpc{\char`\%}
+\def\PYGZdl{\char`\$}
+\def\PYGZti{\char`\~}
 % for compatibility with earlier versions
 \def\PYGZat{@}
 \def\PYGZlb{[}
@@ -107,6 +111,7 @@
 \maketitle
 \tableofcontents
 \phantomsection\label{index::doc}
+
 
 \index{rhipeopts}
 Contents:
@@ -143,7 +148,7 @@ In R
 
 \begin{Verbatim}[commandchars=\\\{\}]
 library\PYG{p}{(}Rhipe\PYG{p}{)}
-rhinit\PYG{p}{(}\PYG{k+kc}{TRUE}\PYG{p}{,} \PYG{k+kc}{TRUE}\PYG{p}{)} \PYG{c+c1}{\#\# the TRUEs are optional, use them for debugging}
+rhinit\PYG{p}{(}\PYG{k+kc}{TRUE}\PYG{p}{,} \PYG{k+kc}{TRUE}\PYG{p}{)} \PYG{c+c1}{\PYGZsh{}\PYGZsh{} the TRUEs are optional, use them for debugging}
 \end{Verbatim}
 
 should work successfully.
@@ -169,12 +174,12 @@ map \PYG{o}{\textless{}-} expression\PYG{p}{(}\PYG{p}{\PYGZob{}}
     rhcollect\PYG{p}{(}map.keys\PYG{p}{[}\PYG{p}{[}r\PYG{p}{]}\PYG{p}{]}\PYG{p}{,}c\PYG{p}{(}n\PYG{o}{=}map.values\PYG{p}{[}\PYG{p}{[}r\PYG{p}{]}\PYG{p}{]}\PYG{p}{,}mean\PYG{o}{=}mean\PYG{p}{(}x\PYG{p}{)}\PYG{p}{,}sd\PYG{o}{=}sd\PYG{p}{(}x\PYG{p}{)}\PYG{p}{)}\PYG{p}{)}
   \PYG{p}{\PYGZcb{}}\PYG{p}{)}
 \PYG{p}{\PYGZcb{}}\PYG{p}{)}
-\PYG{c+c1}{\#\# Create a job object}
+\PYG{c+c1}{\PYGZsh{}\PYGZsh{} Create a job object}
 z \PYG{o}{\textless{}-} rhmr\PYG{p}{(}map\PYG{p}{,} ofolder\PYG{o}{=}\PYG{l+s}{"}\PYG{l+s}{/tmp/test"}\PYG{p}{,} inout\PYG{o}{=}c\PYG{p}{(}\PYG{l+s}{'}\PYG{l+s}{lapply'}\PYG{p}{,}\PYG{l+s}{'}\PYG{l+s}{sequence'}\PYG{p}{)}\PYG{p}{,}
           N\PYG{o}{=}\PYG{l+m}{10}\PYG{p}{,}mapred\PYG{o}{=}list\PYG{p}{(}mapred.reduce.tasks\PYG{o}{=}\PYG{l+m}{0}\PYG{p}{)}\PYG{p}{,}jobname\PYG{o}{=}\PYG{l+s}{'}\PYG{l+s}{test'}\PYG{p}{)}
-\PYG{c+c1}{\#\# Submit the job}
+\PYG{c+c1}{\PYGZsh{}\PYGZsh{} Submit the job}
 rhex\PYG{p}{(}z\PYG{p}{)}
-\PYG{c+c1}{\#\# Read the results}
+\PYG{c+c1}{\PYGZsh{}\PYGZsh{} Read the results}
 res \PYG{o}{\textless{}-} rhread\PYG{p}{(}\PYG{l+s}{'}\PYG{l+s}{/tmp/test'}\PYG{p}{)}
 colres  \PYG{o}{\textless{}-} do.call\PYG{p}{(}\PYG{l+s}{'}\PYG{l+s}{rbind'}\PYG{p}{,} lapply\PYG{p}{(}res\PYG{p}{,}\PYG{l+s}{"}\PYG{l+s}{[["}\PYG{p}{,}\PYG{l+m}{2}\PYG{p}{)}\PYG{p}{)}
 colres
@@ -318,7 +323,8 @@ Two examples, one for quantiles and another for correlation will be described.
 
 
 \subsubsection{Approximate Quantile}
-\label{introduction:approximate-quantile}\index{quantile}
+\label{introduction:approximate-quantile}
+\index{quantile}
 Let $X$ be a column of numbers. This can be arbitrarily large
 (e.g. hundreds of gigabytes). The objective is to find the quantiles of the
 $X$. Let each number be a key. For discrete data e.g. ages (rounded to
@@ -369,7 +375,8 @@ document analysis.
 
 
 \subsubsection{Correlation}
-\label{introduction:correlation}\index{correlation}
+\label{introduction:correlation}
+\index{correlation}
 To compute the correlation of a text file of \emph{N} rows and \emph{C} columns, we need the
 sum, sums of squares of each column and sum of unique pairs of columns. The
 intermediate keys and final keys are the same: the column and column pair
@@ -404,14 +411,14 @@ We need to sum this:
 
 \begin{Verbatim}[commandchars=\\\{\},numbers=left,firstnumber=1,stepnumber=1]
 for identifier in stream\PYGZus{}of\PYGZus{}identifiers:
-    \PYG{c+c1}{\#\# identifier is a colum pair}
+    \PYG{c+c1}{\PYGZsh{}\PYGZsh{} identifier is a colum pair}
     sum \PYG{o}{=} empty tuple
     while has\PYGZus{}more\PYGZus{}values?\PYG{p}{(}\PYG{p}{)}\PYG{o}{==}\PYG{k+kc}{TRUE}:
         sum \PYG{o}{=} sum \PYG{o}{+} get\PYGZus{}new\PYGZus{}value\PYG{p}{(}\PYG{p}{)}
-        \PYG{c+c1}{\# get\PYGZus{}new\PYGZus{}value() will return}
-        \PYG{c+c1}{\# a tuple of length}
-        \PYG{c+c1}{\#     = 3 (if identifier is (i,i)}
-        \PYG{c+c1}{\#     = 1 (if identifier is (i,j) i \textless{}\textgreater{} j}
+        \PYG{c+c1}{\PYGZsh{} get\PYGZus{}new\PYGZus{}value() will return}
+        \PYG{c+c1}{\PYGZsh{} a tuple of length}
+        \PYG{c+c1}{\PYGZsh{}     = 3 (if identifier is (i,i)}
+        \PYG{c+c1}{\PYGZsh{}     = 1 (if identifier is (i,j) i \textless{}\textgreater{} j}
     end while
     rhcollect\PYG{p}{(}identifier\PYG{p}{,} sum\PYG{p}{)}
 \end{Verbatim}
@@ -421,7 +428,8 @@ $(i,i)$ or $(i,j)$.
 
 
 \subsubsection{Computing an Inner Join}
-\label{introduction:computing-an-inner-join}\index{inner join}
+\label{introduction:computing-an-inner-join}
+\index{inner join}
 We have a text file \textbf{A} of \emph{N} columns and \textbf{B} with \emph{M} columns. Both have a
 common column \textbf{index}. In \textbf{A}, it is unique, with one row per level of
 \textbf{index}. \textbf{B} is a repeated measurement data set, with the levels of
@@ -452,19 +460,19 @@ summarized data set \textbf{B'} will be used often, then this is a one time cost
 Summarizing \textbf{B} to \textbf{B'}
 
 \begin{Verbatim}[commandchars=\\\{\},numbers=left,firstnumber=1,stepnumber=1]
-\PYG{c+c1}{\#map}
+\PYG{c+c1}{\PYGZsh{}map}
 for line in lines:
     index  \PYG{o}{=}  get column corresponding to \PYG{l+s}{"}\PYG{l+s}{index"} from line
     weight \PYG{o}{=}  get column corresponding to \PYG{l+s}{"}\PYG{l+s}{weight"} from line
     rhcollect\PYG{p}{(}index\PYG{p}{,}\PYG{p}{(}\PYG{l+m}{1}\PYG{p}{,}weight\PYG{p}{)}\PYG{p}{)}
 
-\PYG{c+c1}{\#reduce}
+\PYG{c+c1}{\PYGZsh{}reduce}
 for index in stream\PYGZus{}of\PYGZus{}indices:
-    \PYG{c+c1}{\#\# identifier is a colum pair}
+    \PYG{c+c1}{\PYGZsh{}\PYGZsh{} identifier is a colum pair}
     sum \PYG{o}{=} empty tuple
     while has\PYGZus{}more\PYGZus{}values?\PYG{p}{(}\PYG{p}{)}\PYG{o}{==}\PYG{k+kc}{TRUE}:
         sum \PYG{o}{=} sum \PYG{o}{+} get\PYGZus{}new\PYGZus{}value\PYG{p}{(}\PYG{p}{)}
-    rhcollect\PYG{p}{(}index\PYG{p}{,} sum\PYG{p}{)} \PYG{c+c1}{\#total number of obs, sum of weight}
+    rhcollect\PYG{p}{(}index\PYG{p}{,} sum\PYG{p}{)} \PYG{c+c1}{\PYGZsh{}total number of obs, sum of weight}
 \end{Verbatim}
 
 To merge, we map each index value found in \textbf{A} to a TRUE value and each value
@@ -491,7 +499,8 @@ for index in stream\PYGZus{}of\PYGZus{}indices:
 
 
 \subsection{Combiners : An Optimization}
-\label{introduction:combiners-an-optimization}\index{combiner}
+\label{introduction:combiners-an-optimization}
+\index{combiner}
 The Hadoop framework, sends all the intermediate values for a given key to the
 reducer. The intermediate values for a given key are located on several compute
 nodes and need to be shuffled (sent across the network) to the node assigned the
@@ -575,6 +584,7 @@ a medium scale (millions of keys) disk based dictionary, which is useful for
 loading R objects into R.
 
 \end{itemize}
+
 \index{hbase}
 \textbf{Future Work}
 \begin{quote}
@@ -589,7 +599,8 @@ a cluster are automatically handled by RHIPE and Hadoop.
 
 
 \chapter{Airline Dataset}
-\label{airline:airline-dataset}\label{airline::doc}\index{airline data}
+\label{airline:airline-dataset}\label{airline::doc}
+\index{airline data}
 The Airline data set consists of flight arrival and departure details for all
 commercial flights from 1987 to 2008. The approximately 120MM records (CSV format),  occupy
 120GB space. The data set was used for the Visualization Poster Competition, JSM
@@ -626,7 +637,9 @@ graphics found in the winning entries {\hyperref[airline:sas]{{[}SAS{]}}} and {\
 
 
 \section{Copying the Data to the HDFS (or a \emph{Distributed Downloader}!)}
-\label{airline:copying-the-data-to-the-hdfs-or-a-distributed-downloader}\index{rhmr}\index{rhcounter}\index{rhstatus}\index{map.values}\index{map.keys}\index{rhex}\index{mapred.task.timeout}\index{rhstatus}\index{rhcounter}\indexiii{copying side effect files}{side effect files}{copyFiles}\phantomsection\label{airline:downloading-airline-data}
+\label{airline:copying-the-data-to-the-hdfs-or-a-distributed-downloader}
+\index{rhmr}\index{rhcounter}\index{rhstatus}\index{map.values}\index{map.keys}\index{rhex}\index{mapred.task.timeout}\index{rhstatus}\index{rhcounter}
+\indexiii{copying side effect files}{side effect files}{copyFiles}\phantomsection\label{airline:downloading-airline-data}
 The Airline data can be found \href{http://stat-computing.org/dataexpo/2009/the-data.html}{at this site} .
 In this example, we download the data sets for the individual years and save
 them on the HDFS with the following code (with limited error checks)
@@ -636,20 +649,20 @@ library\PYG{p}{(}Rhipe\PYG{p}{)}
 rhinit\PYG{p}{(}\PYG{k+kc}{TRUE}\PYG{p}{,}\PYG{k+kc}{TRUE}\PYG{p}{)}
 map \PYG{o}{\textless{}-} expression\PYG{p}{(}\PYG{p}{\PYGZob{}}
   msys \PYG{o}{\textless{}-} \PYG{k+kr}{function}\PYG{p}{(}on\PYG{p}{)}\PYG{p}{\PYGZob{}}
-    system\PYG{p}{(}sprintf\PYG{p}{(}\PYG{l+s}{"}\PYG{l+s}{wget  \%s --directory-prefix ./tmp 2\textgreater{} ./errors"}\PYG{p}{,}on\PYG{p}{)}\PYG{p}{)}
+    system\PYG{p}{(}sprintf\PYG{p}{(}\PYG{l+s}{"}\PYG{l+s}{wget  \PYGZpc{}s --directory-prefix ./tmp 2\textgreater{} ./errors"}\PYG{p}{,}on\PYG{p}{)}\PYG{p}{)}
     \PYG{k+kr}{if}\PYG{p}{(}length\PYG{p}{(}grep\PYG{p}{(}\PYG{l+s}{"}\PYG{l+s}{(failed)\textbar{}(unable)"}\PYG{p}{,}readLines\PYG{p}{(}\PYG{l+s}{"}\PYG{l+s}{./errors"}\PYG{p}{)}\PYG{p}{)}\PYG{p}{)}\PYG{o}{\textgreater{}}\PYG{l+m}{0}\PYG{p}{)}\PYG{p}{\PYGZob{}}
       stop\PYG{p}{(}paste\PYG{p}{(}readLines\PYG{p}{(}\PYG{l+s}{"}\PYG{l+s}{./errors"}\PYG{p}{)}\PYG{p}{,}collapse\PYG{o}{=}\PYG{l+s}{"}\PYG{l+s}{\PYGZbs{}n"}\PYG{p}{)}\PYG{p}{)}
     \PYG{p}{\PYGZcb{}}\PYG{p}{\PYGZcb{}}
 
   lapply\PYG{p}{(}map.values\PYG{p}{,}\PYG{k+kr}{function}\PYG{p}{(}x\PYG{p}{)}\PYG{p}{\PYGZob{}}
     x\PYG{o}{=}\PYG{l+m}{1986}\PYG{o}{+}x
-    on \PYG{o}{\textless{}-} sprintf\PYG{p}{(}\PYG{l+s}{"}\PYG{l+s}{http://stat-computing.org/dataexpo/2009/\%s.csv.bz2"}\PYG{p}{,}x\PYG{p}{)}
-    fn \PYG{o}{\textless{}-} sprintf\PYG{p}{(}\PYG{l+s}{"}\PYG{l+s}{./tmp/\%s.csv.bz2"}\PYG{p}{,}x\PYG{p}{)}
-    rhstatus\PYG{p}{(}sprintf\PYG{p}{(}\PYG{l+s}{"}\PYG{l+s}{Downloading \%s"}\PYG{p}{,} on\PYG{p}{)}\PYG{p}{)}
+    on \PYG{o}{\textless{}-} sprintf\PYG{p}{(}\PYG{l+s}{"}\PYG{l+s}{http://stat-computing.org/dataexpo/2009/\PYGZpc{}s.csv.bz2"}\PYG{p}{,}x\PYG{p}{)}
+    fn \PYG{o}{\textless{}-} sprintf\PYG{p}{(}\PYG{l+s}{"}\PYG{l+s}{./tmp/\PYGZpc{}s.csv.bz2"}\PYG{p}{,}x\PYG{p}{)}
+    rhstatus\PYG{p}{(}sprintf\PYG{p}{(}\PYG{l+s}{"}\PYG{l+s}{Downloading \PYGZpc{}s"}\PYG{p}{,} on\PYG{p}{)}\PYG{p}{)}
     msys\PYG{p}{(}on\PYG{p}{)}
-    rhstatus\PYG{p}{(}sprintf\PYG{p}{(}\PYG{l+s}{"}\PYG{l+s}{Downloaded \%s"}\PYG{p}{,} on\PYG{p}{)}\PYG{p}{)}
-    system\PYG{p}{(}sprintf\PYG{p}{(}\PYG{l+s}{'}\PYG{l+s}{bunzip2 \%s'}\PYG{p}{,}fn\PYG{p}{)}\PYG{p}{)}
-    rhstatus\PYG{p}{(}sprintf\PYG{p}{(}\PYG{l+s}{"}\PYG{l+s}{Unzipped \%s"}\PYG{p}{,} on\PYG{p}{)}\PYG{p}{)}
+    rhstatus\PYG{p}{(}sprintf\PYG{p}{(}\PYG{l+s}{"}\PYG{l+s}{Downloaded \PYGZpc{}s"}\PYG{p}{,} on\PYG{p}{)}\PYG{p}{)}
+    system\PYG{p}{(}sprintf\PYG{p}{(}\PYG{l+s}{'}\PYG{l+s}{bunzip2 \PYGZpc{}s'}\PYG{p}{,}fn\PYG{p}{)}\PYG{p}{)}
+    rhstatus\PYG{p}{(}sprintf\PYG{p}{(}\PYG{l+s}{"}\PYG{l+s}{Unzipped \PYGZpc{}s"}\PYG{p}{,} on\PYG{p}{)}\PYG{p}{)}
     rhcounter\PYG{p}{(}\PYG{l+s}{"}\PYG{l+s}{FILES"}\PYG{p}{,}x\PYG{p}{,}\PYG{l+m}{1}\PYG{p}{)}
     rhcounter\PYG{p}{(}\PYG{l+s}{"}\PYG{l+s}{FILES"}\PYG{p}{,}\PYG{l+s}{"}\PYG{l+s}{\PYGZus{}ALL\PYGZus{}"}\PYG{p}{,}\PYG{l+m}{1}\PYG{p}{)}
   \PYG{p}{\PYGZcb{}}\PYG{p}{)}
@@ -731,6 +744,7 @@ output. These options are passed in the \code{mapred} argument.
 The call to \code{rhex} launches the job across Hadoop. We use the \code{async}
 argument to return control of the R console to the user. We can monitor the
 status in two ways
+
 \index{rhstatus}\index{asynchronous execution}\begin{itemize}
 \item {} 
 Print the return value of \code{rhex}. The name of the job can be changed by giving a value to \code{jobname} in the
@@ -775,30 +789,30 @@ ID (e.g. \emph{job\_201007281701\_0053}).
 \end{itemize}
 
 \begin{Verbatim}[commandchars=\\\{\},numbers=left,firstnumber=1,stepnumber=1]
-\PYG{o}{\textgreater{}} a \PYG{o}{\textless{}-} rhstatus\PYG{p}{(}j\PYG{p}{)} \PYG{c+c1}{\#\# or rhstatus("job\PYGZus{}201007281701\PYGZus{}0053")}
-\PYG{o}{\textgreater{}} a\PYG{p}{\$}state
+\PYG{o}{\textgreater{}} a \PYG{o}{\textless{}-} rhstatus\PYG{p}{(}j\PYG{p}{)} \PYG{c+c1}{\PYGZsh{}\PYGZsh{} or rhstatus("job\PYGZus{}201007281701\PYGZus{}0053")}
+\PYG{o}{\textgreater{}} a\PYG{p}{\PYGZdl{}}state
 \PYG{p}{[}\PYG{l+m}{1}\PYG{p}{]} \PYG{l+s}{"}\PYG{l+s}{RUNNING"}
-\PYG{o}{\textgreater{}} a\PYG{p}{\$}duration
+\PYG{o}{\textgreater{}} a\PYG{p}{\PYGZdl{}}duration
 \PYG{p}{[}\PYG{l+m}{1}\PYG{p}{]} \PYG{l+m}{902.481}
-\PYG{o}{\textgreater{}} a\PYG{p}{\$}counters
-\PYG{p}{\$}counters
-\PYG{p}{\$}counters\PYG{p}{\$}\PYG{l+s+sb}{{}`Job Counters {}`}
+\PYG{o}{\textgreater{}} a\PYG{p}{\PYGZdl{}}counters
+\PYG{p}{\PYGZdl{}}counters
+\PYG{p}{\PYGZdl{}}counters\PYG{p}{\PYGZdl{}}\PYG{l+s+sb}{{}`Job Counters {}`}
 Launched map tasks
                 \PYG{l+m}{22}
 
-\PYG{p}{\$}counters\PYG{p}{\$}FileSystemCounters
+\PYG{p}{\PYGZdl{}}counters\PYG{p}{\PYGZdl{}}FileSystemCounters
    FILE\PYGZus{}BYTES\PYGZus{}READ HDFS\PYGZus{}BYTES\PYGZus{}WRITTEN
          \PYG{l+m}{127162942}          \PYG{l+m}{127162942}
 
-\PYG{p}{\$}counters\PYG{p}{\$}\PYG{l+s+sb}{{}`"FILES"{}`}
+\PYG{p}{\PYGZdl{}}counters\PYG{p}{\PYGZdl{}}\PYG{l+s+sb}{{}`"FILES"{}`}
  \PYG{l+m}{1987.0} \PYG{l+s}{"}\PYG{l+s}{\PYGZus{}ALL\PYGZus{}"}
       \PYG{l+m}{1}       \PYG{l+m}{1}
 
-\PYG{p}{\$}counters\PYG{p}{\$}\PYG{l+s+sb}{{}`Map-Reduce Framework{}`}
+\PYG{p}{\PYGZdl{}}counters\PYG{p}{\PYGZdl{}}\PYG{l+s+sb}{{}`Map-Reduce Framework{}`}
  Map input records    Spilled Records Map output records
                 \PYG{l+m}{22}                  \PYG{l+m}{0}                  \PYG{l+m}{0}
 
-\PYG{p}{\$}counters\PYG{p}{\$}job\PYGZus{}time
+\PYG{p}{\PYGZdl{}}counters\PYG{p}{\PYGZdl{}}job\PYGZus{}time
 \PYG{p}{[}\PYG{l+m}{1}\PYG{p}{]} \PYG{l+m}{902.481}
 \end{Verbatim}
 
@@ -863,9 +877,11 @@ We will store the data set as blocks of 5000 $\times$ 5 rows and columns. These 
 be the values. Every value must be mapped to a key. In this example, the keys
 (indices) to these blocks will not have any meaning but will be unique. The key
 is the first scheduled departure time.
+
 \index{sequencefile}
 The format of the data is a \emph{Sequence File}, which can store binary
 representations of R objects.
+
 \index{rhmr}\index{map.keys}\index{map.values}\index{reduce.key}\index{reduce.values}
 \begin{Verbatim}[commandchars=\\\{\},numbers=left,firstnumber=1,stepnumber=1]
 setup \PYG{o}{\textless{}-} expression\PYG{p}{(}\PYG{p}{\PYGZob{}}
@@ -896,7 +912,7 @@ map \PYG{o}{\textless{}-} expression\PYG{p}{(}\PYG{p}{\PYGZob{}}
                 \PYG{p}{,}carrier \PYG{o}{=} y\PYG{p}{[}\PYG{p}{,}\PYG{l+m}{9}\PYG{p}{]}\PYG{p}{,}origin \PYG{o}{=} y\PYG{p}{[}\PYG{p}{,}\PYG{l+m}{17}\PYG{p}{]}
                 \PYG{p}{,}dest\PYG{o}{=}y\PYG{p}{[}\PYG{p}{,}\PYG{l+m}{18}\PYG{p}{]}\PYG{p}{,}dist \PYG{o}{=} y\PYG{p}{[}\PYG{p}{,}\PYG{l+m}{19}\PYG{p}{]}\PYG{p}{,} year\PYG{o}{=}yr\PYG{p}{,} month\PYG{o}{-}mn\PYG{p}{,} day\PYG{o}{=}dy
                 \PYG{p}{,}cancelled\PYG{o}{=}y\PYG{p}{[}\PYG{p}{,}\PYG{l+m}{22}\PYG{p}{]}\PYG{p}{,} stringsAsFactors\PYG{o}{=}\PYG{k+kc}{FALSE}\PYG{p}{)}
-  d \PYG{o}{\textless{}-} d\PYG{p}{[}order\PYG{p}{(}d\PYG{p}{\$}sdepart\PYG{p}{)}\PYG{p}{,}\PYG{p}{]}
+  d \PYG{o}{\textless{}-} d\PYG{p}{[}order\PYG{p}{(}d\PYG{p}{\PYGZdl{}}sdepart\PYG{p}{)}\PYG{p}{,}\PYG{p}{]}
   rhcollect\PYG{p}{(}d\PYG{p}{[}c\PYG{p}{(}\PYG{l+m}{1}\PYG{p}{,}nrow\PYG{p}{(}d\PYG{p}{)}\PYG{p}{)}\PYG{p}{,}\PYG{l+s}{"}\PYG{l+s}{sdepart"}\PYG{p}{]}\PYG{p}{,}d\PYG{p}{)}
 \PYG{p}{\PYGZcb{}}\PYG{p}{)}
 reduce \PYG{o}{\textless{}-} expression\PYG{p}{(}
@@ -925,7 +941,9 @@ to Hadoop in line 37.
 
 Running R across massive data can be illuminating. Without the calls to
 \code{ISOdatetime}, it is \textbf{much} faster to complete.
-\indexii{key ordering}{ordering of keys}\index{orderby}
+
+\indexii{key ordering}{ordering of keys}
+\index{orderby}
 
 \subsection{Sorted keys}
 \label{airline:index-7}\label{airline:sorted-keys}
@@ -1000,7 +1018,8 @@ A sample data frame (last 4 columns removed):
 
 
 \section{Demonstration of using Hadoop as a Queryable Database}
-\label{airline:demonstration-of-using-hadoop-as-a-queryable-database}\index{rhgetkey}\index{map files}\index{rhipe\_map\_buff\_size}\index{combiner}
+\label{airline:demonstration-of-using-hadoop-as-a-queryable-database}
+\index{rhgetkey}\index{map files}\index{rhipe\_map\_buff\_size}\index{combiner}
 \emph{Sightly artificial}: store all Southwest Airlines information indexed by
 year,month,and day. Each (year, month, day) triplet will have all flight entries
 that left on that day. Using the above data set as the source, the Southwest
@@ -1012,11 +1031,11 @@ associated flight information in seconds rather than subsetting using MapReduce.
 \begin{Verbatim}[commandchars=\\\{\},numbers=left,firstnumber=1,stepnumber=1]
 map \PYG{o}{\textless{}-} expression\PYG{p}{(}\PYG{p}{\PYGZob{}}
   h \PYG{o}{\textless{}-} do.call\PYG{p}{(}\PYG{l+s}{"}\PYG{l+s}{rbind"}\PYG{p}{,}map.values\PYG{p}{)}
-  d \PYG{o}{\textless{}-} h\PYG{p}{[}h\PYG{p}{\$}carrier\PYG{o}{==}\PYG{l+s}{'}\PYG{l+s}{WN'}\PYG{p}{,}\PYG{p}{,}drop\PYG{o}{=}\PYG{k+kc}{FALSE}\PYG{p}{]}
+  d \PYG{o}{\textless{}-} h\PYG{p}{[}h\PYG{p}{\PYGZdl{}}carrier\PYG{o}{==}\PYG{l+s}{'}\PYG{l+s}{WN'}\PYG{p}{,}\PYG{p}{,}drop\PYG{o}{=}\PYG{k+kc}{FALSE}\PYG{p}{]}
   \PYG{k+kr}{if}\PYG{p}{(}nrow\PYG{p}{(}d\PYG{p}{)}\PYG{o}{\textgreater{}}\PYG{l+m}{0}\PYG{p}{)}\PYG{p}{\PYGZob{}}
-    e \PYG{o}{\textless{}-} split\PYG{p}{(}d\PYG{p}{,}list\PYG{p}{(}d\PYG{p}{\$}year\PYG{p}{,}d\PYG{p}{\$}month\PYG{p}{,}d\PYG{p}{\$}mday\PYG{p}{)}\PYG{p}{)}
+    e \PYG{o}{\textless{}-} split\PYG{p}{(}d\PYG{p}{,}list\PYG{p}{(}d\PYG{p}{\PYGZdl{}}year\PYG{p}{,}d\PYG{p}{\PYGZdl{}}month\PYG{p}{,}d\PYG{p}{\PYGZdl{}}mday\PYG{p}{)}\PYG{p}{)}
     lapply\PYG{p}{(}e\PYG{p}{,}\PYG{k+kr}{function}\PYG{p}{(}r\PYG{p}{)}\PYG{p}{\PYGZob{}}
-      k \PYG{o}{\textless{}-} as.vector\PYG{p}{(}unlist\PYG{p}{(}r\PYG{p}{[}\PYG{l+m}{1}\PYG{p}{,}c\PYG{p}{(}\PYG{l+s}{"}\PYG{l+s}{year"}\PYG{p}{,}\PYG{l+s}{"}\PYG{l+s}{month"}\PYG{p}{,}\PYG{l+s}{"}\PYG{l+s}{mday"}\PYG{p}{)}\PYG{p}{]}\PYG{p}{)}\PYG{p}{)}  \PYG{c+c1}{\#\# remove attributes}
+      k \PYG{o}{\textless{}-} as.vector\PYG{p}{(}unlist\PYG{p}{(}r\PYG{p}{[}\PYG{l+m}{1}\PYG{p}{,}c\PYG{p}{(}\PYG{l+s}{"}\PYG{l+s}{year"}\PYG{p}{,}\PYG{l+s}{"}\PYG{l+s}{month"}\PYG{p}{,}\PYG{l+s}{"}\PYG{l+s}{mday"}\PYG{p}{)}\PYG{p}{]}\PYG{p}{)}\PYG{p}{)}  \PYG{c+c1}{\PYGZsh{}\PYGZsh{} remove attributes}
       rhcollect\PYG{p}{(}k\PYG{p}{,} r\PYG{p}{)}
     \PYG{p}{\PYGZcb{}}\PYG{p}{)}
   \PYG{p}{\PYGZcb{}}
@@ -1025,7 +1044,7 @@ reduce \PYG{o}{\textless{}-} expression\PYG{p}{(}
     pre \PYG{o}{=} \PYG{p}{\PYGZob{}} collec \PYG{o}{\textless{}-} \PYG{k+kc}{NULL} \PYG{p}{\PYGZcb{}}\PYG{p}{,}
     reduce \PYG{o}{=} \PYG{p}{\PYGZob{}}
       collec \PYG{o}{\textless{}-} rbind\PYG{p}{(}collec\PYG{p}{,} do.call\PYG{p}{(}\PYG{l+s}{"}\PYG{l+s}{rbind"}\PYG{p}{,}reduce.values\PYG{p}{)}\PYG{p}{)}
-      collec \PYG{o}{\textless{}-} collec\PYG{p}{[}order\PYG{p}{(}collec\PYG{p}{\$}depart\PYG{p}{)}\PYG{p}{,}\PYG{p}{]}
+      collec \PYG{o}{\textless{}-} collec\PYG{p}{[}order\PYG{p}{(}collec\PYG{p}{\PYGZdl{}}depart\PYG{p}{)}\PYG{p}{,}\PYG{p}{]}
     \PYG{p}{\PYGZcb{}}\PYG{p}{,}
     post \PYG{o}{=} \PYG{p}{\PYGZob{}}
       rhcollect\PYG{p}{(}k\PYG{p}{,} collec\PYG{p}{)}
@@ -1075,6 +1094,7 @@ We compute some summaries and displays to understand the data.
 What are the busiest cities by total flight traffic. JFK will feature, but what
 are the others? For each airport code compute the number of inbound, outbound
 and all flights.
+
 \index{rhmr}\index{rhex}\index{rhread}\index{rhex}
 \begin{Verbatim}[commandchars=\\\{\},numbers=left,firstnumber=1,stepnumber=1]
 map \PYG{o}{\textless{}-} expression\PYG{p}{(}\PYG{p}{\PYGZob{}}
@@ -1097,7 +1117,7 @@ reduce \PYG{o}{\textless{}-} expression\PYG{p}{(}
       rhcollect\PYG{p}{(}reduce.key\PYG{p}{,} sums\PYG{p}{)}
     \PYG{p}{\PYGZcb{}}
     \PYG{p}{)}
-mapred\PYG{p}{\$}rhipe\PYGZus{}map\PYGZus{}buff\PYGZus{}size \PYG{o}{\textless{}-} \PYG{l+m}{15}
+mapred\PYG{p}{\PYGZdl{}}rhipe\PYGZus{}map\PYGZus{}buff\PYGZus{}size \PYG{o}{\textless{}-} \PYG{l+m}{15}
 z \PYG{o}{\textless{}-} rhmr\PYG{p}{(}map\PYG{o}{=}map\PYG{p}{,}reduce\PYG{o}{=}reduce\PYG{p}{,}combiner\PYG{o}{=}\PYG{k+kc}{TRUE}\PYG{p}{,}inout\PYG{o}{=}c\PYG{p}{(}\PYG{l+s}{"}\PYG{l+s}{sequence"}\PYG{p}{,}\PYG{l+s}{"}\PYG{l+s}{sequence"}\PYG{p}{)}
           \PYG{p}{,}ifolder\PYG{o}{=}\PYG{l+s}{"}\PYG{l+s}{/airline/blocks/"}\PYG{p}{,}ofolder\PYG{o}{=}\PYG{l+s}{"}\PYG{l+s}{/airline/volume"}
           \PYG{p}{,}mapred\PYG{o}{=}mapred\PYG{p}{)}
@@ -1118,6 +1138,7 @@ varying from 16 to 64 GB.
 \caption{Log of time to complete vs log of \emph{rhipe\_map\_buff\_size}.}\label{airline:time-to-complete-vs-rhipe-map-buff-size}\end{figure}
 
 Read the data into R and display them using the \code{lattice} library.
+
 \index{rhread}
 \begin{Verbatim}[commandchars=\\\{\},numbers=left,firstnumber=1,stepnumber=1]
 counts \PYG{o}{\textless{}-} rhread\PYG{p}{(}\PYG{l+s}{"}\PYG{l+s}{/airline/volume"}\PYG{p}{)}
@@ -1126,15 +1147,15 @@ count \PYG{o}{\textless{}-} do.call\PYG{p}{(}\PYG{l+s}{"}\PYG{l+s}{rbind"}\PYG{p
 results \PYG{o}{\textless{}-} data.frame\PYG{p}{(}aircode\PYG{o}{=}aircode\PYG{p}{,}
                       inb\PYG{o}{=}count\PYG{p}{[}\PYG{p}{,}\PYG{l+m}{1}\PYG{p}{]}\PYG{p}{,}oub\PYG{o}{=}count\PYG{p}{[}\PYG{p}{,}\PYG{l+m}{2}\PYG{p}{]}\PYG{p}{,}all\PYG{o}{=}count\PYG{p}{[}\PYG{p}{,}\PYG{l+m}{3}\PYG{p}{]}
                       \PYG{p}{,}stringsAsFactors\PYG{o}{=}\PYG{k+kc}{FALSE}\PYG{p}{)}
-results \PYG{o}{\textless{}-} results\PYG{p}{[}order\PYG{p}{(}results\PYG{p}{\$}all\PYG{p}{,}decreasing\PYG{o}{=}\PYG{k+kc}{TRUE}\PYG{p}{)}\PYG{p}{,}\PYG{p}{]}
-results\PYG{p}{\$}airport \PYG{o}{\textless{}-} sapply\PYG{p}{(}results\PYG{p}{\$}aircode\PYG{p}{,}\PYG{k+kr}{function}\PYG{p}{(}r\PYG{p}{)}\PYG{p}{\PYGZob{}}
-nam \PYG{o}{\textless{}-} ap\PYG{p}{[}ap\PYG{p}{\$}iata\PYG{o}{==}r\PYG{p}{,}\PYG{l+s}{'}\PYG{l+s}{airport'}\PYG{p}{]}
+results \PYG{o}{\textless{}-} results\PYG{p}{[}order\PYG{p}{(}results\PYG{p}{\PYGZdl{}}all\PYG{p}{,}decreasing\PYG{o}{=}\PYG{k+kc}{TRUE}\PYG{p}{)}\PYG{p}{,}\PYG{p}{]}
+results\PYG{p}{\PYGZdl{}}airport \PYG{o}{\textless{}-} sapply\PYG{p}{(}results\PYG{p}{\PYGZdl{}}aircode\PYG{p}{,}\PYG{k+kr}{function}\PYG{p}{(}r\PYG{p}{)}\PYG{p}{\PYGZob{}}
+nam \PYG{o}{\textless{}-} ap\PYG{p}{[}ap\PYG{p}{\PYGZdl{}}iata\PYG{o}{==}r\PYG{p}{,}\PYG{l+s}{'}\PYG{l+s}{airport'}\PYG{p}{]}
 \PYG{k+kr}{if}\PYG{p}{(}length\PYG{p}{(}nam\PYG{p}{)}\PYG{o}{==}\PYG{l+m}{0}\PYG{p}{)} r \PYG{k+kr}{else} nam
 \PYG{p}{\PYGZcb{}}\PYG{p}{)}
 library\PYG{p}{(}lattice\PYG{p}{)}
 r \PYG{o}{\textless{}-} results\PYG{p}{[}\PYG{l+m}{1}:\PYG{l+m}{20}\PYG{p}{,}\PYG{p}{]}
-af \PYG{o}{\textless{}-} reorder\PYG{p}{(}r\PYG{p}{\$}airport\PYG{p}{,}r\PYG{p}{\$}all\PYG{p}{)}
-dotplot\PYG{p}{(}af\textasciitilde{}log\PYG{p}{(}r\PYG{p}{[}\PYG{p}{,}\PYG{l+s}{'}\PYG{l+s}{all'}\PYG{p}{]}\PYG{p}{,}\PYG{l+m}{10}\PYG{p}{)}\PYG{p}{,}xlab\PYG{o}{=}\PYG{l+s}{'}\PYG{l+s}{Log\PYGZus{}10 Total Volume'}\PYG{p}{,}ylab\PYG{o}{=}\PYG{l+s}{'}\PYG{l+s}{Airport'}\PYG{p}{,}col\PYG{o}{=}\PYG{l+s}{'}\PYG{l+s}{black'}\PYG{p}{)}
+af \PYG{o}{\textless{}-} reorder\PYG{p}{(}r\PYG{p}{\PYGZdl{}}airport\PYG{p}{,}r\PYG{p}{\PYGZdl{}}all\PYG{p}{)}
+dotplot\PYG{p}{(}af\PYGZti{}log\PYG{p}{(}r\PYG{p}{[}\PYG{p}{,}\PYG{l+s}{'}\PYG{l+s}{all'}\PYG{p}{]}\PYG{p}{,}\PYG{l+m}{10}\PYG{p}{)}\PYG{p}{,}xlab\PYG{o}{=}\PYG{l+s}{'}\PYG{l+s}{Log\PYGZus{}10 Total Volume'}\PYG{p}{,}ylab\PYG{o}{=}\PYG{l+s}{'}\PYG{l+s}{Airport'}\PYG{p}{,}col\PYG{o}{=}\PYG{l+s}{'}\PYG{l+s}{black'}\PYG{p}{)}
 \end{Verbatim}
 
 There are 352 locations (airports) of which the top 20 serve 50\% of the volume
@@ -1160,7 +1181,7 @@ takes 1 minute and 32 seconds across 72 cores and all the examples, except the
 download and conversion to R data frames, in the manual are less than 10 minutes)
 
 \begin{Verbatim}[commandchars=\\\{\},numbers=left,firstnumber=1,stepnumber=1]
-\PYG{c+c1}{\#\# To create summaries}
+\PYG{c+c1}{\PYGZsh{}\PYGZsh{} To create summaries}
 map \PYG{o}{\textless{}-} expression\PYG{p}{(}\PYG{p}{\PYGZob{}}
   a \PYG{o}{\textless{}-} do.call\PYG{p}{(}\PYG{l+s}{"}\PYG{l+s}{rbind"}\PYG{p}{,}map.values\PYG{p}{)}
   total \PYG{o}{\textless{}-} table\PYG{p}{(}years\PYG{o}{=}a\PYG{p}{[}\PYG{p}{,}\PYG{l+s}{'}\PYG{l+s}{year'}\PYG{p}{]}\PYG{p}{,}a\PYG{p}{[}\PYG{p}{,}\PYG{l+s}{'}\PYG{l+s}{carrier'}\PYG{p}{]}\PYG{p}{)}
@@ -1179,7 +1200,7 @@ reduce \PYG{o}{\textless{}-} expression\PYG{p}{(}
     \PYG{p}{)}
 
 mapred \PYG{o}{\textless{}-} list\PYG{p}{(}\PYG{p}{)}
-mapred\PYG{p}{\$}rhipe\PYGZus{}map\PYGZus{}buff\PYGZus{}size \PYG{o}{\textless{}-} \PYG{l+m}{5}
+mapred\PYG{p}{\PYGZdl{}}rhipe\PYGZus{}map\PYGZus{}buff\PYGZus{}size \PYG{o}{\textless{}-} \PYG{l+m}{5}
 z \PYG{o}{\textless{}-} rhmr\PYG{p}{(}map\PYG{o}{=}map\PYG{p}{,}reduce\PYG{o}{=}reduce\PYG{p}{,}combiner\PYG{o}{=}\PYG{k+kc}{TRUE}\PYG{p}{,}inout\PYG{o}{=}c\PYG{p}{(}\PYG{l+s}{"}\PYG{l+s}{sequence"}\PYG{p}{,}\PYG{l+s}{"}\PYG{l+s}{sequence"}\PYG{p}{)}
           \PYG{p}{,}ifolder\PYG{o}{=}\PYG{l+s}{"}\PYG{l+s}{/airline/blocks/"}\PYG{p}{,}ofolder\PYG{o}{=}\PYG{l+s}{"}\PYG{l+s}{/airline/carrier.pop"}
           \PYG{p}{,}mapred\PYG{o}{=}mapred\PYG{p}{)}
@@ -1208,16 +1229,16 @@ yr \PYG{o}{\textless{}-} as.numeric\PYG{p}{(}unlist\PYG{p}{(}lapply\PYG{p}{(}lap
 carrier \PYG{o}{\textless{}-} unlist\PYG{p}{(}lapply\PYG{p}{(}lapply\PYG{p}{(}a\PYG{p}{,}\PYG{l+s}{"}\PYG{l+s}{[["}\PYG{p}{,}\PYG{l+m}{1}\PYG{p}{)}\PYG{p}{,}\PYG{l+s}{"}\PYG{l+s}{[["}\PYG{p}{,}\PYG{l+m}{2}\PYG{p}{)}\PYG{p}{)}
 count \PYG{o}{\textless{}-} unlist\PYG{p}{(}lapply\PYG{p}{(}a\PYG{p}{,}\PYG{l+s}{"}\PYG{l+s}{[["}\PYG{p}{,}\PYG{l+m}{2}\PYG{p}{)}\PYG{p}{)}
 results \PYG{o}{\textless{}-} data.frame\PYG{p}{(}yr\PYG{o}{=}yr\PYG{p}{,}carcode\PYG{o}{=}carrier\PYG{p}{,}count\PYG{o}{=}count\PYG{p}{,}stringsAsFactors\PYG{o}{=}\PYG{k+kc}{FALSE}\PYG{p}{)}
-results \PYG{o}{\textless{}-} results\PYG{p}{[}order\PYG{p}{(}results\PYG{p}{\$}yr\PYG{p}{,}results\PYG{p}{\$}count\PYG{p}{,}decreasing\PYG{o}{=}\PYG{k+kc}{TRUE}\PYG{p}{)}\PYG{p}{,}\PYG{p}{]}
-carrier \PYG{o}{\textless{}-} read.table\PYG{p}{(}\PYG{l+s}{"}\PYG{l+s}{\textasciitilde{}/tmp/carriers.csv"}\PYG{p}{,}sep\PYG{o}{=}\PYG{l+s}{"}\PYG{l+s}{,"}\PYG{p}{,}header\PYG{o}{=}\PYG{k+kc}{TRUE}\PYG{p}{,}
+results \PYG{o}{\textless{}-} results\PYG{p}{[}order\PYG{p}{(}results\PYG{p}{\PYGZdl{}}yr\PYG{p}{,}results\PYG{p}{\PYGZdl{}}count\PYG{p}{,}decreasing\PYG{o}{=}\PYG{k+kc}{TRUE}\PYG{p}{)}\PYG{p}{,}\PYG{p}{]}
+carrier \PYG{o}{\textless{}-} read.table\PYG{p}{(}\PYG{l+s}{"}\PYG{l+s}{\PYGZti{}/tmp/carriers.csv"}\PYG{p}{,}sep\PYG{o}{=}\PYG{l+s}{"}\PYG{l+s}{,"}\PYG{p}{,}header\PYG{o}{=}\PYG{k+kc}{TRUE}\PYG{p}{,}
                       stringsAsFactors\PYG{o}{=}\PYG{k+kc}{FALSE}\PYG{p}{,}na.strings\PYG{o}{=}\PYG{l+s}{"}\PYG{l+s}{XYZB"}\PYG{p}{)}
-results\PYG{p}{\$}carrier \PYG{o}{\textless{}-} sapply\PYG{p}{(}results\PYG{p}{\$}carcode\PYG{p}{,}\PYG{k+kr}{function}\PYG{p}{(}r\PYG{p}{)}\PYG{p}{\PYGZob{}}
-  cd \PYG{o}{\textless{}-} carrier\PYG{p}{[}carrier\PYG{p}{\$}Code\PYG{o}{==}r\PYG{p}{,}\PYG{l+s}{'}\PYG{l+s}{Description'}\PYG{p}{]}
+results\PYG{p}{\PYGZdl{}}carrier \PYG{o}{\textless{}-} sapply\PYG{p}{(}results\PYG{p}{\PYGZdl{}}carcode\PYG{p}{,}\PYG{k+kr}{function}\PYG{p}{(}r\PYG{p}{)}\PYG{p}{\PYGZob{}}
+  cd \PYG{o}{\textless{}-} carrier\PYG{p}{[}carrier\PYG{p}{\PYGZdl{}}Code\PYG{o}{==}r\PYG{p}{,}\PYG{l+s}{'}\PYG{l+s}{Description'}\PYG{p}{]}
   \PYG{k+kr}{if}\PYG{p}{(}is.na\PYG{p}{(}cd\PYG{p}{)}\PYG{p}{)} r \PYG{k+kr}{else} cd
 \PYG{p}{\PYGZcb{}}\PYG{p}{)}
-results\PYG{p}{\$}yr \PYG{o}{\textless{}-} results\PYG{p}{\$}yr\PYG{o}{+}\PYG{l+m}{1900}
-carr \PYG{o}{\textless{}-} reorder\PYG{p}{(}results\PYG{p}{\$}carrier\PYG{p}{,}results\PYG{p}{\$}count\PYG{p}{,} median\PYG{p}{)}
-xyplot\PYG{p}{(}log\PYG{p}{(}count\PYG{p}{,}\PYG{l+m}{10}\PYG{p}{)}\textasciitilde{}yr\PYG{o}{\textbar{}}carr\PYG{p}{,} data\PYG{o}{=}results\PYG{p}{,}xlab\PYG{o}{=}\PYG{l+s}{"}\PYG{l+s}{Years"}\PYG{p}{,} ylab\PYG{o}{=}\PYG{l+s}{"}\PYG{l+s}{Log10 count"}\PYG{p}{,}col\PYG{o}{=}\PYG{l+s}{'}\PYG{l+s}{black'}
+results\PYG{p}{\PYGZdl{}}yr \PYG{o}{\textless{}-} results\PYG{p}{\PYGZdl{}}yr\PYG{o}{+}\PYG{l+m}{1900}
+carr \PYG{o}{\textless{}-} reorder\PYG{p}{(}results\PYG{p}{\PYGZdl{}}carrier\PYG{p}{,}results\PYG{p}{\PYGZdl{}}count\PYG{p}{,} median\PYG{p}{)}
+xyplot\PYG{p}{(}log\PYG{p}{(}count\PYG{p}{,}\PYG{l+m}{10}\PYG{p}{)}\PYGZti{}yr\PYG{o}{\textbar{}}carr\PYG{p}{,} data\PYG{o}{=}results\PYG{p}{,}xlab\PYG{o}{=}\PYG{l+s}{"}\PYG{l+s}{Years"}\PYG{p}{,} ylab\PYG{o}{=}\PYG{l+s}{"}\PYG{l+s}{Log10 count"}\PYG{p}{,}col\PYG{o}{=}\PYG{l+s}{'}\PYG{l+s}{black'}
         \PYG{p}{,}scales\PYG{o}{=}list\PYG{p}{(}scale\PYG{o}{=}\PYG{l+s}{'}\PYG{l+s}{free'}\PYG{p}{,}tck\PYG{o}{=}\PYG{l+m}{0.5}\PYG{p}{,}cex\PYG{o}{=}\PYG{l+m}{0.7}\PYG{p}{)}\PYG{p}{,}layout\PYG{o}{=}c\PYG{p}{(}\PYG{l+m}{2}\PYG{p}{,}\PYG{l+m}{8}\PYG{p}{)}\PYG{p}{,}type\PYG{o}{=}\PYG{l+s}{'}\PYG{l+s}{l'}
        \PYG{p}{,}par.strip.text \PYG{o}{=} list\PYG{p}{(}lines \PYG{o}{=} \PYG{l+m}{0.8}\PYG{p}{,}cex\PYG{o}{=}\PYG{l+m}{0.7}\PYG{p}{)}\PYG{p}{,}cex\PYG{o}{=}\PYG{l+m}{0.5}\PYG{p}{,}
        panel\PYG{o}{=}\PYG{k+kr}{function}\PYG{p}{(}\PYG{l+m}{.}\PYG{l+m}{.}\PYG{l+m}{.}\PYG{p}{)}\PYG{p}{\PYGZob{}}
@@ -1253,12 +1274,12 @@ panels). The code for this comes after the figures.
 \begin{Verbatim}[commandchars=\\\{\},numbers=left,firstnumber=1,stepnumber=1]
 map \PYG{o}{\textless{}-} expression\PYG{p}{(}\PYG{p}{\PYGZob{}}
   a \PYG{o}{\textless{}-} do.call\PYG{p}{(}\PYG{l+s}{"}\PYG{l+s}{rbind"}\PYG{p}{,}map.values\PYG{p}{)}
-  a\PYG{p}{\$}delay.sec \PYG{o}{\textless{}-} as.vector\PYG{p}{(}a\PYG{p}{[}\PYG{p}{,}\PYG{l+s}{'}\PYG{l+s}{arrive'}\PYG{p}{]}\PYG{p}{)}\PYG{o}{-}as.vector\PYG{p}{(}a\PYG{p}{[}\PYG{p}{,}\PYG{l+s}{'}\PYG{l+s}{sarrive'}\PYG{p}{]}\PYG{p}{)}
-  a \PYG{o}{\textless{}-} a\PYG{p}{[}!is.na\PYG{p}{(}a\PYG{p}{\$}delay.sec\PYG{p}{)}\PYG{p}{,}\PYG{p}{]}
-  a\PYG{p}{\$}isdelayed \PYG{o}{\textless{}-} sapply\PYG{p}{(}a\PYG{p}{\$}delay.sec\PYG{p}{,}\PYG{k+kr}{function}\PYG{p}{(}r\PYG{p}{)} \PYG{k+kr}{if}\PYG{p}{(}r\PYG{o}{\textgreater{}=}\PYG{l+m}{900}\PYG{p}{)} \PYG{k+kc}{TRUE} \PYG{k+kr}{else} \PYG{k+kc}{FALSE}\PYG{p}{)}
-  e \PYG{o}{\textless{}-} split\PYG{p}{(}a\PYG{p}{,}list\PYG{p}{(}a\PYG{p}{\$}year\PYG{p}{,}a\PYG{p}{\$}yday\PYG{p}{)}\PYG{p}{)}
+  a\PYG{p}{\PYGZdl{}}delay.sec \PYG{o}{\textless{}-} as.vector\PYG{p}{(}a\PYG{p}{[}\PYG{p}{,}\PYG{l+s}{'}\PYG{l+s}{arrive'}\PYG{p}{]}\PYG{p}{)}\PYG{o}{-}as.vector\PYG{p}{(}a\PYG{p}{[}\PYG{p}{,}\PYG{l+s}{'}\PYG{l+s}{sarrive'}\PYG{p}{]}\PYG{p}{)}
+  a \PYG{o}{\textless{}-} a\PYG{p}{[}!is.na\PYG{p}{(}a\PYG{p}{\PYGZdl{}}delay.sec\PYG{p}{)}\PYG{p}{,}\PYG{p}{]}
+  a\PYG{p}{\PYGZdl{}}isdelayed \PYG{o}{\textless{}-} sapply\PYG{p}{(}a\PYG{p}{\PYGZdl{}}delay.sec\PYG{p}{,}\PYG{k+kr}{function}\PYG{p}{(}r\PYG{p}{)} \PYG{k+kr}{if}\PYG{p}{(}r\PYG{o}{\textgreater{}=}\PYG{l+m}{900}\PYG{p}{)} \PYG{k+kc}{TRUE} \PYG{k+kr}{else} \PYG{k+kc}{FALSE}\PYG{p}{)}
+  e \PYG{o}{\textless{}-} split\PYG{p}{(}a\PYG{p}{,}list\PYG{p}{(}a\PYG{p}{\PYGZdl{}}year\PYG{p}{,}a\PYG{p}{\PYGZdl{}}yday\PYG{p}{)}\PYG{p}{)}
   lapply\PYG{p}{(}e\PYG{p}{,}\PYG{k+kr}{function}\PYG{p}{(}r\PYG{p}{)}\PYG{p}{\PYGZob{}}
-    n \PYG{o}{\textless{}-} nrow\PYG{p}{(}r\PYG{p}{)}\PYG{p}{;} numdelayed \PYG{o}{\textless{}-} sum\PYG{p}{(}r\PYG{p}{\$}isdelayed\PYG{p}{)}
+    n \PYG{o}{\textless{}-} nrow\PYG{p}{(}r\PYG{p}{)}\PYG{p}{;} numdelayed \PYG{o}{\textless{}-} sum\PYG{p}{(}r\PYG{p}{\PYGZdl{}}isdelayed\PYG{p}{)}
     rhcollect\PYG{p}{(}as.vector\PYG{p}{(}unlist\PYG{p}{(}c\PYG{p}{(}r\PYG{p}{[}\PYG{l+m}{1}\PYG{p}{,}c\PYG{p}{(}\PYG{l+s}{"}\PYG{l+s}{year"}\PYG{p}{,}\PYG{l+s}{"}\PYG{l+s}{yday"}\PYG{p}{)}\PYG{p}{]}\PYG{p}{)}\PYG{p}{)}\PYG{p}{)}\PYG{p}{,} c\PYG{p}{(}n\PYG{p}{,} numdelayed\PYG{p}{)}\PYG{p}{)}
   \PYG{p}{\PYGZcb{}}\PYG{p}{)}
 \PYG{p}{\PYGZcb{}}\PYG{p}{)}
@@ -1269,7 +1290,7 @@ reduce \PYG{o}{\textless{}-} expression\PYG{p}{(}
     \PYG{p}{)}
 
 mapred \PYG{o}{\textless{}-} list\PYG{p}{(}\PYG{p}{)}
-mapred\PYG{p}{\$}rhipe\PYGZus{}map\PYGZus{}buff\PYGZus{}size \PYG{o}{\textless{}-} \PYG{l+m}{5}
+mapred\PYG{p}{\PYGZdl{}}rhipe\PYGZus{}map\PYGZus{}buff\PYGZus{}size \PYG{o}{\textless{}-} \PYG{l+m}{5}
 z \PYG{o}{\textless{}-} rhmr\PYG{p}{(}map\PYG{o}{=}map\PYG{p}{,}reduce\PYG{o}{=}reduce\PYG{p}{,}combiner\PYG{o}{=}\PYG{k+kc}{TRUE}\PYG{p}{,}inout\PYG{o}{=}c\PYG{p}{(}\PYG{l+s}{"}\PYG{l+s}{sequence"}\PYG{p}{,}\PYG{l+s}{"}\PYG{l+s}{sequence"}\PYG{p}{)}
           \PYG{p}{,}ifolder\PYG{o}{=}\PYG{l+s}{"}\PYG{l+s}{/airline/blocks/"}\PYG{p}{,}ofolder\PYG{o}{=}\PYG{l+s}{"}\PYG{l+s}{/airline/delaybyyear"}
           \PYG{p}{,}mapred\PYG{o}{=}mapred\PYG{p}{)}
@@ -1280,8 +1301,8 @@ y1 \PYG{o}{\textless{}-} do.call\PYG{p}{(}\PYG{l+s}{"}\PYG{l+s}{rbind"}\PYG{p}{,
 y2 \PYG{o}{\textless{}-} do.call\PYG{p}{(}\PYG{l+s}{"}\PYG{l+s}{rbind"}\PYG{p}{,}lapply\PYG{p}{(}b\PYG{p}{,}\PYG{l+s}{"}\PYG{l+s}{[["}\PYG{p}{,}\PYG{l+m}{2}\PYG{p}{)}\PYG{p}{)}
 results \PYG{o}{\textless{}-} data.frame\PYG{p}{(}year\PYG{o}{=}\PYG{l+m}{1900}\PYG{o}{+}y1\PYG{p}{[}\PYG{p}{,}\PYG{l+m}{1}\PYG{p}{]}\PYG{p}{,}yday\PYG{o}{=}y1\PYG{p}{[}\PYG{p}{,}\PYG{l+m}{2}\PYG{p}{]}\PYG{p}{,}
                       nflight\PYG{o}{=}y2\PYG{p}{[}\PYG{p}{,}\PYG{l+m}{1}\PYG{p}{]}\PYG{p}{,}ndelay\PYG{o}{=}y2\PYG{p}{[}\PYG{p}{,}\PYG{l+m}{2}\PYG{p}{]}\PYG{p}{)}
-results\PYG{p}{\$}prop \PYG{o}{\textless{}-} results\PYG{p}{\$}ndelay\PYG{o}{/}results\PYG{p}{\$}nflight
-results \PYG{o}{\textless{}-} results\PYG{p}{[}order\PYG{p}{(}results\PYG{p}{\$}year\PYG{p}{,}results\PYG{p}{\$}yday\PYG{p}{)}\PYG{p}{,}\PYG{p}{]}
+results\PYG{p}{\PYGZdl{}}prop \PYG{o}{\textless{}-} results\PYG{p}{\PYGZdl{}}ndelay\PYG{o}{/}results\PYG{p}{\PYGZdl{}}nflight
+results \PYG{o}{\textless{}-} results\PYG{p}{[}order\PYG{p}{(}results\PYG{p}{\PYGZdl{}}year\PYG{p}{,}results\PYG{p}{\PYGZdl{}}yday\PYG{p}{)}\PYG{p}{,}\PYG{p}{]}
 \end{Verbatim}
 
 {\hyperref[airline:stl-decomposition]{\emph{STL decomposition of proportion of flights delayed}}} is
@@ -1293,7 +1314,7 @@ increasing with time (see \emph{trend} panel).
 prop \PYG{o}{\textless{}-} results\PYG{p}{[}\PYG{p}{,}\PYG{l+s}{'}\PYG{l+s}{prop'}\PYG{p}{]}
 prop \PYG{o}{\textless{}-} prop\PYG{p}{[}!is.na\PYG{p}{(}prop\PYG{p}{)}\PYG{p}{]}
 tprop \PYG{o}{\textless{}-} ts\PYG{p}{(}log\PYG{p}{(}prop\PYG{o}{/}\PYG{p}{(}\PYG{l+m}{1}\PYG{o}{-}prop\PYG{p}{)}\PYG{p}{)}\PYG{p}{,}start\PYG{o}{=}c\PYG{p}{(}\PYG{l+m}{1987}\PYG{p}{,}\PYG{l+m}{273}\PYG{p}{)}\PYG{p}{,}frequency\PYG{o}{=}\PYG{l+m}{365}\PYG{p}{)}
-pdf\PYG{p}{(}\PYG{l+s}{"}\PYG{l+s}{\textasciitilde{}/tmp/propdelayedxyplot.pdf"}\PYG{p}{)}
+pdf\PYG{p}{(}\PYG{l+s}{"}\PYG{l+s}{\PYGZti{}/tmp/propdelayedxyplot.pdf"}\PYG{p}{)}
 plot\PYG{p}{(}stl\PYG{p}{(}tprop\PYG{p}{,}s.window\PYG{o}{=}\PYG{l+s}{"}\PYG{l+s}{periodic"}\PYG{p}{)}\PYG{p}{)}
 dev.off\PYG{p}{(}\PYG{p}{)}
 \end{Verbatim}
@@ -1329,13 +1350,13 @@ The code to create {\hyperref[airline:delay-by-hour]{\emph{Proportion of flights
 \begin{Verbatim}[commandchars=\\\{\},numbers=left,firstnumber=1,stepnumber=1]
 map \PYG{o}{\textless{}-} expression\PYG{p}{(}\PYG{p}{\PYGZob{}}
   a \PYG{o}{\textless{}-} do.call\PYG{p}{(}\PYG{l+s}{"}\PYG{l+s}{rbind"}\PYG{p}{,}map.values\PYG{p}{)}
-  a\PYG{p}{\$}delay.sec \PYG{o}{\textless{}-} as.vector\PYG{p}{(}a\PYG{p}{[}\PYG{p}{,}\PYG{l+s}{'}\PYG{l+s}{arrive'}\PYG{p}{]}\PYG{p}{)}\PYG{o}{-}as.vector\PYG{p}{(}a\PYG{p}{[}\PYG{p}{,}\PYG{l+s}{'}\PYG{l+s}{sarrive'}\PYG{p}{]}\PYG{p}{)}
-  a \PYG{o}{\textless{}-} a\PYG{p}{[}!is.na\PYG{p}{(}a\PYG{p}{\$}delay.sec\PYG{p}{)}\PYG{p}{,}\PYG{p}{]}
-  a\PYG{p}{\$}isdelayed \PYG{o}{\textless{}-} sapply\PYG{p}{(}a\PYG{p}{\$}delay.sec\PYG{p}{,}\PYG{k+kr}{function}\PYG{p}{(}r\PYG{p}{)} \PYG{k+kr}{if}\PYG{p}{(}r\PYG{o}{\textgreater{}=}\PYG{l+m}{900}\PYG{p}{)} \PYG{k+kc}{TRUE} \PYG{k+kr}{else} \PYG{k+kc}{FALSE}\PYG{p}{)}
-  a\PYG{p}{\$}hrs \PYG{o}{\textless{}-} as.numeric\PYG{p}{(}format\PYG{p}{(}a\PYG{p}{[}\PYG{p}{,}\PYG{l+s}{'}\PYG{l+s}{sdepart'}\PYG{p}{]}\PYG{p}{,}\PYG{l+s}{"}\PYG{l+s}{\%H"}\PYG{p}{)}\PYG{p}{)}
-  e \PYG{o}{\textless{}-} split\PYG{p}{(}a\PYG{p}{,}a\PYG{p}{\$}hrs\PYG{p}{)}
+  a\PYG{p}{\PYGZdl{}}delay.sec \PYG{o}{\textless{}-} as.vector\PYG{p}{(}a\PYG{p}{[}\PYG{p}{,}\PYG{l+s}{'}\PYG{l+s}{arrive'}\PYG{p}{]}\PYG{p}{)}\PYG{o}{-}as.vector\PYG{p}{(}a\PYG{p}{[}\PYG{p}{,}\PYG{l+s}{'}\PYG{l+s}{sarrive'}\PYG{p}{]}\PYG{p}{)}
+  a \PYG{o}{\textless{}-} a\PYG{p}{[}!is.na\PYG{p}{(}a\PYG{p}{\PYGZdl{}}delay.sec\PYG{p}{)}\PYG{p}{,}\PYG{p}{]}
+  a\PYG{p}{\PYGZdl{}}isdelayed \PYG{o}{\textless{}-} sapply\PYG{p}{(}a\PYG{p}{\PYGZdl{}}delay.sec\PYG{p}{,}\PYG{k+kr}{function}\PYG{p}{(}r\PYG{p}{)} \PYG{k+kr}{if}\PYG{p}{(}r\PYG{o}{\textgreater{}=}\PYG{l+m}{900}\PYG{p}{)} \PYG{k+kc}{TRUE} \PYG{k+kr}{else} \PYG{k+kc}{FALSE}\PYG{p}{)}
+  a\PYG{p}{\PYGZdl{}}hrs \PYG{o}{\textless{}-} as.numeric\PYG{p}{(}format\PYG{p}{(}a\PYG{p}{[}\PYG{p}{,}\PYG{l+s}{'}\PYG{l+s}{sdepart'}\PYG{p}{]}\PYG{p}{,}\PYG{l+s}{"}\PYG{l+s}{\PYGZpc{}H"}\PYG{p}{)}\PYG{p}{)}
+  e \PYG{o}{\textless{}-} split\PYG{p}{(}a\PYG{p}{,}a\PYG{p}{\PYGZdl{}}hrs\PYG{p}{)}
   lapply\PYG{p}{(}e\PYG{p}{,}\PYG{k+kr}{function}\PYG{p}{(}r\PYG{p}{)}\PYG{p}{\PYGZob{}}
-    n \PYG{o}{\textless{}-} nrow\PYG{p}{(}r\PYG{p}{)}\PYG{p}{;} numdelayed \PYG{o}{\textless{}-} sum\PYG{p}{(}r\PYG{p}{\$}isdelayed\PYG{p}{)}
+    n \PYG{o}{\textless{}-} nrow\PYG{p}{(}r\PYG{p}{)}\PYG{p}{;} numdelayed \PYG{o}{\textless{}-} sum\PYG{p}{(}r\PYG{p}{\PYGZdl{}}isdelayed\PYG{p}{)}
     rhcollect\PYG{p}{(}as.vector\PYG{p}{(}unlist\PYG{p}{(}c\PYG{p}{(}r\PYG{p}{[}\PYG{l+m}{1}\PYG{p}{,}c\PYG{p}{(}\PYG{l+s}{"}\PYG{l+s}{hrs"}\PYG{p}{)}\PYG{p}{]}\PYG{p}{)}\PYG{p}{)}\PYG{p}{)}\PYG{p}{,} c\PYG{p}{(}n\PYG{p}{,} numdelayed\PYG{p}{)}\PYG{p}{)}
   \PYG{p}{\PYGZcb{}}\PYG{p}{)}
 \PYG{p}{\PYGZcb{}}\PYG{p}{)}
@@ -1347,7 +1368,7 @@ reduce \PYG{o}{\textless{}-} expression\PYG{p}{(}
 
 
 mapred \PYG{o}{\textless{}-} list\PYG{p}{(}\PYG{p}{)}
-mapred\PYG{p}{\$}rhipe\PYGZus{}map\PYGZus{}buff\PYGZus{}size \PYG{o}{\textless{}-} \PYG{l+m}{5}
+mapred\PYG{p}{\PYGZdl{}}rhipe\PYGZus{}map\PYGZus{}buff\PYGZus{}size \PYG{o}{\textless{}-} \PYG{l+m}{5}
 z \PYG{o}{\textless{}-} rhmr\PYG{p}{(}map\PYG{o}{=}map\PYG{p}{,}reduce\PYG{o}{=}reduce\PYG{p}{,}combiner\PYG{o}{=}\PYG{k+kc}{TRUE}\PYG{p}{,}inout\PYG{o}{=}c\PYG{p}{(}\PYG{l+s}{"}\PYG{l+s}{sequence"}\PYG{p}{,}\PYG{l+s}{"}\PYG{l+s}{sequence"}\PYG{p}{)}
           \PYG{p}{,}ifolder\PYG{o}{=}\PYG{l+s}{"}\PYG{l+s}{/airline/blocks/"}\PYG{p}{,}ofolder\PYG{o}{=}\PYG{l+s}{"}\PYG{l+s}{/airline/delaybyhours"}
           \PYG{p}{,}mapred\PYG{o}{=}mapred\PYG{p}{)}
@@ -1366,17 +1387,18 @@ table we can compute the quantiles.
 
 The distribution of the delay in minutes does not change significantly over
 months.
+
 \index{quantiles}\phantomsection\label{airline:delay-quantiles-by-month}
 \begin{Verbatim}[commandchars=\\\{\},numbers=left,firstnumber=1,stepnumber=1]
 map \PYG{o}{\textless{}-} expression\PYG{p}{(}\PYG{p}{\PYGZob{}}
   a \PYG{o}{\textless{}-} do.call\PYG{p}{(}\PYG{l+s}{"}\PYG{l+s}{rbind"}\PYG{p}{,}map.values\PYG{p}{)}
-  a\PYG{p}{\$}delay.sec \PYG{o}{\textless{}-} as.vector\PYG{p}{(}a\PYG{p}{[}\PYG{p}{,}\PYG{l+s}{'}\PYG{l+s}{arrive'}\PYG{p}{]}\PYG{p}{)}\PYG{o}{-}as.vector\PYG{p}{(}a\PYG{p}{[}\PYG{p}{,}\PYG{l+s}{'}\PYG{l+s}{sarrive'}\PYG{p}{]}\PYG{p}{)}
-  a \PYG{o}{\textless{}-} a\PYG{p}{[}!is.na\PYG{p}{(}a\PYG{p}{\$}delay.sec\PYG{p}{)}\PYG{p}{,}\PYG{p}{]}
-  a\PYG{p}{\$}isdelayed \PYG{o}{\textless{}-} sapply\PYG{p}{(}a\PYG{p}{\$}delay.sec\PYG{p}{,}\PYG{k+kr}{function}\PYG{p}{(}r\PYG{p}{)} \PYG{k+kr}{if}\PYG{p}{(}r\PYG{o}{\textgreater{}=}\PYG{l+m}{900}\PYG{p}{)} \PYG{k+kc}{TRUE} \PYG{k+kr}{else} \PYG{k+kc}{FALSE}\PYG{p}{)}
-  a \PYG{o}{\textless{}-} a\PYG{p}{[}a\PYG{p}{\$}isdelayed\PYG{o}{==}\PYG{k+kc}{TRUE}\PYG{p}{,}\PYG{p}{]} \PYG{c+c1}{\#\# only look at delays greater than 15 minutes}
+  a\PYG{p}{\PYGZdl{}}delay.sec \PYG{o}{\textless{}-} as.vector\PYG{p}{(}a\PYG{p}{[}\PYG{p}{,}\PYG{l+s}{'}\PYG{l+s}{arrive'}\PYG{p}{]}\PYG{p}{)}\PYG{o}{-}as.vector\PYG{p}{(}a\PYG{p}{[}\PYG{p}{,}\PYG{l+s}{'}\PYG{l+s}{sarrive'}\PYG{p}{]}\PYG{p}{)}
+  a \PYG{o}{\textless{}-} a\PYG{p}{[}!is.na\PYG{p}{(}a\PYG{p}{\PYGZdl{}}delay.sec\PYG{p}{)}\PYG{p}{,}\PYG{p}{]}
+  a\PYG{p}{\PYGZdl{}}isdelayed \PYG{o}{\textless{}-} sapply\PYG{p}{(}a\PYG{p}{\PYGZdl{}}delay.sec\PYG{p}{,}\PYG{k+kr}{function}\PYG{p}{(}r\PYG{p}{)} \PYG{k+kr}{if}\PYG{p}{(}r\PYG{o}{\textgreater{}=}\PYG{l+m}{900}\PYG{p}{)} \PYG{k+kc}{TRUE} \PYG{k+kr}{else} \PYG{k+kc}{FALSE}\PYG{p}{)}
+  a \PYG{o}{\textless{}-} a\PYG{p}{[}a\PYG{p}{\PYGZdl{}}isdelayed\PYG{o}{==}\PYG{k+kc}{TRUE}\PYG{p}{,}\PYG{p}{]} \PYG{c+c1}{\PYGZsh{}\PYGZsh{} only look at delays greater than 15 minutes}
   apply\PYG{p}{(}a\PYG{p}{[}\PYG{p}{,}c\PYG{p}{(}\PYG{l+s}{'}\PYG{l+s}{month'}\PYG{p}{,}\PYG{l+s}{'}\PYG{l+s}{delay.sec'}\PYG{p}{)}\PYG{p}{]}\PYG{p}{,}\PYG{l+m}{1}\PYG{p}{,}\PYG{k+kr}{function}\PYG{p}{(}r\PYG{p}{)}\PYG{p}{\PYGZob{}}
         k \PYG{o}{\textless{}-} as.vector\PYG{p}{(}unlist\PYG{p}{(}r\PYG{p}{)}\PYG{p}{)}
-        \PYG{k+kr}{if}\PYG{p}{(}!is.na\PYG{p}{(}k\PYG{p}{[}\PYG{l+m}{1}\PYG{p}{]}\PYG{p}{)}\PYG{p}{)} rhcollect\PYG{p}{(}k\PYG{p}{,}\PYG{l+m}{1}\PYG{p}{)} \PYG{c+c1}{\# ignore cases where month is missing}
+        \PYG{k+kr}{if}\PYG{p}{(}!is.na\PYG{p}{(}k\PYG{p}{[}\PYG{l+m}{1}\PYG{p}{]}\PYG{p}{)}\PYG{p}{)} rhcollect\PYG{p}{(}k\PYG{p}{,}\PYG{l+m}{1}\PYG{p}{)} \PYG{c+c1}{\PYGZsh{} ignore cases where month is missing}
       \PYG{p}{\PYGZcb{}}\PYG{p}{)}
 \PYG{p}{\PYGZcb{}}\PYG{p}{)}
 reduce \PYG{o}{\textless{}-} expression\PYG{p}{(}
@@ -1385,7 +1407,7 @@ reduce \PYG{o}{\textless{}-} expression\PYG{p}{(}
     post \PYG{o}{=} \PYG{p}{\PYGZob{}} rhcollect\PYG{p}{(}reduce.key\PYG{p}{,} sums\PYG{p}{)} \PYG{p}{\PYGZcb{}}
     \PYG{p}{)}
 mapred \PYG{o}{\textless{}-} list\PYG{p}{(}\PYG{p}{)}
-mapred\PYG{p}{\$}rhipe\PYGZus{}map\PYGZus{}buff\PYGZus{}size \PYG{o}{\textless{}-} \PYG{l+m}{5}
+mapred\PYG{p}{\PYGZdl{}}rhipe\PYGZus{}map\PYGZus{}buff\PYGZus{}size \PYG{o}{\textless{}-} \PYG{l+m}{5}
 z \PYG{o}{\textless{}-} rhmr\PYG{p}{(}map\PYG{o}{=}map\PYG{p}{,}reduce\PYG{o}{=}reduce\PYG{p}{,}combiner\PYG{o}{=}\PYG{k+kc}{TRUE}\PYG{p}{,}inout\PYG{o}{=}c\PYG{p}{(}\PYG{l+s}{"}\PYG{l+s}{sequence"}\PYG{p}{,}\PYG{l+s}{"}\PYG{l+s}{sequence"}\PYG{p}{)}
           \PYG{p}{,}ifolder\PYG{o}{=}\PYG{l+s}{"}\PYG{l+s}{/airline/blocks/"}\PYG{p}{,}ofolder\PYG{o}{=}\PYG{l+s}{"}\PYG{l+s}{/airline/quantiledelay"}
           \PYG{p}{,}mapred\PYG{o}{=}mapred\PYG{p}{)}
@@ -1394,8 +1416,8 @@ b \PYG{o}{\textless{}-} rhread\PYG{p}{(}\PYG{l+s}{"}\PYG{l+s}{/airline/quantiled
 y1 \PYG{o}{\textless{}-} do.call\PYG{p}{(}\PYG{l+s}{"}\PYG{l+s}{rbind"}\PYG{p}{,}lapply\PYG{p}{(}b\PYG{p}{,}\PYG{l+s}{"}\PYG{l+s}{[["}\PYG{p}{,}\PYG{l+m}{1}\PYG{p}{)}\PYG{p}{)}
 count \PYG{o}{\textless{}-} do.call\PYG{p}{(}\PYG{l+s}{"}\PYG{l+s}{rbind"}\PYG{p}{,}lapply\PYG{p}{(}b\PYG{p}{,}\PYG{l+s}{"}\PYG{l+s}{[["}\PYG{p}{,}\PYG{l+m}{2}\PYG{p}{)}\PYG{p}{)}
 results \PYG{o}{\textless{}-} data.frame\PYG{p}{(}month \PYG{o}{=} y1\PYG{p}{[}\PYG{p}{,}\PYG{l+m}{1}\PYG{p}{]}\PYG{p}{,} n\PYG{o}{=}y1\PYG{p}{[}\PYG{p}{,}\PYG{l+m}{2}\PYG{p}{]}\PYG{p}{,} count\PYG{o}{=}count\PYG{p}{)}
-results \PYG{o}{\textless{}-} results\PYG{p}{[}order\PYG{p}{(}results\PYG{p}{\$}month\PYG{p}{,} results\PYG{p}{\$}n\PYG{p}{)}\PYG{p}{,}\PYG{p}{]}
-results.2 \PYG{o}{\textless{}-} split\PYG{p}{(}results\PYG{p}{,} results\PYG{p}{\$}month\PYG{p}{)}
+results \PYG{o}{\textless{}-} results\PYG{p}{[}order\PYG{p}{(}results\PYG{p}{\PYGZdl{}}month\PYG{p}{,} results\PYG{p}{\PYGZdl{}}n\PYG{p}{)}\PYG{p}{,}\PYG{p}{]}
+results.2 \PYG{o}{\textless{}-} split\PYG{p}{(}results\PYG{p}{,} results\PYG{p}{\PYGZdl{}}month\PYG{p}{)}
 
 discrete.quantile\PYG{o}{\textless{}-}\PYG{k+kr}{function}\PYG{p}{(}x\PYG{p}{,}n\PYG{p}{,}prob\PYG{o}{=}seq\PYG{p}{(}\PYG{l+m}{0}\PYG{p}{,}\PYG{l+m}{1}\PYG{p}{,}\PYG{l+m}{0.25}\PYG{p}{)}\PYG{p}{,}type\PYG{o}{=}\PYG{l+m}{7}\PYG{p}{)}\PYG{p}{\PYGZob{}}
   sum.n\PYG{o}{\textless{}-}sum\PYG{p}{(}n\PYG{p}{)}
@@ -1420,10 +1442,10 @@ results.3 \PYG{o}{\textless{}-} lapply\PYG{p}{(}seq\PYGZus{}along\PYG{p}{(}resul
   data.frame\PYG{p}{(}month\PYG{o}{=}as.numeric\PYG{p}{(}rep\PYG{p}{(}names\PYG{p}{(}results.2\PYG{p}{)}\PYG{p}{[}\PYG{p}{[}i\PYG{p}{]}\PYG{p}{]}\PYG{p}{,}length\PYG{p}{(}a\PYG{p}{)}\PYG{p}{)}\PYG{p}{)}\PYG{p}{,}prop\PYG{o}{=}seq\PYG{p}{(}\PYG{l+m}{0}\PYG{p}{,}\PYG{l+m}{1}\PYG{p}{,}DEL\PYG{p}{)}\PYG{p}{,}qt\PYG{o}{=}a\PYG{p}{)}
 \PYG{p}{\PYGZcb{}}\PYG{p}{)}
 results.3 \PYG{o}{\textless{}-} do.call\PYG{p}{(}\PYG{l+s}{"}\PYG{l+s}{rbind"}\PYG{p}{,}results.3\PYG{p}{)}
-results.3\PYG{p}{\$}month \PYG{o}{\textless{}-} factor\PYG{p}{(}results.3\PYG{p}{\$}month\PYG{p}{,}
+results.3\PYG{p}{\PYGZdl{}}month \PYG{o}{\textless{}-} factor\PYG{p}{(}results.3\PYG{p}{\PYGZdl{}}month\PYG{p}{,}
                           label\PYG{o}{=}c\PYG{p}{(}\PYG{l+s}{"}\PYG{l+s}{Jan"}\PYG{p}{,}\PYG{l+s}{"}\PYG{l+s}{Feb"}\PYG{p}{,}\PYG{l+s}{"}\PYG{l+s}{March"}\PYG{p}{,}\PYG{l+s}{"}\PYG{l+s}{Apr"}\PYG{p}{,}\PYG{l+s}{"}\PYG{l+s}{May"}\PYG{p}{,}\PYG{l+s}{"}\PYG{l+s}{June"}\PYG{p}{,}
                             \PYG{l+s}{"}\PYG{l+s}{July"}\PYG{p}{,}\PYG{l+s}{"}\PYG{l+s}{August"}\PYG{p}{,}\PYG{l+s}{"}\PYG{l+s}{September"}\PYG{p}{,}\PYG{l+s}{"}\PYG{l+s}{October"}\PYG{p}{,}\PYG{l+s}{"}\PYG{l+s}{November"}\PYG{p}{,}\PYG{l+s}{"}\PYG{l+s}{December"}\PYG{p}{)}\PYG{p}{)}
-xyplot\PYG{p}{(}log\PYG{p}{(}qt\PYG{p}{,}\PYG{l+m}{2}\PYG{p}{)}\textasciitilde{}prop\PYG{o}{\textbar{}}month\PYG{p}{,} data\PYG{o}{=}results.3\PYG{p}{,}cex\PYG{o}{=}\PYG{l+m}{0.4}\PYG{p}{,}col\PYG{o}{=}\PYG{l+s}{'}\PYG{l+s}{black'}\PYG{p}{,}
+xyplot\PYG{p}{(}log\PYG{p}{(}qt\PYG{p}{,}\PYG{l+m}{2}\PYG{p}{)}\PYGZti{}prop\PYG{o}{\textbar{}}month\PYG{p}{,} data\PYG{o}{=}results.3\PYG{p}{,}cex\PYG{o}{=}\PYG{l+m}{0.4}\PYG{p}{,}col\PYG{o}{=}\PYG{l+s}{'}\PYG{l+s}{black'}\PYG{p}{,}
        scales\PYG{o}{=}list\PYG{p}{(}x\PYG{o}{=}list\PYG{p}{(}tick.number\PYG{o}{=}\PYG{l+m}{10}\PYG{p}{)}\PYG{p}{,}y\PYG{o}{=}list\PYG{p}{(}tick.number\PYG{o}{=}\PYG{l+m}{10}\PYG{p}{)}\PYG{p}{)}\PYG{p}{,}
        layout\PYG{o}{=}c\PYG{p}{(}\PYG{l+m}{4}\PYG{p}{,}\PYG{l+m}{3}\PYG{p}{)}\PYG{p}{,}type\PYG{o}{=}\PYG{l+s}{'}\PYG{l+s}{l'}\PYG{p}{,}
        xlab\PYG{o}{=}\PYG{l+s}{"}\PYG{l+s}{Proportion"}\PYG{p}{,}ylab\PYG{o}{=}\PYG{l+s}{"}\PYG{l+s}{log\PYGZus{}2 delay (minutes)"}\PYG{p}{,}panel\PYG{o}{=}\PYG{k+kr}{function}\PYG{p}{(}x\PYG{p}{,}y\PYG{p}{,}\PYG{l+m}{.}\PYG{l+m}{.}\PYG{l+m}{.}\PYG{p}{)}\PYG{p}{\PYGZob{}}
@@ -1446,11 +1468,11 @@ hours (look at panel 23,24,1,2 and 3)
 \begin{Verbatim}[commandchars=\\\{\},numbers=left,firstnumber=1,stepnumber=1]
 map \PYG{o}{\textless{}-} expression\PYG{p}{(}\PYG{p}{\PYGZob{}}
   a \PYG{o}{\textless{}-} do.call\PYG{p}{(}\PYG{l+s}{"}\PYG{l+s}{rbind"}\PYG{p}{,}map.values\PYG{p}{)}
-  a\PYG{p}{\$}delay.sec \PYG{o}{\textless{}-} as.vector\PYG{p}{(}a\PYG{p}{[}\PYG{p}{,}\PYG{l+s}{'}\PYG{l+s}{arrive'}\PYG{p}{]}\PYG{p}{)}\PYG{o}{-}as.vector\PYG{p}{(}a\PYG{p}{[}\PYG{p}{,}\PYG{l+s}{'}\PYG{l+s}{sarrive'}\PYG{p}{]}\PYG{p}{)}
-  a \PYG{o}{\textless{}-} a\PYG{p}{[}!is.na\PYG{p}{(}a\PYG{p}{\$}delay.sec\PYG{p}{)}\PYG{p}{,}\PYG{p}{]}
-  a\PYG{p}{\$}isdelayed \PYG{o}{\textless{}-} sapply\PYG{p}{(}a\PYG{p}{\$}delay.sec\PYG{p}{,}\PYG{k+kr}{function}\PYG{p}{(}r\PYG{p}{)} \PYG{k+kr}{if}\PYG{p}{(}r\PYG{o}{\textgreater{}=}\PYG{l+m}{900}\PYG{p}{)} \PYG{k+kc}{TRUE} \PYG{k+kr}{else} \PYG{k+kc}{FALSE}\PYG{p}{)}
-  a \PYG{o}{\textless{}-} a\PYG{p}{[}a\PYG{p}{\$}isdelayed\PYG{o}{==}\PYG{k+kc}{TRUE}\PYG{p}{,}\PYG{p}{]} \PYG{c+c1}{\#\# only look at delays greater than 15 minutes}
-  a\PYG{p}{\$}hrs \PYG{o}{\textless{}-} as.numeric\PYG{p}{(}format\PYG{p}{(}a\PYG{p}{[}\PYG{p}{,}\PYG{l+s}{'}\PYG{l+s}{sdepart'}\PYG{p}{]}\PYG{p}{,}\PYG{l+s}{"}\PYG{l+s}{\%H"}\PYG{p}{)}\PYG{p}{)}
+  a\PYG{p}{\PYGZdl{}}delay.sec \PYG{o}{\textless{}-} as.vector\PYG{p}{(}a\PYG{p}{[}\PYG{p}{,}\PYG{l+s}{'}\PYG{l+s}{arrive'}\PYG{p}{]}\PYG{p}{)}\PYG{o}{-}as.vector\PYG{p}{(}a\PYG{p}{[}\PYG{p}{,}\PYG{l+s}{'}\PYG{l+s}{sarrive'}\PYG{p}{]}\PYG{p}{)}
+  a \PYG{o}{\textless{}-} a\PYG{p}{[}!is.na\PYG{p}{(}a\PYG{p}{\PYGZdl{}}delay.sec\PYG{p}{)}\PYG{p}{,}\PYG{p}{]}
+  a\PYG{p}{\PYGZdl{}}isdelayed \PYG{o}{\textless{}-} sapply\PYG{p}{(}a\PYG{p}{\PYGZdl{}}delay.sec\PYG{p}{,}\PYG{k+kr}{function}\PYG{p}{(}r\PYG{p}{)} \PYG{k+kr}{if}\PYG{p}{(}r\PYG{o}{\textgreater{}=}\PYG{l+m}{900}\PYG{p}{)} \PYG{k+kc}{TRUE} \PYG{k+kr}{else} \PYG{k+kc}{FALSE}\PYG{p}{)}
+  a \PYG{o}{\textless{}-} a\PYG{p}{[}a\PYG{p}{\PYGZdl{}}isdelayed\PYG{o}{==}\PYG{k+kc}{TRUE}\PYG{p}{,}\PYG{p}{]} \PYG{c+c1}{\PYGZsh{}\PYGZsh{} only look at delays greater than 15 minutes}
+  a\PYG{p}{\PYGZdl{}}hrs \PYG{o}{\textless{}-} as.numeric\PYG{p}{(}format\PYG{p}{(}a\PYG{p}{[}\PYG{p}{,}\PYG{l+s}{'}\PYG{l+s}{sdepart'}\PYG{p}{]}\PYG{p}{,}\PYG{l+s}{"}\PYG{l+s}{\PYGZpc{}H"}\PYG{p}{)}\PYG{p}{)}
   apply\PYG{p}{(}a\PYG{p}{[}\PYG{p}{,}c\PYG{p}{(}\PYG{l+s}{'}\PYG{l+s}{hrs'}\PYG{p}{,}\PYG{l+s}{'}\PYG{l+s}{delay.sec'}\PYG{p}{)}\PYG{p}{]}\PYG{p}{,}\PYG{l+m}{1}\PYG{p}{,}\PYG{k+kr}{function}\PYG{p}{(}r\PYG{p}{)}\PYG{p}{\PYGZob{}}
         k \PYG{o}{\textless{}-} as.vector\PYG{p}{(}unlist\PYG{p}{(}r\PYG{p}{)}\PYG{p}{)}
         \PYG{k+kr}{if}\PYG{p}{(}!is.na\PYG{p}{(}k\PYG{p}{[}\PYG{l+m}{1}\PYG{p}{]}\PYG{p}{)}\PYG{p}{)} rhcollect\PYG{p}{(}k\PYG{p}{,}\PYG{l+m}{1}\PYG{p}{)}
@@ -1463,7 +1485,7 @@ reduce \PYG{o}{\textless{}-} expression\PYG{p}{(}
     \PYG{p}{)}
 
 mapred \PYG{o}{\textless{}-} list\PYG{p}{(}\PYG{p}{)}
-mapred\PYG{p}{\$}rhipe\PYGZus{}map\PYGZus{}buff\PYGZus{}size \PYG{o}{\textless{}-} \PYG{l+m}{5}
+mapred\PYG{p}{\PYGZdl{}}rhipe\PYGZus{}map\PYGZus{}buff\PYGZus{}size \PYG{o}{\textless{}-} \PYG{l+m}{5}
 z \PYG{o}{\textless{}-} rhmr\PYG{p}{(}map\PYG{o}{=}map\PYG{p}{,}reduce\PYG{o}{=}reduce\PYG{p}{,}combiner\PYG{o}{=}\PYG{k+kc}{TRUE}\PYG{p}{,}inout\PYG{o}{=}c\PYG{p}{(}\PYG{l+s}{"}\PYG{l+s}{sequence"}\PYG{p}{,}\PYG{l+s}{"}\PYG{l+s}{sequence"}\PYG{p}{)}
           \PYG{p}{,}ifolder\PYG{o}{=}\PYG{l+s}{"}\PYG{l+s}{/airline/blocks/"}\PYG{p}{,}ofolder\PYG{o}{=}\PYG{l+s}{"}\PYG{l+s}{/airline/quantiledelaybyhour"}
           \PYG{p}{,}mapred\PYG{o}{=}mapred\PYG{p}{)}
@@ -1495,17 +1517,17 @@ airports. Dotted red lines are 25\%,50\% and 75\% uniform proportions.}}} displa
  map \PYG{o}{\textless{}-} expression\PYG{p}{(}\PYG{p}{\PYGZob{}}
    cc \PYG{o}{\textless{}-} c\PYG{p}{(}\PYG{l+s}{"}\PYG{l+s}{ORD"}\PYG{p}{,}\PYG{l+s}{"}\PYG{l+s}{SEA"}\PYG{p}{,}\PYG{l+s}{"}\PYG{l+s}{DFW"}\PYG{p}{,}\PYG{l+s}{"}\PYG{l+s}{SFO"}\PYG{p}{)}
    a \PYG{o}{\textless{}-} do.call\PYG{p}{(}\PYG{l+s}{"}\PYG{l+s}{rbind"}\PYG{p}{,}map.values\PYG{p}{)}
-   a \PYG{o}{\textless{}-} a\PYG{p}{[}a\PYG{p}{\$}origin \PYG{o}{\%in\%} cc\PYG{o}{\textbar{}} a\PYG{p}{\$}dest \PYG{o}{\%in\%} cc\PYG{p}{,}\PYG{p}{]}
+   a \PYG{o}{\textless{}-} a\PYG{p}{[}a\PYG{p}{\PYGZdl{}}origin \PYG{o}{\PYGZpc{}in\PYGZpc{}} cc\PYG{o}{\textbar{}} a\PYG{p}{\PYGZdl{}}dest \PYG{o}{\PYGZpc{}in\PYGZpc{}} cc\PYG{p}{,}\PYG{p}{]}
    \PYG{k+kr}{if}\PYG{p}{(}nrow\PYG{p}{(}a\PYG{p}{)}\PYG{o}{\textgreater{}}\PYG{l+m}{0}\PYG{p}{)}\PYG{p}{\PYGZob{}}
-     a\PYG{p}{\$}delay.sec \PYG{o}{\textless{}-} as.vector\PYG{p}{(}a\PYG{p}{[}\PYG{p}{,}\PYG{l+s}{'}\PYG{l+s}{arrive'}\PYG{p}{]}\PYG{p}{)}\PYG{o}{-}as.vector\PYG{p}{(}a\PYG{p}{[}\PYG{p}{,}\PYG{l+s}{'}\PYG{l+s}{sarrive'}\PYG{p}{]}\PYG{p}{)}
-     a \PYG{o}{\textless{}-} a\PYG{p}{[}!is.na\PYG{p}{(}a\PYG{p}{\$}delay.sec\PYG{p}{)}\PYG{p}{,}\PYG{p}{]}
-     a\PYG{p}{\$}isdelayed \PYG{o}{\textless{}-} sapply\PYG{p}{(}a\PYG{p}{\$}delay.sec\PYG{p}{,}\PYG{k+kr}{function}\PYG{p}{(}r\PYG{p}{)} \PYG{k+kr}{if}\PYG{p}{(}r\PYG{o}{\textgreater{}=}\PYG{l+m}{900}\PYG{p}{)} \PYG{k+kc}{TRUE} \PYG{k+kr}{else} \PYG{k+kc}{FALSE}\PYG{p}{)}
-     a \PYG{o}{\textless{}-} a\PYG{p}{[}a\PYG{p}{\$}isdelayed\PYG{o}{==}\PYG{k+kc}{TRUE}\PYG{p}{,}\PYG{p}{]}
+     a\PYG{p}{\PYGZdl{}}delay.sec \PYG{o}{\textless{}-} as.vector\PYG{p}{(}a\PYG{p}{[}\PYG{p}{,}\PYG{l+s}{'}\PYG{l+s}{arrive'}\PYG{p}{]}\PYG{p}{)}\PYG{o}{-}as.vector\PYG{p}{(}a\PYG{p}{[}\PYG{p}{,}\PYG{l+s}{'}\PYG{l+s}{sarrive'}\PYG{p}{]}\PYG{p}{)}
+     a \PYG{o}{\textless{}-} a\PYG{p}{[}!is.na\PYG{p}{(}a\PYG{p}{\PYGZdl{}}delay.sec\PYG{p}{)}\PYG{p}{,}\PYG{p}{]}
+     a\PYG{p}{\PYGZdl{}}isdelayed \PYG{o}{\textless{}-} sapply\PYG{p}{(}a\PYG{p}{\PYGZdl{}}delay.sec\PYG{p}{,}\PYG{k+kr}{function}\PYG{p}{(}r\PYG{p}{)} \PYG{k+kr}{if}\PYG{p}{(}r\PYG{o}{\textgreater{}=}\PYG{l+m}{900}\PYG{p}{)} \PYG{k+kc}{TRUE} \PYG{k+kr}{else} \PYG{k+kc}{FALSE}\PYG{p}{)}
+     a \PYG{o}{\textless{}-} a\PYG{p}{[}a\PYG{p}{\PYGZdl{}}isdelayed\PYG{o}{==}\PYG{k+kc}{TRUE}\PYG{p}{,}\PYG{p}{]}
      \PYG{k+kr}{for}\PYG{p}{(}i in \PYG{l+m}{1}:nrow\PYG{p}{(}a\PYG{p}{)}\PYG{p}{)}\PYG{p}{\PYGZob{}}
        dl \PYG{o}{\textless{}-} a\PYG{p}{[}i\PYG{p}{,}\PYG{l+s}{'}\PYG{l+s}{delay.sec'}\PYG{p}{]}
-       \PYG{k+kr}{if}\PYG{p}{(}a\PYG{p}{[}i\PYG{p}{,}\PYG{l+s}{'}\PYG{l+s}{origin'}\PYG{p}{]} \PYG{o}{\%in\%} cc\PYG{p}{)} rhcollect\PYG{p}{(}data.frame\PYG{p}{(}dir\PYG{o}{=}\PYG{l+s}{"}\PYG{l+s}{outbound"}\PYG{p}{,}ap\PYG{o}{=}a\PYG{p}{[}i\PYG{p}{,}\PYG{l+s}{"}\PYG{l+s}{origin"}\PYG{p}{]}
+       \PYG{k+kr}{if}\PYG{p}{(}a\PYG{p}{[}i\PYG{p}{,}\PYG{l+s}{'}\PYG{l+s}{origin'}\PYG{p}{]} \PYG{o}{\PYGZpc{}in\PYGZpc{}} cc\PYG{p}{)} rhcollect\PYG{p}{(}data.frame\PYG{p}{(}dir\PYG{o}{=}\PYG{l+s}{"}\PYG{l+s}{outbound"}\PYG{p}{,}ap\PYG{o}{=}a\PYG{p}{[}i\PYG{p}{,}\PYG{l+s}{"}\PYG{l+s}{origin"}\PYG{p}{]}
                                                       \PYG{p}{,}delay\PYG{o}{=}dl\PYG{p}{,}stringsAsFactors\PYG{o}{=}\PYG{k+kc}{FALSE}\PYG{p}{)}\PYG{p}{,}\PYG{l+m}{1}\PYG{p}{)}
-       \PYG{k+kr}{if}\PYG{p}{(}a\PYG{p}{[}i\PYG{p}{,}\PYG{l+s}{'}\PYG{l+s}{dest'}\PYG{p}{]} \PYG{o}{\%in\%} cc\PYG{p}{)} rhcollect\PYG{p}{(}data.frame\PYG{p}{(}dir\PYG{o}{=}\PYG{l+s}{"}\PYG{l+s}{inbound"}\PYG{p}{,}ap\PYG{o}{=}a\PYG{p}{[}i\PYG{p}{,}\PYG{l+s}{"}\PYG{l+s}{dest"}\PYG{p}{]}
+       \PYG{k+kr}{if}\PYG{p}{(}a\PYG{p}{[}i\PYG{p}{,}\PYG{l+s}{'}\PYG{l+s}{dest'}\PYG{p}{]} \PYG{o}{\PYGZpc{}in\PYGZpc{}} cc\PYG{p}{)} rhcollect\PYG{p}{(}data.frame\PYG{p}{(}dir\PYG{o}{=}\PYG{l+s}{"}\PYG{l+s}{inbound"}\PYG{p}{,}ap\PYG{o}{=}a\PYG{p}{[}i\PYG{p}{,}\PYG{l+s}{"}\PYG{l+s}{dest"}\PYG{p}{]}
                                                \PYG{p}{,}delay\PYG{o}{=}dl\PYG{p}{,}stringsAsFactors\PYG{o}{=}\PYG{k+kc}{FALSE}\PYG{p}{)}\PYG{p}{,}\PYG{l+m}{1}\PYG{p}{)}
      \PYG{p}{\PYGZcb{}}
    \PYG{p}{\PYGZcb{}}
@@ -1516,7 +1538,7 @@ reduce \PYG{o}{\textless{}-} expression\PYG{p}{(}
      post \PYG{o}{=} \PYG{p}{\PYGZob{}} rhcollect\PYG{p}{(}reduce.key\PYG{p}{,} sums\PYG{p}{)} \PYG{p}{\PYGZcb{}}
      \PYG{p}{)}
  mapred \PYG{o}{\textless{}-} list\PYG{p}{(}\PYG{p}{)}
- mapred\PYG{p}{\$}rhipe\PYGZus{}map\PYGZus{}buff\PYGZus{}size \PYG{o}{\textless{}-} \PYG{l+m}{5}
+ mapred\PYG{p}{\PYGZdl{}}rhipe\PYGZus{}map\PYGZus{}buff\PYGZus{}size \PYG{o}{\textless{}-} \PYG{l+m}{5}
  z \PYG{o}{\textless{}-} rhmr\PYG{p}{(}map\PYG{o}{=}map\PYG{p}{,}reduce\PYG{o}{=}reduce\PYG{p}{,}combiner\PYG{o}{=}\PYG{k+kc}{TRUE}\PYG{p}{,}inout\PYG{o}{=}c\PYG{p}{(}\PYG{l+s}{"}\PYG{l+s}{sequence"}\PYG{p}{,}\PYG{l+s}{"}\PYG{l+s}{sequence"}\PYG{p}{)}
            \PYG{p}{,}ifolder\PYG{o}{=}\PYG{l+s}{"}\PYG{l+s}{/airline/blocks/"}\PYG{p}{,}ofolder\PYG{o}{=}\PYG{l+s}{"}\PYG{l+s}{/airline/inoutboundelay"}
            \PYG{p}{,}mapred\PYG{o}{=}mapred\PYG{p}{)}
@@ -1537,16 +1559,16 @@ Is there a difference in carrier delays? We display the time series of
 proportion of delayed flights by carrier, ranked by carrier.
 
 \begin{Verbatim}[commandchars=\\\{\},numbers=left,firstnumber=1,stepnumber=1]
-\PYG{c+c1}{\#\# For proportions and volumes}
+\PYG{c+c1}{\PYGZsh{}\PYGZsh{} For proportions and volumes}
 map \PYG{o}{\textless{}-} expression\PYG{p}{(}\PYG{p}{\PYGZob{}}
   a \PYG{o}{\textless{}-} do.call\PYG{p}{(}\PYG{l+s}{"}\PYG{l+s}{rbind"}\PYG{p}{,}map.values\PYG{p}{)}
-  a\PYG{p}{\$}delay.sec \PYG{o}{\textless{}-} as.vector\PYG{p}{(}a\PYG{p}{[}\PYG{p}{,}\PYG{l+s}{'}\PYG{l+s}{arrive'}\PYG{p}{]}\PYG{p}{)}\PYG{o}{-}as.vector\PYG{p}{(}a\PYG{p}{[}\PYG{p}{,}\PYG{l+s}{'}\PYG{l+s}{sarrive'}\PYG{p}{]}\PYG{p}{)}
-  a \PYG{o}{\textless{}-} a\PYG{p}{[}!is.na\PYG{p}{(}a\PYG{p}{\$}delay.sec\PYG{p}{)}\PYG{p}{,}\PYG{p}{]}
-  a\PYG{p}{\$}isdelayed \PYG{o}{\textless{}-} sapply\PYG{p}{(}a\PYG{p}{\$}delay.sec\PYG{p}{,}\PYG{k+kr}{function}\PYG{p}{(}r\PYG{p}{)} \PYG{k+kr}{if}\PYG{p}{(}r\PYG{o}{\textgreater{}=}\PYG{l+m}{900}\PYG{p}{)} \PYG{k+kc}{TRUE} \PYG{k+kr}{else} \PYG{k+kc}{FALSE}\PYG{p}{)}
-  a\PYG{p}{\$}hrs \PYG{o}{\textless{}-} as.numeric\PYG{p}{(}format\PYG{p}{(}a\PYG{p}{[}\PYG{p}{,}\PYG{l+s}{'}\PYG{l+s}{sdepart'}\PYG{p}{]}\PYG{p}{,}\PYG{l+s}{"}\PYG{l+s}{\%H"}\PYG{p}{)}\PYG{p}{)}
-  e \PYG{o}{\textless{}-} split\PYG{p}{(}a\PYG{p}{,}a\PYG{p}{\$}hrs\PYG{p}{)}
+  a\PYG{p}{\PYGZdl{}}delay.sec \PYG{o}{\textless{}-} as.vector\PYG{p}{(}a\PYG{p}{[}\PYG{p}{,}\PYG{l+s}{'}\PYG{l+s}{arrive'}\PYG{p}{]}\PYG{p}{)}\PYG{o}{-}as.vector\PYG{p}{(}a\PYG{p}{[}\PYG{p}{,}\PYG{l+s}{'}\PYG{l+s}{sarrive'}\PYG{p}{]}\PYG{p}{)}
+  a \PYG{o}{\textless{}-} a\PYG{p}{[}!is.na\PYG{p}{(}a\PYG{p}{\PYGZdl{}}delay.sec\PYG{p}{)}\PYG{p}{,}\PYG{p}{]}
+  a\PYG{p}{\PYGZdl{}}isdelayed \PYG{o}{\textless{}-} sapply\PYG{p}{(}a\PYG{p}{\PYGZdl{}}delay.sec\PYG{p}{,}\PYG{k+kr}{function}\PYG{p}{(}r\PYG{p}{)} \PYG{k+kr}{if}\PYG{p}{(}r\PYG{o}{\textgreater{}=}\PYG{l+m}{900}\PYG{p}{)} \PYG{k+kc}{TRUE} \PYG{k+kr}{else} \PYG{k+kc}{FALSE}\PYG{p}{)}
+  a\PYG{p}{\PYGZdl{}}hrs \PYG{o}{\textless{}-} as.numeric\PYG{p}{(}format\PYG{p}{(}a\PYG{p}{[}\PYG{p}{,}\PYG{l+s}{'}\PYG{l+s}{sdepart'}\PYG{p}{]}\PYG{p}{,}\PYG{l+s}{"}\PYG{l+s}{\PYGZpc{}H"}\PYG{p}{)}\PYG{p}{)}
+  e \PYG{o}{\textless{}-} split\PYG{p}{(}a\PYG{p}{,}a\PYG{p}{\PYGZdl{}}hrs\PYG{p}{)}
   lapply\PYG{p}{(}e\PYG{p}{,}\PYG{k+kr}{function}\PYG{p}{(}r\PYG{p}{)}\PYG{p}{\PYGZob{}}
-    n \PYG{o}{\textless{}-} nrow\PYG{p}{(}r\PYG{p}{)}\PYG{p}{;} numdelayed \PYG{o}{\textless{}-} sum\PYG{p}{(}r\PYG{p}{\$}isdelayed\PYG{p}{)}
+    n \PYG{o}{\textless{}-} nrow\PYG{p}{(}r\PYG{p}{)}\PYG{p}{;} numdelayed \PYG{o}{\textless{}-} sum\PYG{p}{(}r\PYG{p}{\PYGZdl{}}isdelayed\PYG{p}{)}
     rhcollect\PYG{p}{(}as.vector\PYG{p}{(}unlist\PYG{p}{(}c\PYG{p}{(}r\PYG{p}{[}\PYG{l+m}{1}\PYG{p}{,}c\PYG{p}{(}\PYG{l+s}{"}\PYG{l+s}{carrier"}\PYG{p}{)}\PYG{p}{]}\PYG{p}{)}\PYG{p}{)}\PYG{p}{)}\PYG{p}{,} c\PYG{p}{(}n\PYG{p}{,} numdelayed\PYG{p}{)}\PYG{p}{)}
   \PYG{p}{\PYGZcb{}}\PYG{p}{)}
 \PYG{p}{\PYGZcb{}}\PYG{p}{)}
@@ -1593,31 +1615,31 @@ reduce \PYG{o}{\textless{}-} expression\PYG{p}{(}
     post \PYG{o}{=} \PYG{p}{\PYGZob{}} rhcollect\PYG{p}{(}reduce.key\PYG{p}{,} sums\PYG{p}{)} \PYG{p}{\PYGZcb{}}
     \PYG{p}{)}
 mapred \PYG{o}{\textless{}-} list\PYG{p}{(}\PYG{p}{)}
-mapred\PYG{p}{\$}rhipe\PYGZus{}map\PYGZus{}buff\PYGZus{}size \PYG{o}{\textless{}-} \PYG{l+m}{5}
-mapred\PYG{p}{\$}mapred.job.priority\PYG{o}{=}\PYG{l+s}{"}\PYG{l+s}{VERY\PYGZus{}LOW"}
+mapred\PYG{p}{\PYGZdl{}}rhipe\PYGZus{}map\PYGZus{}buff\PYGZus{}size \PYG{o}{\textless{}-} \PYG{l+m}{5}
+mapred\PYG{p}{\PYGZdl{}}mapred.job.priority\PYG{o}{=}\PYG{l+s}{"}\PYG{l+s}{VERY\PYGZus{}LOW"}
 z \PYG{o}{\textless{}-} rhmr\PYG{p}{(}map\PYG{o}{=}map\PYG{p}{,}reduce\PYG{o}{=}reduce\PYG{p}{,}combiner\PYG{o}{=}\PYG{k+kc}{TRUE}\PYG{p}{,}inout\PYG{o}{=}c\PYG{p}{(}\PYG{l+s}{"}\PYG{l+s}{sequence"}\PYG{p}{,}\PYG{l+s}{"}\PYG{l+s}{sequence"}\PYG{p}{)}
           \PYG{p}{,}ifolder\PYG{o}{=}\PYG{l+s}{"}\PYG{l+s}{/airline/blocks/"}\PYG{p}{,}ofolder\PYG{o}{=}\PYG{l+s}{"}\PYG{l+s}{/airline/ijjoin"}
           \PYG{p}{,}mapred\PYG{o}{=}mapred\PYG{p}{)}
 z\PYG{o}{=}rhex\PYG{p}{(}z\PYG{p}{)}
 
-\PYG{c+c1}{\#\#Merge results}
+\PYG{c+c1}{\PYGZsh{}\PYGZsh{}Merge results}
 b\PYG{o}{=}rhread\PYG{p}{(}\PYG{l+s}{"}\PYG{l+s}{/airline/ijjoin"}\PYG{p}{)}
 y \PYG{o}{\textless{}-} do.call\PYG{p}{(}\PYG{l+s}{"}\PYG{l+s}{rbind"}\PYG{p}{,}lapply\PYG{p}{(}b\PYG{p}{,}\PYG{l+s}{"}\PYG{l+s}{[["}\PYG{p}{,}\PYG{l+m}{1}\PYG{p}{)}\PYG{p}{)}
 results \PYG{o}{\textless{}-} data.frame\PYG{p}{(}a\PYG{o}{=}y\PYG{p}{[}\PYG{p}{,}\PYG{l+m}{1}\PYG{p}{]}\PYG{p}{,}b\PYG{o}{=}y\PYG{p}{[}\PYG{p}{,}\PYG{l+m}{2}\PYG{p}{]}\PYG{p}{,}count\PYG{o}{=}
            do.call\PYG{p}{(}\PYG{l+s}{"}\PYG{l+s}{rbind"}\PYG{p}{,}lapply\PYG{p}{(}b\PYG{p}{,}\PYG{l+s}{"}\PYG{l+s}{[["}\PYG{p}{,}\PYG{l+m}{2}\PYG{p}{)}\PYG{p}{)}\PYG{p}{,}stringsAsFactors\PYG{o}{=}\PYG{k+kc}{FALSE}\PYG{p}{)}
-results \PYG{o}{\textless{}-} results\PYG{p}{[}order\PYG{p}{(}results\PYG{p}{\$}count\PYG{p}{,}decreasing\PYG{o}{=}\PYG{k+kc}{TRUE}\PYG{p}{)}\PYG{p}{,}\PYG{p}{]}
-results\PYG{p}{\$}cumprop \PYG{o}{\textless{}-} cumsum\PYG{p}{(}results\PYG{p}{\$}count\PYG{p}{)}\PYG{o}{/}sum\PYG{p}{(}results\PYG{p}{\$}count\PYG{p}{)}
-a.lat \PYG{o}{\textless{}-} t\PYG{p}{(}sapply\PYG{p}{(}results\PYG{p}{\$}a\PYG{p}{,}\PYG{k+kr}{function}\PYG{p}{(}r\PYG{p}{)}\PYG{p}{\PYGZob{}}
-  ap\PYG{p}{[}ap\PYG{p}{\$}iata\PYG{o}{==}r\PYG{p}{,}c\PYG{p}{(}\PYG{l+s}{'}\PYG{l+s}{lat'}\PYG{p}{,}\PYG{l+s}{'}\PYG{l+s}{long'}\PYG{p}{)}\PYG{p}{]}
+results \PYG{o}{\textless{}-} results\PYG{p}{[}order\PYG{p}{(}results\PYG{p}{\PYGZdl{}}count\PYG{p}{,}decreasing\PYG{o}{=}\PYG{k+kc}{TRUE}\PYG{p}{)}\PYG{p}{,}\PYG{p}{]}
+results\PYG{p}{\PYGZdl{}}cumprop \PYG{o}{\textless{}-} cumsum\PYG{p}{(}results\PYG{p}{\PYGZdl{}}count\PYG{p}{)}\PYG{o}{/}sum\PYG{p}{(}results\PYG{p}{\PYGZdl{}}count\PYG{p}{)}
+a.lat \PYG{o}{\textless{}-} t\PYG{p}{(}sapply\PYG{p}{(}results\PYG{p}{\PYGZdl{}}a\PYG{p}{,}\PYG{k+kr}{function}\PYG{p}{(}r\PYG{p}{)}\PYG{p}{\PYGZob{}}
+  ap\PYG{p}{[}ap\PYG{p}{\PYGZdl{}}iata\PYG{o}{==}r\PYG{p}{,}c\PYG{p}{(}\PYG{l+s}{'}\PYG{l+s}{lat'}\PYG{p}{,}\PYG{l+s}{'}\PYG{l+s}{long'}\PYG{p}{)}\PYG{p}{]}
 \PYG{p}{\PYGZcb{}}\PYG{p}{)}\PYG{p}{)}
-results\PYG{p}{\$}a.lat \PYG{o}{\textless{}-} unlist\PYG{p}{(}a.lat\PYG{p}{[}\PYG{p}{,}\PYG{l+s}{'}\PYG{l+s}{lat'}\PYG{p}{]}\PYG{p}{)}
-results\PYG{p}{\$}a.long \PYG{o}{\textless{}-} unlist\PYG{p}{(}a.lat\PYG{p}{[}\PYG{p}{,}\PYG{l+s}{'}\PYG{l+s}{long'}\PYG{p}{]}\PYG{p}{)}
-b.lat \PYG{o}{\textless{}-} t\PYG{p}{(}sapply\PYG{p}{(}results\PYG{p}{\$}b\PYG{p}{,}\PYG{k+kr}{function}\PYG{p}{(}r\PYG{p}{)}\PYG{p}{\PYGZob{}}
-  ap\PYG{p}{[}ap\PYG{p}{\$}iata\PYG{o}{==}r\PYG{p}{,}c\PYG{p}{(}\PYG{l+s}{'}\PYG{l+s}{lat'}\PYG{p}{,}\PYG{l+s}{'}\PYG{l+s}{long'}\PYG{p}{)}\PYG{p}{]}
+results\PYG{p}{\PYGZdl{}}a.lat \PYG{o}{\textless{}-} unlist\PYG{p}{(}a.lat\PYG{p}{[}\PYG{p}{,}\PYG{l+s}{'}\PYG{l+s}{lat'}\PYG{p}{]}\PYG{p}{)}
+results\PYG{p}{\PYGZdl{}}a.long \PYG{o}{\textless{}-} unlist\PYG{p}{(}a.lat\PYG{p}{[}\PYG{p}{,}\PYG{l+s}{'}\PYG{l+s}{long'}\PYG{p}{]}\PYG{p}{)}
+b.lat \PYG{o}{\textless{}-} t\PYG{p}{(}sapply\PYG{p}{(}results\PYG{p}{\PYGZdl{}}b\PYG{p}{,}\PYG{k+kr}{function}\PYG{p}{(}r\PYG{p}{)}\PYG{p}{\PYGZob{}}
+  ap\PYG{p}{[}ap\PYG{p}{\PYGZdl{}}iata\PYG{o}{==}r\PYG{p}{,}c\PYG{p}{(}\PYG{l+s}{'}\PYG{l+s}{lat'}\PYG{p}{,}\PYG{l+s}{'}\PYG{l+s}{long'}\PYG{p}{)}\PYG{p}{]}
 \PYG{p}{\PYGZcb{}}\PYG{p}{)}\PYG{p}{)}
 b.lat\PYG{p}{[}\PYG{l+s}{"}\PYG{l+s}{CBM"}\PYG{p}{,}\PYG{p}{]} \PYG{o}{\textless{}-} c\PYG{p}{(}\PYG{l+m}{0}\PYG{p}{,}\PYG{l+m}{0}\PYG{p}{)}
-results\PYG{p}{\$}b.lat \PYG{o}{\textless{}-} unlist\PYG{p}{(}b.lat\PYG{p}{[}\PYG{p}{,}\PYG{l+s}{'}\PYG{l+s}{lat'}\PYG{p}{]}\PYG{p}{)}
-results\PYG{p}{\$}b.long \PYG{o}{\textless{}-} unlist\PYG{p}{(}b.lat\PYG{p}{[}\PYG{p}{,}\PYG{l+s}{'}\PYG{l+s}{long'}\PYG{p}{]}\PYG{p}{)}
+results\PYG{p}{\PYGZdl{}}b.lat \PYG{o}{\textless{}-} unlist\PYG{p}{(}b.lat\PYG{p}{[}\PYG{p}{,}\PYG{l+s}{'}\PYG{l+s}{lat'}\PYG{p}{]}\PYG{p}{)}
+results\PYG{p}{\PYGZdl{}}b.long \PYG{o}{\textless{}-} unlist\PYG{p}{(}b.lat\PYG{p}{[}\PYG{p}{,}\PYG{l+s}{'}\PYG{l+s}{long'}\PYG{p}{]}\PYG{p}{)}
 
 head\PYG{p}{(}results\PYG{p}{)}
    a   b  count     cumprop    a.lat     a.long    b.lat     b.long
@@ -1640,6 +1662,7 @@ implies those routes carry the top 25\% of traffic in/out of ORD.
 
 \includegraphics{flightord.pdf}
 \caption{Flights in and out of Chicago color coded by \% cumulative contribution.}\end{figure}
+
 \index{biglm}\index{QR}\index{out-of-core regression}
 
 \section{Out of Core Regression using \texttt{biglm}}
@@ -1651,7 +1674,8 @@ as the airline data set is stored (see above).
 
 
 \section{Streaming Data?}
-\label{airline:id7}\label{airline:streaming-data}\index{orderby}\index{streaming}\index{partitioner}
+\label{airline:id7}\label{airline:streaming-data}
+\index{orderby}\index{streaming}\index{partitioner}
 Some algorithms are left associative in their operands
 $t_1,t_2,\ldots,t_n$ but not commutative. For example a streaming update
 algorithm that computes the inter-arrival times of time series data for
@@ -1680,9 +1704,9 @@ by the reducer and R is about to quit.
 \begin{Verbatim}[commandchars=\\\{\},numbers=left,firstnumber=1,stepnumber=1]
 map \PYG{o}{\textless{}-} expression\PYG{p}{(}\PYG{p}{\PYGZob{}}
    lapply\PYG{p}{(}seq\PYGZus{}along\PYG{p}{(}map.values\PYG{p}{)}\PYG{p}{,}\PYG{k+kr}{function}\PYG{p}{(}r\PYG{p}{)}\PYG{p}{\PYGZob{}}
-     catlevel \PYG{o}{\textless{}-} map.keys\PYG{p}{[}\PYG{p}{[}r\PYG{p}{]}\PYG{p}{]} \PYG{c+c1}{\#numeric}
-     timepoint \PYG{o}{\textless{}-} map.values\PYG{p}{[}\PYG{p}{[}r\PYG{p}{]}\PYG{p}{]}\PYG{p}{\$}timepoint \PYG{c+c1}{\#numeric}
-     datastructure \PYG{o}{\textless{}-} map.values\PYG{p}{[}\PYG{p}{[}r\PYG{p}{]}\PYG{p}{]}\PYG{p}{\$}data
+     catlevel \PYG{o}{\textless{}-} map.keys\PYG{p}{[}\PYG{p}{[}r\PYG{p}{]}\PYG{p}{]} \PYG{c+c1}{\PYGZsh{}numeric}
+     timepoint \PYG{o}{\textless{}-} map.values\PYG{p}{[}\PYG{p}{[}r\PYG{p}{]}\PYG{p}{]}\PYG{p}{\PYGZdl{}}timepoint \PYG{c+c1}{\PYGZsh{}numeric}
+     datastructure \PYG{o}{\textless{}-} map.values\PYG{p}{[}\PYG{p}{[}r\PYG{p}{]}\PYG{p}{]}\PYG{p}{\PYGZdl{}}data
      key \PYG{o}{\textless{}-} c\PYG{p}{(}catlevel\PYG{p}{,}timepoint\PYG{p}{)}
      rhcollect\PYG{p}{(}key\PYG{p}{,}datastructure\PYG{p}{)}
    \PYG{p}{\PYGZcb{}}\PYG{p}{)}
@@ -1695,14 +1719,14 @@ map \PYG{o}{\textless{}-} expression\PYG{p}{(}\PYG{p}{\PYGZob{}}
        catlevel \PYG{o}{\textless{}-} reduce.key\PYG{p}{[}\PYG{l+m}{1}\PYG{p}{]}
        time \PYG{o}{\textless{}-} reduce.key\PYG{p}{[}\PYG{l+m}{2}\PYG{p}{]}
        \PYG{k+kr}{if}\PYG{p}{(}!identical\PYG{p}{(}catlevel\PYG{p}{,}currentkey\PYG{p}{)}\PYG{p}{)}\PYG{p}{\PYGZob{}}
-         \PYG{c+c1}{\#\# new categorical level}
-         \PYG{c+c1}{\#\# so finalize the computation for}
-         \PYG{c+c1}{\#\# the previous level e.g. use rhcollect}
+         \PYG{c+c1}{\PYGZsh{}\PYGZsh{} new categorical level}
+         \PYG{c+c1}{\PYGZsh{}\PYGZsh{} so finalize the computation for}
+         \PYG{c+c1}{\PYGZsh{}\PYGZsh{} the previous level e.g. use rhcollect}
          \PYG{k+kr}{if}\PYG{p}{(}!identical\PYG{p}{(}currentkey\PYG{p}{,}\PYG{k+kc}{NULL}\PYG{p}{)}\PYG{p}{)}
            FINALIZE\PYG{p}{(}\PYG{k+kVariable}{F}\PYG{p}{)}
-         \PYG{c+c1}{\#\# store current categorical level}
+         \PYG{c+c1}{\PYGZsh{}\PYGZsh{} store current categorical level}
          currentkey \PYG{o}{\textless{}-} catlevel
-         \PYG{c+c1}{\#\# initialize computation for new level}
+         \PYG{c+c1}{\PYGZsh{}\PYGZsh{} initialize computation for new level}
          INITIALIZE\PYG{p}{(}\PYG{k+kVariable}{F}\PYG{p}{)}
        \PYG{p}{\PYGZcb{}}
      \PYG{p}{\PYGZcb{}}\PYG{p}{,}
@@ -1710,8 +1734,8 @@ map \PYG{o}{\textless{}-} expression\PYG{p}{(}\PYG{p}{\PYGZob{}}
        \PYG{k+kVariable}{F} \PYG{o}{\textless{}-} UPDATE\PYG{p}{(}\PYG{k+kVariable}{F}\PYG{p}{,} reduce.values\PYG{p}{[}\PYG{p}{[}\PYG{l+m}{1}\PYG{p}{]}\PYG{p}{]}\PYG{p}{)}
      \PYG{p}{\PYGZcb{}}\PYG{p}{)}
  redclose \PYG{o}{\textless{}-} expression\PYG{p}{(}\PYG{p}{\PYGZob{}}
-   \PYG{c+c1}{\#\# need to run this, otherwise the last catlevel}
-   \PYG{c+c1}{\#\# will not get finalized}
+   \PYG{c+c1}{\PYGZsh{}\PYGZsh{} need to run this, otherwise the last catlevel}
+   \PYG{c+c1}{\PYGZsh{}\PYGZsh{} will not get finalized}
   FINALIZE\PYG{p}{(}\PYG{k+kVariable}{F}\PYG{p}{)}
  \PYG{p}{\PYGZcb{}}\PYG{p}{)}
  rhmr\PYG{p}{(}\PYG{l+m}{.}\PYG{l+m}{.}\PYG{l+m}{.}\PYG{p}{,} combiner\PYG{o}{=}\PYG{k+kc}{FALSE}\PYG{p}{,}setup\PYG{o}{=}list\PYG{p}{(}reduce\PYG{o}{=}redsetup\PYG{p}{)}\PYG{p}{,}cleanup\PYG{o}{=}list\PYG{p}{(}reduce\PYG{o}{=}redclose\PYG{p}{)}\PYG{p}{,}
@@ -1765,7 +1789,7 @@ reduce.setup \PYG{o}{\textless{}-} expression\PYG{p}{(}\PYG{p}{\PYGZob{}}
 reduce \PYG{o}{\textless{}-} expression\PYG{p}{(}
     pre\PYG{o}{=}\PYG{p}{\PYGZob{}}
       \PYG{k+kr}{if}\PYG{p}{(}reduce.key\PYG{p}{[}\PYG{p}{[}\PYG{l+m}{1}\PYG{p}{]}\PYG{p}{]}\PYG{p}{[}\PYG{l+m}{1}\PYG{p}{]} \PYG{o}{!=} newp\PYG{p}{)} \PYG{p}{\PYGZob{}}
-        \PYG{k+kr}{if}\PYG{p}{(}newp\PYG{o}{\textgreater{}}\PYG{o}{-}Inf\PYG{p}{)} rhcollect\PYG{p}{(}newp\PYG{p}{,} diffsum\PYG{p}{)} \PYG{c+c1}{\#prevents -Inf from being collected}
+        \PYG{k+kr}{if}\PYG{p}{(}newp\PYG{o}{\textgreater{}}\PYG{o}{-}Inf\PYG{p}{)} rhcollect\PYG{p}{(}newp\PYG{p}{,} diffsum\PYG{p}{)} \PYG{c+c1}{\PYGZsh{}prevents -Inf from being collected}
         diffsum \PYG{o}{\textless{}-} \PYG{l+m}{0}
         lastval \PYG{o}{\textless{}-} \PYG{l+m}{0}
         newp \PYG{o}{\textless{}-} reduce.key\PYG{p}{[}\PYG{p}{[}\PYG{l+m}{1}\PYG{p}{]}\PYG{p}{]}\PYG{p}{[}\PYG{l+m}{1}\PYG{p}{]}
@@ -1773,13 +1797,13 @@ reduce \PYG{o}{\textless{}-} expression\PYG{p}{(}
       \PYG{p}{\PYGZcb{}}
     \PYG{p}{\PYGZcb{}}\PYG{p}{,}
     reduce\PYG{o}{=}\PYG{p}{\PYGZob{}}
-      current \PYG{o}{\textless{}-} unlist\PYG{p}{(}reduce.values\PYG{p}{)} \PYG{c+c1}{\#only one value!}
+      current \PYG{o}{\textless{}-} unlist\PYG{p}{(}reduce.values\PYG{p}{)} \PYG{c+c1}{\PYGZsh{}only one value!}
       \PYG{k+kr}{if}\PYG{p}{(}!skip\PYG{p}{)} diffsum \PYG{o}{\textless{}-} diffsum \PYG{o}{+} \PYG{p}{(}current\PYG{o}{-}lastval\PYG{p}{)} \PYG{k+kr}{else} skip \PYG{o}{\textless{}-} \PYG{k+kc}{FALSE}
       lastval \PYG{o}{\textless{}-} current
     \PYG{p}{\PYGZcb{}}
   \PYG{p}{)}
 reduce.post \PYG{o}{\textless{}-} expression\PYG{p}{(}\PYG{p}{\PYGZob{}}
-  \PYG{k+kr}{if}\PYG{p}{(}newp\PYG{o}{\textgreater{}}\PYG{o}{-}Inf\PYG{p}{)} rhcollect\PYG{p}{(}newp\PYG{p}{,}diffsum\PYG{p}{)} \PYG{c+c1}{\#for the last key}
+  \PYG{k+kr}{if}\PYG{p}{(}newp\PYG{o}{\textgreater{}}\PYG{o}{-}Inf\PYG{p}{)} rhcollect\PYG{p}{(}newp\PYG{p}{,}diffsum\PYG{p}{)} \PYG{c+c1}{\PYGZsh{}for the last key}
 \PYG{p}{\PYGZcb{}}\PYG{p}{)}
 \end{Verbatim}
 
@@ -1795,7 +1819,8 @@ rhex\PYG{p}{(}z\PYG{p}{)}
 
 
 \section{Simple Debugging}
-\label{airline:simple-debugging}\index{debugging}\index{tryCatch}
+\label{airline:simple-debugging}
+\index{debugging}\index{tryCatch}
 Consider the example code used to compute the delay quantiles by month (see
 {\hyperref[airline:delay-quantiles-by-month]{\emph{Delay Quantiles By Month}}} ). We can use \code{tryCatch} for some simple
 debugging. See the error in line 7, there is no such variable \code{isdelayed}
@@ -1804,18 +1829,18 @@ debugging. See the error in line 7, there is no such variable \code{isdelayed}
 map \PYG{o}{\textless{}-} expression\PYG{p}{(}\PYG{p}{\PYGZob{}}
   tryCatch\PYG{p}{(}\PYG{p}{\PYGZob{}}
     a \PYG{o}{\textless{}-} do.call\PYG{p}{(}\PYG{l+s}{"}\PYG{l+s}{rbind"}\PYG{p}{,}map.values\PYG{p}{)}
-    a\PYG{p}{\$}delay.sec \PYG{o}{\textless{}-} as.vector\PYG{p}{(}a\PYG{p}{[}\PYG{p}{,}\PYG{l+s}{'}\PYG{l+s}{arrive'}\PYG{p}{]}\PYG{p}{)}\PYG{o}{-}as.vector\PYG{p}{(}a\PYG{p}{[}\PYG{p}{,}\PYG{l+s}{'}\PYG{l+s}{sarrive'}\PYG{p}{]}\PYG{p}{)}
-    a \PYG{o}{\textless{}-} a\PYG{p}{[}!is.na\PYG{p}{(}a\PYG{p}{\$}delay.sec\PYG{p}{)}\PYG{p}{,}\PYG{p}{]}
-    a\PYG{p}{\$}isdelayed \PYG{o}{\textless{}-} sapply\PYG{p}{(}a\PYG{p}{\$}delay.sec\PYG{p}{,}\PYG{k+kr}{function}\PYG{p}{(}r\PYG{p}{)} \PYG{k+kr}{if}\PYG{p}{(}r\PYG{o}{\textgreater{}=}\PYG{l+m}{900}\PYG{p}{)} \PYG{k+kc}{TRUE} \PYG{k+kr}{else} \PYG{k+kc}{FALSE}\PYG{p}{)}
-    a \PYG{o}{\textless{}-} a\PYG{p}{[}isdelayed\PYG{o}{==}\PYG{k+kc}{TRUE}\PYG{p}{,}\PYG{p}{]} \PYG{c+c1}{\#\# only look at delays greater than 15 minutes}
+    a\PYG{p}{\PYGZdl{}}delay.sec \PYG{o}{\textless{}-} as.vector\PYG{p}{(}a\PYG{p}{[}\PYG{p}{,}\PYG{l+s}{'}\PYG{l+s}{arrive'}\PYG{p}{]}\PYG{p}{)}\PYG{o}{-}as.vector\PYG{p}{(}a\PYG{p}{[}\PYG{p}{,}\PYG{l+s}{'}\PYG{l+s}{sarrive'}\PYG{p}{]}\PYG{p}{)}
+    a \PYG{o}{\textless{}-} a\PYG{p}{[}!is.na\PYG{p}{(}a\PYG{p}{\PYGZdl{}}delay.sec\PYG{p}{)}\PYG{p}{,}\PYG{p}{]}
+    a\PYG{p}{\PYGZdl{}}isdelayed \PYG{o}{\textless{}-} sapply\PYG{p}{(}a\PYG{p}{\PYGZdl{}}delay.sec\PYG{p}{,}\PYG{k+kr}{function}\PYG{p}{(}r\PYG{p}{)} \PYG{k+kr}{if}\PYG{p}{(}r\PYG{o}{\textgreater{}=}\PYG{l+m}{900}\PYG{p}{)} \PYG{k+kc}{TRUE} \PYG{k+kr}{else} \PYG{k+kc}{FALSE}\PYG{p}{)}
+    a \PYG{o}{\textless{}-} a\PYG{p}{[}isdelayed\PYG{o}{==}\PYG{k+kc}{TRUE}\PYG{p}{,}\PYG{p}{]} \PYG{c+c1}{\PYGZsh{}\PYGZsh{} only look at delays greater than 15 minutes}
     apply\PYG{p}{(}a\PYG{p}{[}\PYG{p}{,}c\PYG{p}{(}\PYG{l+s}{'}\PYG{l+s}{month'}\PYG{p}{,}\PYG{l+s}{'}\PYG{l+s}{delay.sec'}\PYG{p}{)}\PYG{p}{]}\PYG{p}{,}\PYG{l+m}{1}\PYG{p}{,}\PYG{k+kr}{function}\PYG{p}{(}r\PYG{p}{)}\PYG{p}{\PYGZob{}}
       k \PYG{o}{\textless{}-} as.vector\PYG{p}{(}unlist\PYG{p}{(}r\PYG{p}{)}\PYG{p}{)}
-      \PYG{k+kr}{if}\PYG{p}{(}!is.na\PYG{p}{(}k\PYG{p}{[}\PYG{l+m}{1}\PYG{p}{]}\PYG{p}{)}\PYG{p}{)} rhcollect\PYG{p}{(}k\PYG{p}{,}\PYG{l+m}{1}\PYG{p}{)} \PYG{c+c1}{\# ignore cases where month is missing}
+      \PYG{k+kr}{if}\PYG{p}{(}!is.na\PYG{p}{(}k\PYG{p}{[}\PYG{l+m}{1}\PYG{p}{]}\PYG{p}{)}\PYG{p}{)} rhcollect\PYG{p}{(}k\PYG{p}{,}\PYG{l+m}{1}\PYG{p}{)} \PYG{c+c1}{\PYGZsh{} ignore cases where month is missing}
     \PYG{p}{\PYGZcb{}}\PYG{p}{)}
   \PYG{p}{\PYGZcb{}}\PYG{p}{,}error\PYG{o}{=}\PYG{k+kr}{function}\PYG{p}{(}e\PYG{p}{)}\PYG{p}{\PYGZob{}}
-    e\PYG{p}{\$}message \PYG{o}{\textless{}-} sprintf\PYG{p}{(}\PYG{l+s}{"}\PYG{l+s}{Input File:\%s\PYGZbs{}nAttempt ID:\%s\PYGZbs{}nR INFO:\%s"}\PYG{p}{,}
-                 Sys.getenv\PYG{p}{(}\PYG{l+s}{"}\PYG{l+s}{mapred.input.file"}\PYG{p}{)}\PYG{p}{,}Sys.getenv\PYG{p}{(}\PYG{l+s}{"}\PYG{l+s}{mapred.task.id"}\PYG{p}{)}\PYG{p}{,}e\PYG{p}{\$}message\PYG{p}{)}
-    stop\PYG{p}{(}e\PYG{p}{)} \PYG{c+c1}{\#\# WONT STOP OTHERWISE}
+    e\PYG{p}{\PYGZdl{}}message \PYG{o}{\textless{}-} sprintf\PYG{p}{(}\PYG{l+s}{"}\PYG{l+s}{Input File:\PYGZpc{}s\PYGZbs{}nAttempt ID:\PYGZpc{}s\PYGZbs{}nR INFO:\PYGZpc{}s"}\PYG{p}{,}
+                 Sys.getenv\PYG{p}{(}\PYG{l+s}{"}\PYG{l+s}{mapred.input.file"}\PYG{p}{)}\PYG{p}{,}Sys.getenv\PYG{p}{(}\PYG{l+s}{"}\PYG{l+s}{mapred.task.id"}\PYG{p}{)}\PYG{p}{,}e\PYG{p}{\PYGZdl{}}message\PYG{p}{)}
+    stop\PYG{p}{(}e\PYG{p}{)} \PYG{c+c1}{\PYGZsh{}\PYGZsh{} WONT STOP OTHERWISE}
   \PYG{p}{\PYGZcb{}}\PYG{p}{)}
 \PYG{p}{\PYGZcb{}}\PYG{p}{)}
   reduce \PYG{o}{\textless{}-} expression\PYG{p}{(}
@@ -1824,7 +1849,7 @@ map \PYG{o}{\textless{}-} expression\PYG{p}{(}\PYG{p}{\PYGZob{}}
     post \PYG{o}{=} \PYG{p}{\PYGZob{}} rhcollect\PYG{p}{(}reduce.key\PYG{p}{,} sums\PYG{p}{)} \PYG{p}{\PYGZcb{}}
     \PYG{p}{)}
 mapred \PYG{o}{\textless{}-} list\PYG{p}{(}\PYG{p}{)}
-mapred\PYG{p}{\$}rhipe\PYGZus{}map\PYGZus{}buff\PYGZus{}size \PYG{o}{\textless{}-} \PYG{l+m}{5}
+mapred\PYG{p}{\PYGZdl{}}rhipe\PYGZus{}map\PYGZus{}buff\PYGZus{}size \PYG{o}{\textless{}-} \PYG{l+m}{5}
 z \PYG{o}{\textless{}-} rhmr\PYG{p}{(}map\PYG{o}{=}map\PYG{p}{,}reduce\PYG{o}{=}reduce\PYG{p}{,}combiner\PYG{o}{=}\PYG{k+kc}{TRUE}\PYG{p}{,}inout\PYG{o}{=}c\PYG{p}{(}\PYG{l+s}{"}\PYG{l+s}{sequence"}\PYG{p}{,}\PYG{l+s}{"}\PYG{l+s}{sequence"}\PYG{p}{)}
           \PYG{p}{,}ifolder\PYG{o}{=}\PYG{l+s}{"}\PYG{l+s}{/airline/blocks/"}\PYG{p}{,}ofolder\PYG{o}{=}\PYG{l+s}{"}\PYG{l+s}{/airline/quantiledelay"}
           \PYG{p}{,}mapred\PYG{o}{=}mapred\PYG{p}{)}
@@ -1832,6 +1857,7 @@ z\PYG{o}{=}rhex\PYG{p}{(}z\PYG{p}{)}
 \end{Verbatim}
 
 Produces a slew of errors like (output slightly modified to fit page)
+
 \index{counter}
 \begin{Verbatim}[commandchars=\\\{\},numbers=left,firstnumber=1,stepnumber=1]
 \PYG{l+m}{10}\PYG{o}{/}\PYG{l+m}{08}\PYG{o}{/}\PYG{l+m}{04} \PYG{l+m}{00}:\PYG{l+m}{41}:\PYG{l+m}{20} INFO mapred.JobClient: Task Id :
@@ -1858,7 +1884,10 @@ Unfortunately, RHIPE does not offer much in the way of debugging. To run jobs
 locally that is, Hadoop will execute the job in a single thread on one computer,
 set \code{mapred.job.tracker} to \emph{local} in the \code{mapred} argument of \code{rhmr}. In
 this case, \code{shared.files} cannot be used and \code{copyFiles} will not work.
-\phantomsection\label{texttransfirm:rhipeserialize}\index{textouput!transformations on text files}\index{textouput!subsets of text files}\index{textoutput!quoting text}\index{textoutput!separators for vectors}\index{rhipe\_string\_quote}\index{mapred.field.separator}\index{mapred.textoutputformat.usekey}
+\phantomsection\label{texttransfirm:rhipeserialize}
+\index{textouput!transformations on text files}
+\index{textouput!subsets of text files}\index{textoutput!quoting text}\index{textoutput!separators for vectors}
+\index{rhipe\_string\_quote}\index{mapred.field.separator}\index{mapred.textoutputformat.usekey}
 
 \chapter{Transforming Text Data}
 \label{texttransfirm::doc}\label{texttransfirm:index-2}\label{texttransfirm:transforming-text-data}
@@ -1874,6 +1903,7 @@ Transform the original text data to one with fewer columns and some transformed 
 \end{enumerate}
 
 We'll cover both examples.
+
 \index{partitioner}
 
 \section{Subset}
@@ -1892,11 +1922,11 @@ equal to \emph{WN} or \emph{DL} will be saved.
 
 \begin{Verbatim}[commandchars=\\\{\},numbers=left,firstnumber=1,stepnumber=1]
 map \PYG{o}{\textless{}-} expression\PYG{p}{(}\PYG{p}{\PYGZob{}}
-  \PYG{c+c1}{\#\# Each element of map.values is a line of text}
-  \PYG{c+c1}{\#\# this needs to be tokenized and then combined}
+  \PYG{c+c1}{\PYGZsh{}\PYGZsh{} Each element of map.values is a line of text}
+  \PYG{c+c1}{\PYGZsh{}\PYGZsh{} this needs to be tokenized and then combined}
   tkn \PYG{o}{\textless{}-} strsplit\PYG{p}{(}unlist\PYG{p}{(}map.values\PYG{p}{)}\PYG{p}{,}\PYG{l+s}{"}\PYG{l+s}{,"}\PYG{p}{)}
   text \PYG{o}{\textless{}-} do.call\PYG{p}{(}\PYG{l+s}{"}\PYG{l+s}{rbind"}\PYG{p}{,}tkn\PYG{p}{)}
-  text \PYG{o}{\textless{}-} text\PYG{p}{[}text\PYG{p}{[}\PYG{p}{,}\PYG{l+m}{9}\PYG{p}{]} \PYG{o}{\%in\%} c\PYG{p}{(}\PYG{l+s}{"}\PYG{l+s}{WN"}\PYG{p}{,}\PYG{l+s}{"}\PYG{l+s}{DL"}\PYG{p}{)}\PYG{p}{,}\PYG{p}{,}drop\PYG{o}{=}\PYG{k+kc}{FALSE}\PYG{p}{]}
+  text \PYG{o}{\textless{}-} text\PYG{p}{[}text\PYG{p}{[}\PYG{p}{,}\PYG{l+m}{9}\PYG{p}{]} \PYG{o}{\PYGZpc{}in\PYGZpc{}} c\PYG{p}{(}\PYG{l+s}{"}\PYG{l+s}{WN"}\PYG{p}{,}\PYG{l+s}{"}\PYG{l+s}{DL"}\PYG{p}{)}\PYG{p}{,}\PYG{p}{,}drop\PYG{o}{=}\PYG{k+kc}{FALSE}\PYG{p}{]}
   \PYG{k+kr}{if}\PYG{p}{(}nrow\PYG{p}{(}text\PYG{p}{)}\PYG{o}{\textgreater{}}\PYG{l+m}{0}\PYG{p}{)} apply\PYG{p}{(}text\PYG{p}{,}\PYG{l+m}{1}\PYG{p}{,} \PYG{k+kr}{function}\PYG{p}{(}r\PYG{p}{)} rhcollect\PYG{p}{(}r\PYG{p}{[}\PYG{l+m}{9}\PYG{p}{]}\PYG{p}{,} r\PYG{p}{)}\PYG{p}{)}
 \PYG{p}{\PYGZcb{}}\PYG{p}{)}
 \end{Verbatim}
@@ -1946,7 +1976,7 @@ Airport codes (origin and destination) are in columns 17 and 18. The \code{setup
 data set and creates a function that does the mapping.
 
 \begin{Verbatim}[commandchars=\\\{\},numbers=left,firstnumber=1,stepnumber=1]
-airport \PYG{o}{\textless{}-} read.table\PYG{p}{(}\PYG{l+s}{"}\PYG{l+s}{\textasciitilde{}/tmp/airports.csv"}\PYG{p}{,}sep\PYG{o}{=}\PYG{l+s}{"}\PYG{l+s}{,"}\PYG{p}{,}header\PYG{o}{=}\PYG{k+kc}{TRUE}\PYG{p}{,}stringsAsFactors\PYG{o}{=}\PYG{k+kc}{FALSE}\PYG{p}{)}
+airport \PYG{o}{\textless{}-} read.table\PYG{p}{(}\PYG{l+s}{"}\PYG{l+s}{\PYGZti{}/tmp/airports.csv"}\PYG{p}{,}sep\PYG{o}{=}\PYG{l+s}{"}\PYG{l+s}{,"}\PYG{p}{,}header\PYG{o}{=}\PYG{k+kc}{TRUE}\PYG{p}{,}stringsAsFactors\PYG{o}{=}\PYG{k+kc}{FALSE}\PYG{p}{)}
 aton \PYG{o}{\textless{}-} new.env\PYG{p}{(}\PYG{p}{)}
 \PYG{k+kr}{for}\PYG{p}{(}i in \PYG{l+m}{1}:nrow\PYG{p}{(}airport\PYG{p}{)}\PYG{p}{)}\PYG{p}{\PYGZob{}}
   aton\PYG{p}{[}\PYG{p}{[} airport\PYG{p}{[}i\PYG{p}{,}\PYG{l+s}{"}\PYG{l+s}{iata"}\PYG{p}{]} \PYG{p}{]}\PYG{p}{]} \PYG{o}{\textless{}-} list\PYG{p}{(}ap\PYG{o}{=}airport\PYG{p}{[}i\PYG{p}{,}\PYG{l+s}{"}\PYG{l+s}{airport"}\PYG{p}{]}\PYG{p}{,}latlong\PYG{o}{=}airport\PYG{p}{[}i\PYG{p}{,}c\PYG{p}{(}\PYG{l+s}{"}\PYG{l+s}{lat"}\PYG{p}{,}\PYG{l+s}{"}\PYG{l+s}{long"}\PYG{p}{)}\PYG{p}{]}\PYG{p}{)}
@@ -1957,8 +1987,8 @@ setup \PYG{o}{\textless{}-} expression\PYG{p}{(}\PYG{p}{\PYGZob{}}
   load\PYG{p}{(}\PYG{l+s}{"}\PYG{l+s}{airports.Rdata"}\PYG{p}{)}
   co \PYG{o}{\textless{}-} \PYG{k+kr}{function}\PYG{p}{(}N\PYG{p}{)}\PYG{p}{\PYGZob{}}
     sapply\PYG{p}{(}text\PYG{p}{[}\PYG{p}{,}N\PYG{p}{]}\PYG{p}{,}\PYG{k+kr}{function}\PYG{p}{(}r\PYG{p}{)}\PYG{p}{\PYGZob{}}
-      o \PYG{o}{\textless{}-} aton\PYG{p}{[}\PYG{p}{[} r\PYG{p}{[}\PYG{l+m}{1}\PYG{p}{]} \PYG{p}{]}\PYG{p}{]}\PYG{p}{\$}ap
-      \PYG{k+kr}{if}\PYG{p}{(}is.null\PYG{p}{(}o\PYG{p}{)}\PYG{p}{)} \PYG{k+kc}{NA} \PYG{k+kr}{else} sprintf\PYG{p}{(}\PYG{l+s}{'}\PYG{l+s}{"\%s"'}\PYG{p}{,}o\PYG{p}{)}
+      o \PYG{o}{\textless{}-} aton\PYG{p}{[}\PYG{p}{[} r\PYG{p}{[}\PYG{l+m}{1}\PYG{p}{]} \PYG{p}{]}\PYG{p}{]}\PYG{p}{\PYGZdl{}}ap
+      \PYG{k+kr}{if}\PYG{p}{(}is.null\PYG{p}{(}o\PYG{p}{)}\PYG{p}{)} \PYG{k+kc}{NA} \PYG{k+kr}{else} sprintf\PYG{p}{(}\PYG{l+s}{'}\PYG{l+s}{"\PYGZpc{}s"'}\PYG{p}{,}o\PYG{p}{)}
     \PYG{p}{\PYGZcb{}}\PYG{p}{)}
   \PYG{p}{\PYGZcb{}}
 \PYG{p}{\PYGZcb{}}\PYG{p}{)}
@@ -1998,6 +2028,7 @@ and this gives us
 \PYG{l+m}{1987}\PYG{p}{,}\PYG{l+m}{10}\PYG{p}{,}\PYG{l+m}{30}\PYG{p}{,}\PYG{l+m}{5}\PYG{p}{,}\PYG{l+m}{1947}\PYG{p}{,}\PYG{l+m}{1945}\PYG{p}{,}\PYG{l+m}{2109}\PYG{p}{,}\PYG{l+m}{2100}\PYG{p}{,}\PYG{l+m}{.}\PYG{l+m}{.}\PYG{l+m}{.}\PYG{p}{,}\PYG{l+s}{"}\PYG{l+s}{San Francisco International"}\PYG{p}{,}\PYG{l+s}{"}\PYG{l+s}{John Wayne /Orange Co,...}
 \PYG{l+s}{1987,10,1,4,2133,2100,2303,2218,...,"}San Diego International\PYG{o}{-}Lindbergh\PYG{l+s}{"}\PYG{l+s}{,"}San Francisco International\PYG{p}{,}\PYG{l+m}{.}\PYG{l+m}{.}\PYG{l+m}{.}
 \end{Verbatim}
+
 \index{simulations}\index{rhlapply}\index{lapply}
 
 \chapter{Simulations}
@@ -2076,6 +2107,7 @@ function to aggregate the intermediate results. With this function, the user can
 distribute the \code{lapply} command and rely on Hadoop to handle fault-tolerancy
 and the scheduling of processors in an optimal fashion. The \code{rhlapply}
 function is present to do this.
+
 \index{rhlapply}
 \begin{Verbatim}[commandchars=\\\{\}]
 rhlapply\PYG{p}{(}ll\PYG{p}{,} \PYG{k+kVariable}{F}\PYG{p}{,} ofolder\PYG{p}{,}setup\PYG{o}{=}\PYG{k+kc}{NULL}\PYG{p}{,}readIn \PYG{o}{=} \PYG{k+kc}{TRUE}\PYG{p}{,} N\PYG{p}{,} aggr\PYG{o}{=}\PYG{k+kc}{NULL}\PYG{p}{,}\PYG{l+m}{.}\PYG{l+m}{.}\PYG{l+m}{.}\PYG{p}{)}
@@ -2087,6 +2119,7 @@ is TRUE. The value of \code{N} is passed to \code{rhwrite} (if \code{ll} is a li
 will be written to a temporary file). \code{setup} can be used to load files. The
 \code{rhllapply} command takes the arguments of \code{rhmr} (e.g. \code{mapred}) and they
 passed to \code{rhmr}.
+
 \index{random number generation}\index{mapred.task.id}
 
 \section{A Note on Random Number Generators}
@@ -2113,7 +2146,8 @@ of messages are displayed  - useful if Rhipe does not load.
 
 
 \section{HDFS Related}
-\label{functions:hdfs-related}\index{rhdel}
+\label{functions:hdfs-related}
+\index{rhdel}
 
 \subsection{rhdel - File Deletion}
 \label{functions:rhdel-file-deletion}\label{functions:index-0}
@@ -2124,6 +2158,7 @@ rhdel\PYG{p}{(}folders\PYG{p}{)}
 This function deletes the folders contained in the character vector \code{folders}
 which are located on the HDFS. The deletion is recursive, so all subfolders will
 be deleted too. Nothing is returned.
+
 \index{rhls}
 
 \subsection{rhls - Listing Files}
@@ -2138,6 +2173,7 @@ rooted at \code{path}. The returned object is a data frame consisting of the
 columns: \emph{permission, owner, group, size (which is numeric), modification time},
 and the \emph{file name}. \code{path} may optionally \textbf{end} in `*' which is the
 wildcard and will match any character(s).
+
 \index{rhget}
 
 \subsection{rhget - Copying from the HDFS}
@@ -2149,6 +2185,7 @@ rhget\PYG{p}{(}src\PYG{p}{,}dest\PYG{p}{)}
 Copies the files (or folder) at \code{src}, located on the HDFS to the
 destination \code{dest} located on the local filesystem. If a file or folder of
 the same name as \code{dest} exists on the local filesystem, it will be deleted.
+
 \index{rhput}
 
 \subsection{rhput - Copying to the HDF}
@@ -2159,6 +2196,7 @@ rhput\PYG{p}{(}src\PYG{p}{,}dest\PYG{p}{)}
 
 Copies the local file called \code{src} (not a folder) to the destination \code{dest}
 on the HDFS.
+
 \index{rhcp}
 
 \subsection{rhcp - Copying on the HDFS}
@@ -2169,6 +2207,7 @@ rhcp\PYG{p}{(}src\PYG{p}{,}dest\PYG{p}{)}
 
 Copies the file (or folder) \code{src} on the HDFS to the destination \code{dest}
 also on the HDFS.
+
 \index{rhwrite}
 
 \subsection{rhwrite - Writing R data to the HDFS}
@@ -2197,6 +2236,7 @@ value in the list, stored as strings. Thus when used as a source for a MapReduce
 job, the variable \code{map.keys} will contain numbers in the range $[1,
 length(list)]$. The variable \code{map.values} will contain elements of
 \code{list}.
+
 \index{rhread}\index{sequencefile}\index{mapfile}
 
 \subsection{rhread - Reading data from HDFS into R}
@@ -2222,7 +2262,9 @@ to read, by default all the key,value pairs will be read. Setting \code{mc} to T
 will use the the \code{multicore} {\hyperref[functions:multicore]{{[}multicore{]}}} package to convert the data to R
 objects in parallel. The user must have first loaded \code{multicore} via call to
 library. This often does accelerate the process of reading data into R.
-\index{rhgetkey}\index{mapfile}\index{orderby}\index{rhmr}\index{sequencefile!convert seqeuncefile to mapfile}
+
+\index{rhgetkey}\index{mapfile}\index{orderby}\index{rhmr}
+\index{sequencefile!convert seqeuncefile to mapfile}
 
 \subsection{rhgetkeys - Reading Values from Map Files}
 \label{functions:rhgetkeys-reading-values-from-map-files}\label{functions:index-8}
@@ -2293,9 +2335,9 @@ to a bug in the logic, the \code{get} function may retrieve from \code{batch} to
 
 \begin{Verbatim}[commandchars=\\\{\}]
 e \PYG{o}{\textless{}-} rhstreamsequence\PYG{p}{(}\PYG{l+s}{"}\PYG{l+s}{/tmp/x/0"}\PYG{p}{,}batch\PYG{o}{=}\PYG{l+m}{100}\PYG{p}{)}
-a \PYG{o}{\textless{}-} e\PYG{p}{\$}get\PYG{p}{(}\PYG{p}{)}
-a \PYG{o}{\textless{}-} e\PYG{p}{\$}get\PYG{p}{(}\PYG{p}{)} \PYG{c+c1}{\# returns an empty list if reached end.}
-e\PYG{p}{\$}close\PYG{p}{(}\PYG{p}{)}
+a \PYG{o}{\textless{}-} e\PYG{p}{\PYGZdl{}}get\PYG{p}{(}\PYG{p}{)}
+a \PYG{o}{\textless{}-} e\PYG{p}{\PYGZdl{}}get\PYG{p}{(}\PYG{p}{)} \PYG{c+c1}{\PYGZsh{} returns an empty list if reached end.}
+e\PYG{p}{\PYGZdl{}}close\PYG{p}{(}\PYG{p}{)}
 \end{Verbatim}
 
 This is particularly useful for the \code{biglm} package which accepts a function
@@ -2305,29 +2347,30 @@ as key/value pairs where the values are data frames, you can use
 
 \begin{Verbatim}[commandchars=\\\{\},numbers=left,firstnumber=1,stepnumber=1]
 modifier \PYG{o}{\textless{}-} \PYG{k+kr}{function}\PYG{p}{(}df\PYG{p}{,}reset\PYG{p}{)}\PYG{p}{\PYGZob{}}
-  \PYG{c+c1}{\#\# different chunks might not all display all the levels}
-  \PYG{c+c1}{\#\# of rm.site, so we have to predefine all levels visible}
-  \PYG{c+c1}{\#\# across data site}
+  \PYG{c+c1}{\PYGZsh{}\PYGZsh{} different chunks might not all display all the levels}
+  \PYG{c+c1}{\PYGZsh{}\PYGZsh{} of rm.site, so we have to predefine all levels visible}
+  \PYG{c+c1}{\PYGZsh{}\PYGZsh{} across data site}
   \PYG{k+kr}{if}\PYG{p}{(}!reset\PYG{p}{)}\PYG{p}{\PYGZob{}}
     total.rows\PYG{o}{\textless{}}\PYG{o}{\textless{}-}total.rows\PYG{o}{+}nrow\PYG{p}{(}df\PYG{p}{)}
-    cat\PYG{p}{(}sprintf\PYG{p}{(}\PYG{l+s}{"}\PYG{l+s}{Total rows:\%s\PYGZbs{}n"}\PYG{p}{,}total.rows\PYG{p}{)}\PYG{p}{)}
+    cat\PYG{p}{(}sprintf\PYG{p}{(}\PYG{l+s}{"}\PYG{l+s}{Total rows:\PYGZpc{}s\PYGZbs{}n"}\PYG{p}{,}total.rows\PYG{p}{)}\PYG{p}{)}
   \PYG{p}{\PYGZcb{}}else \PYG{p}{\PYGZob{}}total.rows\PYG{o}{\textless{}}\PYG{o}{\textless{}-}\PYG{l+m}{0}\PYG{p}{;}\PYG{k+kr}{return}\PYG{p}{(}\PYG{p}{)}\PYG{p}{\PYGZcb{}}
-  df\PYG{p}{\$}rm.site \PYG{o}{\textless{}-} factor\PYG{p}{(}df\PYG{p}{\$}rm.site\PYG{p}{,} levels\PYG{o}{=}names\PYG{p}{(}remote.site.table\PYG{p}{)}\PYG{p}{)}
-  df\PYG{p}{\$}traffic.rate \PYG{o}{\textless{}-} df\PYG{p}{\$}traffic.rate\PYG{o}{/}\PYG{l+m}{1}e6
+  df\PYG{p}{\PYGZdl{}}rm.site \PYG{o}{\textless{}-} factor\PYG{p}{(}df\PYG{p}{\PYGZdl{}}rm.site\PYG{p}{,} levels\PYG{o}{=}names\PYG{p}{(}remote.site.table\PYG{p}{)}\PYG{p}{)}
+  df\PYG{p}{\PYGZdl{}}traffic.rate \PYG{o}{\textless{}-} df\PYG{p}{\PYGZdl{}}traffic.rate\PYG{o}{/}\PYG{l+m}{1}e6
   df
 \PYG{p}{\PYGZcb{}}
 pp \PYG{o}{\textless{}-} \PYG{l+s}{"}\PYG{l+s}{/voip/modified.jitter.traffic.rate.database/"}
 \PYG{k+kVariable}{F} \PYG{o}{\textless{}-}  rhbiglm.stream.hdfs\PYG{p}{(}pp\PYG{p}{,}type\PYG{o}{=}\PYG{l+s}{'}\PYG{l+s}{map'}\PYG{p}{,}modifier\PYG{o}{=}modifier\PYG{p}{,}batch\PYG{o}{=}\PYG{l+m}{150}\PYG{p}{,}quiet\PYG{o}{=}\PYG{k+kc}{TRUE}\PYG{p}{)}
-\PYG{c+c1}{\#\# modifier is called for every list of 'batch' key,value pairs}
-\PYG{c+c1}{\#\# the parameter df is a data frame (do.call("rbind",values))}
-\PYG{c+c1}{\#\# reset is FALSE when bigglm calls for more data}
-\PYG{c+c1}{\#\# and is TRUE when it requests the reader to go to the beginning of the stream}
-b\PYG{o}{\textless{}-}bigglm\PYG{p}{(}jitter\textasciitilde{}traffic.rate\PYG{o}{+}rm.site\PYG{p}{,}data\PYG{o}{=}\PYG{k+kVariable}{F}\PYG{p}{,}maxit\PYG{o}{=}\PYG{l+m}{3}\PYG{p}{)}
+\PYG{c+c1}{\PYGZsh{}\PYGZsh{} modifier is called for every list of 'batch' key,value pairs}
+\PYG{c+c1}{\PYGZsh{}\PYGZsh{} the parameter df is a data frame (do.call("rbind",values))}
+\PYG{c+c1}{\PYGZsh{}\PYGZsh{} reset is FALSE when bigglm calls for more data}
+\PYG{c+c1}{\PYGZsh{}\PYGZsh{} and is TRUE when it requests the reader to go to the beginning of the stream}
+b\PYG{o}{\textless{}-}bigglm\PYG{p}{(}jitter\PYGZti{}traffic.rate\PYG{o}{+}rm.site\PYG{p}{,}data\PYG{o}{=}\PYG{k+kVariable}{F}\PYG{p}{,}maxit\PYG{o}{=}\PYG{l+m}{3}\PYG{p}{)}
 \end{Verbatim}
 
 
 \section{MapReduce Administration}
-\label{functions:mapreduce-administration}\index{rhex}\index{rhmr}\index{rhstatus}\index{rhjoin}\index{rhkill}
+\label{functions:mapreduce-administration}
+\index{rhex}\index{rhmr}\index{rhstatus}\index{rhjoin}\index{rhkill}
 
 \subsection{rhex - Submitting a MapReduce R Object to Hadoop}
 \label{functions:rhex-submitting-a-mapreduce-r-object-to-hadoop}\label{functions:index-9}
@@ -2342,9 +2385,11 @@ from \code{rhmr}.  The function returns when the job ends (success/failure or
 because the user terminated (see \code{rhkill})). When \code{async} is TRUE, the
 function returns immediately, leaving the job running in the background on Hadoop.
 
-The function returns an object of class \emph{jobtoken}. The generic function
+When \code{async=TRUE}, function returns an object of class \emph{jobtoken}. The generic function
 \code{print.jobtoken}, displays the start time, duration (in seconds) and percent
 progress. This object can be used in calls to \code{rhstatus},{}`{}`rhjoin{}`{}` and \code{rhkill}.
+Otherwise is returns a list of counters and the job state.
+
 \index{rhstatus}\index{rhcounter}
 
 \subsection{rhstatus - Monitoring a MapReduce Job}
@@ -2377,6 +2422,7 @@ In addition the list has an element that consists of both user defined and Hadoo
 If \code{mon.sec} is greater than 0, a small data frame indicating the progress will be returned every \code{mon.sec} seconds.
 If \code{autokill} is TRUE, then any R errors caused by the map/reduce code will cause the job to be killed. If \code{verbose} is TRUE, the above list
 will be displayed too.
+
 \index{rhjoin}\index{rhex}
 
 \subsection{rhjoin - Waiting on Completion of a MapReduce Job}
@@ -2392,6 +2438,7 @@ with the \code{async} option set to TRUE. This function returns the same object 
 \code{rhex} i.e a list of the results of the job (TRUE or FALSE indicating success
 or failure) and a counters returned by the job. If \code{ignore} is FALSE, the
 progress will be displayed on the R console (much like \code{rhex})
+
 \index{rhkill}
 
 \subsection{rhkill - Stopping a MapReduce Job}
@@ -2415,7 +2462,9 @@ the Hadoop Framework. These are discussed in {\hyperref[mr:insidemr]{\emph{Funct
 
 
 \section{Creating a MapReduce Object}
-\label{mr:creating-a-mapreduce-object}\index{rhmr}\index{combiner}\index{partitioner}\index{setup}\index{cleanup}\index{input formats}\index{output formats}\index{shared files}\index{mapred.reduce.tasks}
+\label{mr:creating-a-mapreduce-object}
+\index{rhmr}\index{combiner}\index{partitioner}\index{setup}\index{cleanup}\index{input formats}\index{output formats}\index{shared files}
+\index{mapred.reduce.tasks}
 
 \subsection{rhmr - Creating the MapReduce Object}
 \label{mr:rhmr-creating-the-mapreduce-object}\label{mr:index-1}
@@ -2493,6 +2542,7 @@ the output of the \code{map} expression locally i.e. on the same computer that
 is running the associated map. For every \emph{io.sort.mb} megabytes of key,value
 
 \end{description}
+
 \index{combiner!io.sort.mb}\begin{description}
 \item[{.}] \leavevmode
 output from the map, the keys are sorted, and  the expression \code{reduce}
@@ -2639,7 +2689,8 @@ RHIPE options see \emph{Options For RHIPE} and for  Hadoop options go \href{http
 
 
 \section{Functions to Communicate with Hadoop during MapReduce}
-\label{mr:insidemr}\label{mr:functions-to-communicate-with-hadoop-during-mapreduce}\index{rhcollect}
+\label{mr:insidemr}\label{mr:functions-to-communicate-with-hadoop-during-mapreduce}
+\index{rhcollect}
 
 \subsection{rhcollect - Writing Data to Hadoop MapReduce}
 \label{mr:rhcollect-writing-data-to-hadoop-mapreduce}\label{mr:index-3}
@@ -2653,6 +2704,7 @@ not zero (by default it is non zero) or it will be written to disk if
 \code{mapred.reduce.tasks} is zero. In the Reduce phase, it will be sent for further
 reduction if \code{reduce} is being run as a combiner or it will be written to
 the final destination if it is being run as the reducer. Don't forget to use this in the Map - if not called,nothing will be sent to the reducer.
+
 \index{rhcounter}\index{counter}
 
 \subsection{rhcounter - Distributed Counters}
@@ -2665,10 +2717,12 @@ Increments (in a safe way i.e. no race conditions) the distributed counter
 \code{name} that belongs to family \code{group} by \code{value}. Ideally \code{group} and
 \code{name} should be strings, any R object can be sent and it will be converted to
 its string representation (see {\hyperref[serialize:serializationstringify]{\emph{String Representations}}})
+
 \index{rhstatus}
 
 \subsection{rhstatus - Updating the Status of the Job during Runtime}
-\label{mr:index-5}\label{mr:rhstatus-updating-the-status-of-the-job-during-runtime}\index{mapred.task.timeout}
+\label{mr:index-5}\label{mr:rhstatus-updating-the-status-of-the-job-during-runtime}
+\index{mapred.task.timeout}
 \begin{Verbatim}[commandchars=\\\{\}]
 rhstatus\PYG{p}{(}message\PYG{p}{)}
 \end{Verbatim}
@@ -2678,6 +2732,7 @@ website. This also informs Hadoop that the task is still running and it is not
 to be killed. In the absence of \code{rhstatus} and if
 \code{mapred.task.timeout} is non zero (by default it is 10 minutes) Hadoop will
 kill the R process.
+
 \index{rhsz}\index{rhuz}\index{maximum size of objects}
 
 \subsection{rhsz,rhuz - Functions for Serialization}
@@ -2703,7 +2758,8 @@ of how large an object will be.
 \label{serialize::doc}\label{serialize:rhipe-serialization}\label{serialize:rhipeserialize}
 
 \section{About}
-\label{serialize:about}\index{serialization}
+\label{serialize:about}
+\index{serialization}
 The R serialization is verbose. Serialized objects have 22 bytes of header and
 booleans are serialized to integers.  Best performance is achieved in Hadoop
 when the size of the data exchanged is as small as possible. RHIPE implements
@@ -2730,9 +2786,10 @@ Closures, environments and promises cannot be serialized. For example, to
 serialize the output of \code{xyplot}, wrap it in a call to \code{serialize} e.g.
 
 \begin{Verbatim}[commandchars=\\\{\}]
-rhcollect\PYG{p}{(}key\PYG{p}{,} serialize\PYG{p}{(}xyplot\PYG{p}{(}a\textasciitilde{}b\PYG{p}{)}\PYG{p}{,} \PYG{k+kc}{NULL}\PYG{p}{)}\PYG{p}{)}
+rhcollect\PYG{p}{(}key\PYG{p}{,} serialize\PYG{p}{(}xyplot\PYG{p}{(}a\PYGZti{}b\PYG{p}{)}\PYG{p}{,} \PYG{k+kc}{NULL}\PYG{p}{)}\PYG{p}{)}
 \end{Verbatim}
-\phantomsection\label{serialize:serializationstringify}\index{serialization!string representations}\index{textouput!writing to text}\index{rhmr}
+\phantomsection\label{serialize:serializationstringify}
+\index{serialization!string representations}\index{textouput!writing to text}\index{rhmr}
 
 \section{String Representations and TextOutput Format}
 \label{serialize:string-representations-and-textoutput-format}\label{serialize:index-1}
@@ -2798,7 +2855,9 @@ message CMPLX \PYG{p}{\PYGZob{}}
 
 
 \chapter{RHIPE Options}
-\label{options:rhipe-options}\label{options::doc}\phantomsection\label{options:options-for-rhipe}\index{rhipe\_map\_buffsize}\index{rhipe\_reduce\_buffsize}\index{io.sort.mb}\index{mapred.textoutputformat.separator}\index{mapred.field.separator}\index{mapred.textoutputformat.usekey}\index{mapred.map.tasks}\index{mapred.reduce.tasks}\index{mapred.task.timeout}\index{rhipe\_stream\_buffer}\index{mapred.input.filename}\begin{figure}[htbp]
+\label{options:rhipe-options}\label{options::doc}\phantomsection\label{options:options-for-rhipe}
+\index{rhipe\_map\_buffsize}\index{rhipe\_reduce\_buffsize}\index{io.sort.mb}\index{mapred.textoutputformat.separator}\index{mapred.field.separator}
+\index{mapred.textoutputformat.usekey}\index{mapred.map.tasks}\index{mapred.reduce.tasks}\index{mapred.task.timeout}\index{rhipe\_stream\_buffer}\index{mapred.input.filename}\begin{figure}[htbp]
 \centering
 \capstart
 
