@@ -12,7 +12,7 @@
 
 
 \title{RHIPE Documentation}
-\date{March 12, 2011}
+\date{April 16, 2011}
 \release{0.65.3}
 \author{Saptarshi Guha}
 \newcommand{\sphinxlogo}{}
@@ -2184,7 +2184,8 @@ rhget\PYG{p}{(}src\PYG{p}{,}dest\PYG{p}{)}
 
 Copies the files (or folder) at \code{src}, located on the HDFS to the
 destination \code{dest} located on the local filesystem. If a file or folder of
-the same name as \code{dest} exists on the local filesystem, it will be deleted.
+the same name as \code{dest} exists on the local filesystem, it will be
+deleted. The \code{dest} can contain ``\textasciitilde{}'' which will be expanded.
 
 \index{rhput}
 
@@ -2195,7 +2196,7 @@ rhput\PYG{p}{(}src\PYG{p}{,}dest\PYG{p}{)}
 \end{Verbatim}
 
 Copies the local file called \code{src} (not a folder) to the destination \code{dest}
-on the HDFS.
+on the HDFS. Uses \code{path.expand} to expand the \code{src} parameter.
 
 \index{rhcp}
 
